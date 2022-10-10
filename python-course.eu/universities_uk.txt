@@ -1,4 +1,5 @@
 Rank	Institution	Undergraduates	Postgraduates	Total students
+<<<<<<< HEAD
 1	The Open University	"120,440"	"8,975"	"129,420"
 2	University College London[b]	"19,715"	"21,380"	"41,095"
 3	University of Manchester	"26,630"	"13,855"	"40,485"
@@ -138,20 +139,161 @@ Rank	Institution	Undergraduates	Postgraduates	Total students
 137	Bishop Grosseteste University	"1,665"	615	"2,280"
 138	London Business School[b]		"2,305"	"2,305"
 139	Leeds Arts University	"2,075"	70	"2,145"
+=======
+1	The Open University	120440	8975	129420
+2	University College London[b]	19715	21380	41095
+3	University of Manchester	26630	13855	40485
+4	Coventry University	31645	6785	38430
+5	University of Leeds	25955	10370	36330
+6	Nottingham Trent University	28915	6870	35785
+7	University of Birmingham	23155	12605	35760
+8	University of Edinburgh	23060	12310	35375
+9	University of Nottingham	25980	8860	34840
+10	Manchester Metropolitan University	26435	6985	33420
+11	Cardiff University	23755	9505	33260
+12	King's College London[b]	19370	13740	33110
+13	University of Glasgow	21165	11300	32465
+14	Sheffield Hallam University	24215	6750	30960
+15	University of the West of England	23110	7570	30680
+16	University of Sheffield	19100	10955	30055
+17	University of Liverpool	22690	6910	29600
+18	De Montfort University	23045	5955	29000
+19	Northumbria University	20455	7875	28325
+20	Newcastle University	21300	6775	28070
+21	Ulster University	20865	6815	27680
+22	University of Bristol	20035	7340	27375
+23	University of Exeter	20320	6615	26935
+24	Birmingham City University	20940	5990	26930
+25	University of Warwick	17635	9190	26825
+26	University of Portsmouth	22010	4765	26775
+27	Anglia Ruskin University	21280	5435	26715
+28	University of Oxford	15270	10640	25910
+29	University of Hertfordshire	17805	7715	25520
+30	Liverpool John Moores University	20105	4945	25050
+31	Queen's University Belfast	18310	6605	24915
+32	University of Central Lancashire	17835	6885	24715
+33	University of Strathclyde	16115	8215	24330
+34	Leeds Beckett University	17705	5590	23290
+35	University of South Wales	17765	5325	23090
+36	University of Southampton	14705	7960	22665
+37	"Queen Mary, University of London[b]"	14825	6840	21665
+38	University of Salford	17325	4175	21500
+39	University of Cambridge	12860	8475	21340
+40	Swansea University	16315	4065	20375
+41	Middlesex University	14880	5290	20175
+42	University of Brighton	15530	3455	18985
+43	"City, University of London[b]"	11020	8955	19975
+44	University of Plymouth	15660	2750	18410
+45	University of York	14075	5715	19790
+46	University of Kent	15020	3685	18710
+47	University of Sussex	14780	4615	19395
+48	University of Derby	15320	4365	19685
+49	Imperial College London	10475	8925	19400
+50	University of the Arts London	15735	4230	19965
+51	University of Wolverhampton	15205	3670	18875
+52	Durham University	14730	4790	19520
+53	University of Greenwich	14580	5245	19825
+54	University of Westminster	15385	4085	19470
+55	Teesside University	15480	3815	19290
+56	University of Bath	13605	4955	18560
+57	Loughborough University	13885	4410	18295
+58	University of East Anglia	13410	4625	18035
+59	Bournemouth University	13895	3495	17390
+60	University of Reading	12630	6105	18735
+61	University of Huddersfield	13600	3705	17305
+62	London South Bank University	12725	4115	16840
+63	University of the West of Scotland	13465	2640	16105
+64	Glasgow Caledonian University	14165	3375	17540
+65	University of Leicester	11400	4780	16180
+66	Kingston University	12770	5300	18070
+67	University of Surrey	13485	3505	16990
+68	Oxford Brookes University	12710	4185	16900
+69	University of Hull	11930	2325	14255
+70	University of Dundee	11670	4600	16270
+71	University of Lincoln	14095	2330	16425
+72	University of Essex	12910	3620	16530
+73	Aston University	11985	3400	15385
+74	Staffordshire University	13295	2380	15675
+75	Brunel University London	11460	4060	15520
+76	University of Aberdeen	10125	5060	15185
+77	University of Sunderland	12580	3160	15740
+78	University of Chester	9230	4315	13545
+79	Lancaster University	11405	4260	15665
+80	Canterbury Christ Church University	10795	2545	13340
+81	University of Bedfordshire	13155	3575	16725
+82	Edge Hill University	10025	3535	13560
+83	Edinburgh Napier University	10260	3675	13930
+84	University of East London	10270	5085	15355
+85	Roehampton University	10365	2130	12495
+86	University of Stirling	8545	3995	12540
+87	Robert Gordon University	9085	3580	12660
+88	University of Northampton	9145	2915	12060
+89	London School of Economics[b]	5160	6895	12050
+90	"Birkbeck, University of London[b]"	6680	4745	11425
+91	"University of Wales, Trinity Saint David"	10680	2025	12700
+92	University of West London	9815	2170	11985
+93	"Royal Holloway, University of London[b]"	8530	3005	11530
+94	Buckinghamshire New University	12895	1180	14075
+95	Heriot-Watt University	8150	3005	11155
+96	Keele University	8490	2395	10880
+97	Cardiff Metropolitan University	8100	2820	10920
+98	University of St Andrews	8470	2065	10535
+99	"Goldsmiths, University of London[b]"	6500	3590	10090
+100	Bangor University	7235	2715	9945
+101	University of Worcester	8400	1780	10180
+102	Solent University	9765	745	10510
+103	University of Bradford	7480	2290	9770
+104	University of the Highlands and Islands	8670	1235	9905
+105	London Metropolitan University	8250	2135	10390
+106	University of Gloucestershire	6385	1530	7915
+107	Aberystwyth University	6605	1115	7720
+108	Bath Spa University	6665	1790	8450
+109	University of Winchester	6700	1305	8000
+110	University of Suffolk	8910	650	9565
+111	University of Cumbria	5980	1965	7945
+112	University of Bolton	6675	1500	8175
+113	York St John University	5700	1300	7000
+114	University for the Creative Arts	5985	780	6765
+115	Falmouth University	5500	745	6245
+116	Wrexham Glynd?r University	4885	1160	6045
+117	School of Oriental and African Studies[b]	2740	3050	5795
+118	"St Mary's University, Twickenham"	3670	1855	5520
+119	University of Chichester	4395	1150	5545
+120	Queen Margaret University	3510	1615	5130
+121	Leeds Trinity University	4220	760	4985
+121	Liverpool Hope University	3895	1090	4985
+123	University College Birmingham	4435	495	4930
+124	Cranfield University		4825	4825
+125	Harper Adams University	4125	555	4680
+126	"St George's, University of London[b]"	3520	810	4330
+127	Abertay University	3835	445	4280
+128	Arts University Bournemouth	3270	175	3445
+128	University of Buckingham	1645	1460	3100
+130	Newman University	2170	620	2795
+131	University of St Mark and St John	2215	535	2750
+132	Ravensbourne	2485	45	2535
+133	Royal Veterinary College[b]	2025	490	2510
+134	Royal College of Art	85	2565	2645
+135	Norwich University of the Arts	2265	95	2360
+136	Glasgow School of Art	1665	710	2380
+137	Bishop Grosseteste University	1665	615	2280
+138	London Business School[b]		2305	2305
+139	Leeds Arts University	2075	70	2145
+>>>>>>> 4782f547a599e391ef334b4466d67a921cb225d3
 140	Hartpury University			
-141	SRUC	"1,485"	85	"1,570"
-142	Stranmillis University College	"1,070"	140	"1,210"
-143	Conservatoire for Dance and Drama	815	185	"1,000"
+141	SRUC	1485	85	1570
+142	Stranmillis University College	1070	140	1210
+143	Conservatoire for Dance and Drama	815	185	1000
 144	Gr?p Llandrillo Menai			
-145	Arts University Plymouth	"1,210"	95	"1,305"
-146	Royal Conservatoire of Scotland	900	320	"1,220"
-147	Trinity Laban Conservatoire of Music and Dance	950	300	"1,250"
+145	Arts University Plymouth	1210	95	1305
+146	Royal Conservatoire of Scotland	900	320	1220
+147	Trinity Laban Conservatoire of Music and Dance	950	300	1250
 148	Leeds College of Music			
-149	London School of Hygiene and Tropical Medicine[b]		"1,090"	"1,090"
-150	Royal Agricultural University	"1,015"	110	"1,125"
-151	Guildhall School of Music and Drama	685	370	"1,060"
-152	Royal Central School of Speech and Drama[b]	690	410	"1,100"
-153	"St Mary's University College, Belfast"	845	200	"1,045"
+149	London School of Hygiene and Tropical Medicine[b]		1090	1090
+150	Royal Agricultural University	1015	110	1125
+151	Guildhall School of Music and Drama	685	370	1060
+152	Royal Central School of Speech and Drama[b]	690	410	1100
+153	"St Mary's University College, Belfast"	845	200	1045
 154	Royal Northern College of Music	595	295	890
 155	Royal Academy of Music[b]	420	435	860
 156	Royal College of Music	440	450	890
