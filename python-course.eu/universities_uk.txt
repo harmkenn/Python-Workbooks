@@ -1,5 +1,4 @@
 Rank	Institution	Undergraduates	Postgraduates	Total students
--	University of London[a]			[3]
 1	The Open University	"120,440"	"8,975"	"129,420"
 2	University College London[b]	"19,715"	"21,380"	"41,095"
 3	University of Manchester	"26,630"	"13,855"	"40,485"
@@ -165,4 +164,4 @@ Rank	Institution	Undergraduates	Postgraduates	Total students
 163	Liverpool School of Tropical Medicine		345	345
 164	National Film and Television School		495	495
 165	Institute of Cancer Research[b]		280	280
-166	University of London (Institutes and activities)		330	330
+166	University of Londonï¿½(Institutes and activities)		330	330
