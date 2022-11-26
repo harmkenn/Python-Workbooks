@@ -1,0 +1,238 @@
+'China' 1,355,692,576
+'India' 1,236,344,631
+'European Union' 511,434,812
+'United States' 318,892,103
+'Indonesia' 253,609,643
+'Brazil' 202,656,788
+'Pakistan' 196,174,380
+'Nigeria' 177,155,754
+'Bangladesh' 166,280,712
+'Russia' 142,470,272
+'Japan' 127,103,388
+'Mexico' 120,286,655
+'Philippines' 107,668,231
+'Ethiopia' 96,633,458
+'Vietnam' 93,421,835
+'Egypt' 86,895,099
+'Turkey' 81,619,392
+'Germany' 80,996,685
+'Iran' 80,840,713
+'Congo, Democratic Republic of the' 77,433,744
+'Thailand' 67,741,401
+'France' 66,259,012
+'United Kingdom' 63,742,977
+'Italy' 61,680,122
+'Burma' 55,746,253
+'Tanzania' 49,639,138
+'Korea, South' 49,039,986
+'South Africa' 48,375,645
+'Spain' 47,737,941
+'Colombia' 46,245,297
+'Kenya' 45,010,056
+'Ukraine' 44,291,413
+'Argentina' 43,024,374
+'Algeria' 38,813,722
+'Poland' 38,346,279
+'Uganda' 35,918,915
+'Sudan' 35,482,233
+'Canada' 34,834,841
+'Morocco' 32,987,206
+'Iraq' 32,585,692
+'Afghanistan' 31,822,848
+'Nepal' 30,986,975
+'Peru' 30,147,935
+'Malaysia' 30,073,353
+'Uzbekistan' 28,929,716
+'Venezuela' 28,868,486
+'Saudi Arabia' 27,345,986
+'Yemen' 26,052,966
+'Ghana' 25,758,108
+'Korea, North' 24,851,627
+'Mozambique' 24,692,144
+'Taiwan' 23,359,928
+'Madagascar' 23,201,926
+'Cameroon' 23,130,708
+'Cote d'Ivoire' 22,848,945
+'Australia' 22,507,617
+'Sri Lanka' 21,866,445
+'Romania' 21,729,871
+'Angola' 19,088,106
+'Burkina Faso' 18,365,123
+'Syria' 17,951,639
+'Kazakhstan' 17,948,816
+'Niger' 17,466,172
+'Malawi' 17,377,468
+'Chile' 17,363,894
+'Netherlands' 16,877,351
+'Mali' 16,455,903
+'Ecuador' 15,654,411
+'Cambodia' 15,458,332
+'Guatemala' 14,647,083
+'Zambia' 14,638,505
+'Zimbabwe' 13,771,721
+'Senegal' 13,635,927
+'Rwanda' 12,337,138
+'South Sudan' 11,562,695
+'Guinea' 11,474,383
+'Chad' 11,412,107
+'Cuba' 11,047,251
+'Tunisia' 10,937,521
+'Portugal' 10,813,834
+'Greece' 10,775,557
+'Bolivia' 10,631,486
+'Czech Republic' 10,627,448
+'Belgium' 10,449,361
+'Somalia' 10,428,043
+'Burundi' 10,395,931
+'Dominican Republic' 10,349,741
+'Benin' 10,160,556
+'Haiti' 9,996,731
+'Hungary' 9,919,128
+'Sweden' 9,723,809
+'Azerbaijan' 9,686,210
+'Belarus' 9,608,058
+'Honduras' 8,598,561
+'Austria' 8,223,062
+'Switzerland' 8,061,516
+'Tajikistan' 8,051,512
+'Jordan' 7,930,491
+'Israel' 7,821,850
+'Togo' 7,351,374
+'Serbia' 7,209,764
+'Hong Kong' 7,112,688
+'Bulgaria' 6,924,716
+'Laos' 6,803,699
+'Paraguay' 6,703,860
+'Papua New Guinea' 6,552,730
+'Eritrea' 6,380,803
+'Libya' 6,244,174
+'El Salvador' 6,125,512
+'Lebanon' 5,882,562
+'Nicaragua' 5,848,641
+'Sierra Leone' 5,743,725
+'United Arab Emirates' 5,628,805
+'Kyrgyzstan' 5,604,212
+'Denmark' 5,569,077
+'Singapore' 5,567,301
+'Slovakia' 5,443,583
+'Central African Republic' 5,277,959
+'Finland' 5,268,799
+'Turkmenistan' 5,171,943
+'Norway' 5,147,792
+'Georgia' 4,935,880
+'Ireland' 4,832,765
+'Costa Rica' 4,755,234
+'Congo, Republic of the' 4,662,446
+'Croatia' 4,470,534
+'New Zealand' 4,401,916
+'Liberia' 4,092,310
+'Bosnia and Herzegovina' 3,871,643
+'Puerto Rico' 3,620,897
+'Panama' 3,608,431
+'Moldova' 3,583,288
+'Mauritania' 3,516,806
+'Lithuania' 3,505,738
+'Uruguay' 3,332,972
+'Oman' 3,219,775
+'Armenia' 3,060,631
+'Albania' 3,020,209
+'Mongolia' 2,953,190
+'Jamaica' 2,930,050
+'Kuwait' 2,742,711
+'West Bank' 2,731,052
+'Namibia' 2,198,406
+'Latvia' 2,165,165
+'Botswana' 2,155,784
+'Qatar' 2,123,160
+'Macedonia' 2,091,719
+'Slovenia' 1,988,292
+'Lesotho' 1,942,008
+'Gambia, The' 1,925,527
+'Kosovo' 1,859,203
+'Gaza Strip' 1,816,379
+'Guinea-Bissau' 1,693,398
+'Gabon' 1,672,597
+'Swaziland' 1,419,623
+'Mauritius' 1,331,155
+'Bahrain' 1,314,089
+'Estonia' 1,257,921
+'Trinidad and Tobago' 1,223,916
+'Timor-Leste' 1,201,542
+'Cyprus' 1,172,458
+'Fiji' 903,207
+'Djibouti' 810,179
+'Comoros' 766,865
+'Guyana' 735,554
+'Bhutan' 733,643
+'Equatorial Guinea' 722,254
+'Montenegro' 650,036
+'Solomon Islands' 609,883
+'Macau' 587,914
+'Suriname' 573,311
+'Western Sahara' 554,795
+'Cabo Verde' 538,535
+'Luxembourg' 520,672
+'Brunei' 422,675
+'Malta' 412,655
+'Maldives' 393,595
+'Belize' 340,844
+'Bahamas, The' 321,834
+'Iceland' 317,351
+'Barbados' 289,680
+'French Polynesia' 280,026
+'New Caledonia' 267,840
+'Vanuatu' 266,937
+'Samoa' 196,628
+'Sao Tome and Principe' 190,428
+'Saint Lucia' 163,362
+'Guam' 161,001
+'Curacao' 146,836
+'Aruba' 110,663
+'Grenada' 110,152
+'Tonga' 106,440
+'Micronesia, Federated States of' 105,681
+'Kiribati' 104,488
+'Virgin Islands' 104,170
+'Saint Vincent and the Grenadines' 102,918
+'Jersey' 96,513
+'Seychelles' 91,650
+'Antigua and Barbuda' 91,295
+'Isle of Man' 86,866
+'Andorra' 85,458
+'Dominica' 73,449
+'Marshall Islands' 70,983
+'Bermuda' 69,839
+'Guernsey' 65,849
+'Greenland' 57,728
+'Cayman Islands' 54,914
+'American Samoa' 54,517
+'Saint Kitts and Nevis' 51,538
+'Northern Mariana Islands' 51,483
+'Faroe Islands' 49,947
+'Turks and Caicos Islands' 49,070
+'Sint Maarten' 39,689
+'Liechtenstein' 37,313
+'San Marino' 32,742
+'British Virgin Islands' 32,680
+'Saint Martin' 31,530
+'Monaco' 30,508
+'Gibraltar' 29,185
+'Palau' 21,186
+'Anguilla' 16,086
+'Wallis and Futuna' 15,561
+'Tuvalu' 10,782
+'Cook Islands' 10,134
+'Nauru' 9,488
+'Saint Helena, Ascension, and Tristan da Cunha' 7,776
+'Saint Barthelemy' 7,267
+'Saint Pierre and Miquelon' 5,716
+'Montserrat' 5,215
+'Falkland Islands (Islas Malvinas)' 3,361
+'Norfolk Island' 2,210
+'Svalbard' 1,872
+'Christmas Island' 1,530
+'Tokelau' 1,337
+'Niue' 1,190
+'Holy See (Vatican City)' 842
+'Cocos (Keeling) Islands' 596
+'Pitcairn Islands' 48
