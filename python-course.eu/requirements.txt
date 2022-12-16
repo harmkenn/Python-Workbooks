@@ -6,3 +6,4 @@ plotly
 sklearn
 scikit-learn
 pip
+matplotlib
