@@ -7,3 +7,4 @@ sklearn
 scikit-learn
 pip
 matplotlib
+openpyxl
