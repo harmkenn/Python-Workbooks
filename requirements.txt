@@ -8,3 +8,4 @@ scikit-learn
 pip
 matplotlib
 openpyxl
+requests
