@@ -9,3 +9,4 @@ pip
 matplotlib
 openpyxl
 requests
+levenshtein
