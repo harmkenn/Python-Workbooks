@@ -10,3 +10,5 @@ matplotlib
 openpyxl
 requests
 levenshtein
+tensorflow
+keras
