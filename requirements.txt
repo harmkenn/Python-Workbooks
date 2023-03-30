@@ -12,3 +12,4 @@ requests
 levenshtein
 tensorflow
 keras
+pydataset
