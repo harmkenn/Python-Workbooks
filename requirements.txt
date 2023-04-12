@@ -13,3 +13,5 @@ levenshtein
 tensorflow
 keras
 pydataset
+pyaudio
+SpeechRecognition
