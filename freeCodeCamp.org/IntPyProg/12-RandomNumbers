@@ -1,0 +1,9 @@
+Random Numbers
+Python defines a set of functions that are used to generate or manipulate random numbers. This article covers:
+
+the random module
+reproduce numbers with random.seed()
+create cryptographically strong random numbers with the secrets module
+create random nd arrays with numpy.random
+The random module
+This module implements pseudo-random number generators for various distributions. It uses the Mersenne Twister algorithm (https://en.wikipedia.org/wiki/Mersenne_Twister) as its core generator. It is called pseudo-random, because the numbers seem random, but are reproducable.
