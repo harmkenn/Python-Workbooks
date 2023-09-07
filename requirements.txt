@@ -13,7 +13,7 @@ levenshtein
 tensorflow
 keras
 pydataset
-pyaudio
+#pyaudio
 SpeechRecognition
 pyinstaller
 yfinance
