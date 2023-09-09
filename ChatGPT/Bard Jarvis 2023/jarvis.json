@@ -1,0 +1,7 @@
+{
+    "commands": ["open Google", "play music"],
+    "actions": {
+        "open Google": "open Google Chrome",
+        "play music": "mpg123 -q ~/music/favorite_song.mp3"
+    }
+}
