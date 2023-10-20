@@ -17,3 +17,4 @@ yfinance
 geopandas
 matplotlib
 scipy
+nbformat
