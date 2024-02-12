@@ -1,9 +1,14 @@
-// comment on the stuff
+// https://www.youtube.com/watch?v=lfmg-EJ8gm4&list=WL&index=11&t=23655s
+/* 
+console.log('Hello Again')
+console.log('I like peanut butter')
+
+window.alert('This is an alert')
+window.alert('I like Peanut Butter')
 
 
-let name = 'coolness';
+    We are doing great
+*/
 
-console.log(name);
-
-let firstName = 'Ken';
-console.log(firstName);
+document.getElementById("myH1").textContent = 'This Header comes from the Java script';
+document.getElementById('myP').textContent = 'This paragraph comes from javascrpt also'
