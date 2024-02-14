@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll the Dice</title>
+    
+</head>
+<body>
+    <button id="btnRoll">Roll</button>
+    <label id="lblResult"></label>
+    <style>
+        body{
+            font-family: Verdana;
+            text-align: center;
+        }
+        #btnRoll{
+            font-size: 3em;
+            padding: 5px 25px;
+            border-radius: 5px;
+        }
+        #lblResult{
+            font-size: 3em;
+        }
+    </style>
+    <Script>
+        const btnRoll = document.getElementById("btnRoll");
+        const lblResult = document.getElementById("lblResult");
+        let rand;
+        btnRoll.onclick = function(){
+            rand = Math.ceil(Math.random()*6);
+            lblResult.textContent = rand;
+        }
+    </Script>
+</body>
+</html>

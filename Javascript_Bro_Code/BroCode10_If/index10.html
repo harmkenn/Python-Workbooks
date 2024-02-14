@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label>Enter your age:</label><br>
+    <input type="text" id="txtAge"><br>
+    <button type="submit" id="btnSubmit">submit</button><br>
+    <p id="pResult"></p>
+    <script>
+        const txtAge = document.getElementById("txtAge");
+        const btnSubmit = document.getElementById("btnSubmit");
+        const pResult = document.getElementById("pResult");
+
+        let age;
+
+        
+
+        btnSubmit.onclick = function(){
+            age = Number(txtAge.value);
+            console.log(age);
+            if(age>=100){
+                pResult.textContent = `${age} is too old`
+            }
+            else if(age<18){
+                pResult.textContent = `${age} is too young`
+            }
+            else{
+                pResult.textContent = `${age} is perfect`
+            }
+        }
+
+    </script>
+</body>
+</html>
