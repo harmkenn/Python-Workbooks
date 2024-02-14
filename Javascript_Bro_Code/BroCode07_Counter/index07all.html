@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bro Code 07</title>
+  <style>
+    /* Styles for everything */
+    body {
+      font-family: sans-serif; /* Add a default font for the body */
+    }
+
+    #lblCount {
+      display: block;
+      text-align: center;
+      font-size: 10em;
+      font-family: Arial;
+    }
+
+    #btnContainer {
+      text-align: center;
+    }
+
+    .buttons {
+      padding: 10px 20px;
+      font-size: 1.5em;
+      color: whitesmoke;
+      background-color: hsl(214, 100%, 74%);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color .3s;
+    }
+
+    .buttons:hover {
+      background-color: hsl(286, 100%, 74%);
+    }
+  </style>
+</head>
+<body>
+  <label id="lblCount">0</label><br>
+  <div id="btnContainer">
+    <button id="btnDecrease" class="buttons">Decrease</button>
+    <button id="btnReset" class="buttons">Reset</button>
+    <button id="btnIncrease" class="buttons">Increase</button>
+  </div>
+
+  <script>
+    // Your JavaScript code here
+    const btnDecrease = document.getElementById("btnDecrease");
+    const btnIncrease = document.getElementById("btnIncrease");
+    const btnReset = document.getElementById("btnReset");
+    const lblCount = document.getElementById("lblCount");
+    let count = 0;
+
+    btnDecrease.onclick = function() {
+      count--;
+      lblCount.textContent = count;
+    };
+
+    btnIncrease.onclick = function() {
+      count++;
+      lblCount.textContent = count;
+    };
+
+    btnReset.onclick = function() {
+      count = 0;
+      lblCount.textContent = count;
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+#lblCount{
+    display: block;
+    text-align: center;
+    font-size: 10em;
+    font-family: Arial;
+}
+#btnContainer{
+    text-align: center;
+}
+.buttons{
+    padding: 10px 20px;
+    font-size: 1.5em;
+    color: whitesmoke;
+    background-color: hsl(214,100%,74%);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+.buttons:hover{
+    background-color: hsl(286, 100%, 74%);
+}
