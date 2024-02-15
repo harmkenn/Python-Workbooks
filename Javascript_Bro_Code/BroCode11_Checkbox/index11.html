@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bro Code 11</title>
+</head>
+<body>
+    <style>
+        body{
+            font-family: Verdana;
+            font-size: 2em;
+        }
+        #btnSubmit{
+            font-size: 1em;
+        }
+    </style>
+    <input type="checkbox" id="chk1"><label for="chk1">subscribe</label><br>
+    <input type="radio" id="rdVisa" name="card"><label for="rdVisa">Visa</label><br>
+    <input type="radio" id="rdMC" name="card"><label for="rdMC">MasterCard</label><br>
+    <input type="radio" id="rdPaypal" name="card"><label for="rdPaypal">PayPal</label><br>
+    <button type="submit" id="btnSubmit">submit</button><br>
+    <p id="rslt1"></p>
+    <p id="rslt2"></p>
+    <script>
+        const chk1 = document.getElementById("chk1");
+        const rdVisa = document.getElementById("rdVisa");
+        const rdMC = document.getElementById("rdMC");
+        const rdPaypal = document.getElementById("rdPaypal");
+        const btnSubmit = document.getElementById("btnSubmit");
+        const rslt1 = document.getElementById("rslt1");
+        const rslt2 = document.getElementById("rslt2");
+
+        btnSubmit.onclick = function(){
+            if(chk1.checked){
+                rslt1.textContent = 'You are subscribed!'
+            }
+            else{
+                rslt1.textContent = 'You are not subscribed!'
+            }
+            if(rdVisa.checked){
+                rslt2.textContent = 'You are paying with Visa'
+            }
+            else if(rdMC.checked){
+                rslt2.textContent = 'You are paying with MasterCard'
+            }
+            else if(rdPaypal.checked){
+                rslt2.textContent = 'You are paying with PayPal'
+            }
+            else{
+                rslt2.textContent = 'You must select a payment method'
+            }
+        }
+    </script>
+</body>
+</html>
