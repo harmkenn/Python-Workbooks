@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label>Test Score:</label><input id="inTS">
+    <button id="submit">submit</button>
+    <p id="pLG"></p>
+    <script>
+        const testScore = document.getElementById('inTS');
+        const letterGrade = document.getElementById('pLG');
+        const button = document.getElementById('submit');
+        let tS; 
+        
+        button.onclick = function(){
+            let tS = Number(testScore.value);
+            switch(true){
+               case tS >= 90:
+                letterGrade.textContent = `${tS} is good enough for an A`;
+                break;
+            case tS >= 80:
+                letterGrade.textContent = `${tS} is good enough for an B`;
+                break;                
+            case tS >= 70:
+                letterGrade.textContent = `${tS} is good enough for an C`;
+                break;
+            case tS >= 60:
+                letterGrade.textContent = `${tS} is good enough for an A`;
+                break;
+            default:
+            letterGrade.textContent = `You did not get a passing grade`;
+            }
+
+            
+        }
+        
+    </script>
+</body>
+</html>
