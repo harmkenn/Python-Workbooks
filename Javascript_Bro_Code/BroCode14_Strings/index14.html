@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let MGRS = "   3S NV 1234 6789 ";
+        console.log(MGRS);
+        let replace = MGRS.replaceAll(" ","");
+        console.log(replace);
+        let GZn = replace.match(/\D/)[0];
+        
+        let GZe = replace.slice(0,replace.indexOf(GZn));
+        console.log(GZe);
+        console.log(GZn);
+        let GS = replace.slice(replace.indexOf(GZn)+1,replace.indexOf(GZn)+3);
+        console.log(GS);
+        let rest = replace.slice(replace.indexOf(GZn)+3);
+        console.log(rest);
+        let east = rest.slice(0,rest.length/2);
+        console.log(east);
+        let north = rest.slice(rest.length/2);
+        console.log(north);
+    </script>
+</body>
+</html>
