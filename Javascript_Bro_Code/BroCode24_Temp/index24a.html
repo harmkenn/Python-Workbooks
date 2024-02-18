@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bro Code 24</title>
+</head>
+<body>
+    <div class="container">
+        <style>
+            .container {
+                display: flex;
+                max-width: 1500px;
+            }   
+
+            .form1, .form2 {
+                flex: 1; /* Makes forms share available space equally */
+                margin: 10px; /* Adds some margin for spacing */
+            }
+        </style>
+        <form class="form1">
+            <style>
+                body{
+                    font-family: Arial, Helvetica, sans-serif;
+                    background-color: hsl(0, 0%, 95%);
+                }
+                h1{
+                    color:rgb(74, 157, 252);
+                }
+                form{
+                    background-color: rgb(243, 250, 248);
+                    text-align: center;
+                    max-width: 750px;
+                    margin: auto;
+                    padding: 25px;
+                    border-radius: 10px;
+                    box-shadow: 5px 5px 15px;
+                }
+                #inTemp{
+                    width: 50%;
+                    text-align: center;
+                    font-size: 2em;
+                    border-radius: 4px;
+                    margin-bottom: 15px;
+                }
+                label{
+                    font-size: 1.5em;
+                    font-weight: bold;
+                }
+                button{
+                    margin-top: 15px;
+                    background-color: rgb(236, 57, 26);
+                    font-size: 1.5em;
+                    border: none;
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    color: white;
+                    cursor: pointer;
+                }
+                button:hover{
+                    background-color: rgb(182, 3, 3);
+                }
+                #result{
+                    font-size: 1.75em;
+                    font-weight: bold;
+                }
+                .rc{
+                    display: grid;
+                    grid-template-columns: repeat(1); /* 1 columns of equal width */
+                    grid-template-rows: repeat(2, 1fr); /* 2 rows of equal height */
+                }
+
+            </style>
+            <h1>Temperature Conversion:</h1>
+            <input type="number" id="inTemp" value="0"><br>
+            <div class="rc">
+                <input type="radio" id="CtoF" name="unit"><label for="CtoF">Celsius ➡️ Fahrenheit</label><br> 
+                <input type="radio" id="FtoC" name="unit"><label for="FtoC">Fahrenheit ➡️ Celsius</label><br>
+            </div>
+            
+            <button type="button" onclick="convert()">submit</button>
+            <p id="result"></p>
+            <script>
+                // <! -- windows key and ; to get emojis --><br>
+                const inTemp = document.getElementById("inTemp");
+                const CtoF = document.getElementById("CtoF");
+                const FtoC = document.getElementById("FtoC");
+                const result = document.getElementById("result");
+                let temp;
+                CtoF.checked = true;
+                function convert(){
+                    if(CtoF.checked){
+                        C = Number(inTemp.value);
+                        F = (C * 9 / 5 + 32).toFixed(1);
+                        result.textContent = C + "\xB0C is " + F + "\xB0F"; // alt + 0176 for °
+                    }
+                    else if(FtoC.checked){
+                        F = Number(inTemp.value);
+                        C = ((F - 32) * 5 / 9).toFixed(1);
+                        result.textContent = F + "\xB0F is " + C + "\xB0C"; // alt + 0176 for °
+                    }
+                }
+            </script>
+        </form>
+
+        <form class="form2">
+            <style>
+                input{
+                    width: 50%;
+                    text-align: center;
+                    font-size: 2em;
+                    border-radius: 4px;
+                    margin-bottom: 15px;
+                }
+         
+            </style>
+            <h1>Temperature Conversion:</h1>
+            <label for="Celsius">Celsius:</label>
+            <input type="number" id="Celsius" class="inputs"><br>
+            <label for="fahrenheit">Fahrenheit:</label>
+            <input type="number" id="fahrenheit" class="inputs">
+            <script>
+                const celsiusInput = document.getElementById("celsius");
+                const fahrenheitInput = document.getElementById("fahrenheit");
+
+                const convertCelsiusToFahrenheit = (celsius) => {
+                return (celsius * 9 / 5) + 32;
+                };
+
+                const convertFahrenheitToCelsius = (fahrenheit) => {
+                return (fahrenheit - 32) * 5 / 9;
+                };
+
+                celsiusInput.addEventListener("keyup", (event) => {
+                if (event.keyCode === 13) {
+                    const celsius = parseFloat(celsiusInput.value);
+                    if (!isNaN(celsius)) {
+                    const fahrenheit = convertCelsiusToFahrenheit(celsius);
+                    fahrenheitInput.value = fahrenheit.toFixed(2);
+                    }
+                }
+                });
+
+                fahrenheitInput.addEventListener("keyup", (event) => {
+                if (event.keyCode === 13) {
+                    const fahrenheit = parseFloat(fahrenheitInput.value);
+                    if (!isNaN(fahrenheit)) {
+                    const celsius = convertFahrenheitToCelsius(fahrenheit);
+                    celsiusInput.value = celsius.toFixed(2);
+                    }
+                }
+                });
+            </script>
+        </form>
+      </div>
+      
+    
+    
+
+</body>
+</html>
