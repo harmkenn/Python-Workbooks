@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        
+
+        * {
+        box-sizing: border-box;
+        }
+
+        body {
+        font-family: "Muli", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        }
+
+        .container {
+        display: flex;
+        width: 40vw;
+        }
+
+        .container .panel {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 40vh;
+        border-radius: 20px;
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        flex: 0.5;
+        margin: 10px;
+        position: relative;
+        transition: all 500ms ease-in;
+        opacity: 0.5;
+        }
+
+        .container .panel h3 {
+        font-size: 24px;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        margin: 0;
+        opacity: 0;
+        text-transform: capitalize;
+        }
+
+        .container .panel.active {
+        flex: 5;
+        opacity: 1;
+        }
+
+        .container .panel.active h3 {
+        opacity: 1;
+        transition: opacity 0.3s ease-in 0.4s;
+        }
+
+        .container .panel:nth-child(1) {
+        background-image: url("https://cdn.vox-cdn.com/thumbor/UesDON6gRqnBw9ivwPwijDAk43E=/0x0:5472x3648/920x613/filters:focal(2307x802:3181x1676):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/67471592/1273762781.jpg.0.jpg");
+        }
+
+        .container .panel:nth-child(2) {
+        background-image: url("https://basketballforever.com/wp-content/uploads/2022/11/Lauri-Markkanen-.jpg");
+        }
+
+        .container .panel:nth-child(3) {
+        background-image: url("https://cdn.theathletic.com/cdn-cgi/image/width=770%2cformat=auto%2cquality=75/https://cdn.theathletic.com/app/uploads/2023/06/07194921/USATSI_20846622-1024x683.jpg");
+        }
+
+        .container .panel:nth-child(4) {
+        background-image: url("https://library.sportingnews.com/styles/crop_style_16_9_desktop/s3/2023-01/Brock%20Purdy%20011423.jpeg?itok=78rrVPBU");
+        }
+
+        .container .panel:nth-child(5) {
+        background-image: url("https://heavy.com/wp-content/uploads/2019/08/gettyimages-1160860031-1-e1565749818974.jpg?quality=65&strip=all&w=780");
+        }
+
+        @media (max-width: 480px) {
+        .container {
+            width: 100vw;
+        }
+
+        .container .panel:nth-child(4),
+        .container .panel:nth-child(5) {
+            display: none;
+        }
+        }
+
+    </style>
+    <div class="container">
+        <div class="panel active">
+          <h3>Justin Herbert</h3>
+        </div>
+        <div class="panel">
+          <h3>Lauri Markkanen</h3>
+        </div>
+        <div class="panel">
+          <h3>Elly De La Cruz</h3>
+        </div>
+        <div class="panel">
+          <h3>Brock Purdy</h3>
+        </div>
+        <div class="panel">
+          <h3>Patrick Mahomes</h3>
+        </div>
+      </div>
+      <script>
+        const panels = document.querySelectorAll(".panel");
+
+        panels.forEach((panel) => {
+        panel.addEventListener("click", () => {
+            removeActiveClass();
+            panel.classList.add("active");
+        });
+        });
+
+        function removeActiveClass() {
+        panels.forEach((panel) => {
+            panel.classList.remove("active");
+        });
+        }
+        
+      </script>
+</body>
+</html>
