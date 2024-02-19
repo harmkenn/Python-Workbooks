@@ -59,7 +59,7 @@
             for(let i = 0; i < numDice; i++){
                 const value = Math.ceil(Math.random()*6);
                 values.push(value);
-                images.push(`<img src="dice_images/${value}.png" alt="Dice ${value}">`)
+                images.push(`<img src="https://www.wpclipart.com/recreation/games/dice/die_face_${value}.png" alt="Dice ${value}">`)
                 console.log("dice_images/${value}.png")
             }
             diceResult.textContent = `dice: ${values.join(', ')}`;
