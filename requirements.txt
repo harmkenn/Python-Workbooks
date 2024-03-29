@@ -18,3 +18,4 @@ geopandas
 matplotlib
 scipy
 nbformat
+selenium
