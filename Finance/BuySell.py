@@ -28,17 +28,16 @@ def get_nasdaq_data(start_date, end_date):
 def get_combined_data():
     # Load existing data
     nasdaq_data = pd.read_csv('Finance/nasdaq_data.csv', index_col=0)
-    # Convert the Date column to datetime format
-    nasdaq_data.index = pd.to_datetime(nasdaq_data.index)
+
     # Get the latest date from the collected data
     latest_date = pd.to_datetime(nasdaq_data.index[-1]).date()
     today = datetime.today().date()
 
-    start_date = latest_date.strftime("%d.%m.%Y")  # or latest_date.strftime("%Y-%m-%d")
-    end_date = today.strftime("%d.%m.%Y")
+    start_date = latest_date.strftime("%Y-%m-%d")
+    end_date = today.strftime("%Y-%m-%d")
 
     nasdaq_data_new = get_nasdaq_data(start_date, end_date)
-    nasdaq_data_new['Date'] = pd.to_datetime(nasdaq_data_new['Date'])
+
     combined_data = pd.concat([nasdaq_data, nasdaq_data_new])
 
     # Calculate rolling averages
@@ -53,7 +52,6 @@ def get_combined_data():
             combined_data.at[index, 'invest'] -= 0.01
         if row['Close'] < row['ra200'] and row['Close'] < row['ra100'] and row['Close'] < row['ra400']:
             combined_data.at[index, 'invest'] += 0.01
-
     
 
     # Save the combined data
