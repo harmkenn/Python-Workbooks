@@ -56,8 +56,7 @@ def get_combined_data():
     # Calculate the accumulation of the invest column
     combined_data['accum_invest'] = combined_data['invest'].cumsum()
 
-    # Cap the accum_invest column between 0 and 1
-    combined_data['accum_invest'] = combined_data['accum_invest'].clip(lower=0, upper=1)
+
     
 
     # Save the combined data
