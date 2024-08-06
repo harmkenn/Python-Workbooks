@@ -47,13 +47,16 @@ def get_combined_data():
 
     # Calculate investment amount row by row
     combined_data['invest'] = 0
-    for index, row in combined_data.iterrows():
+    current_index = 0
+    while current_index < len(combined_data):
+        row = combined_data.iloc[current_index]
         if row['Close'] < row['ra200']:
-            combined_data.at[index, 'invest'] += 0.25
+            combined_data.loc[current_index+1:, 'invest'] += 0.01
         if row['Close'] < row['ra100']:
-            combined_data.at[index, 'invest'] += 0.25
+            combined_data.loc[current_index+1:, 'invest'] += 0.01
         if row['Close'] < row['ra400']:
-            combined_data.at[index, 'invest'] += 0.25
+            combined_data.loc[current_index+1:, 'invest'] += 0.01
+        current_index += 1
 
     # Save the combined data
     combined_data.to_csv('Finance/nasdaq_data.csv')
