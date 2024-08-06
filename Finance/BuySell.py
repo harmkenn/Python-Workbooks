@@ -52,6 +52,12 @@ def get_combined_data():
             combined_data.at[index, 'invest'] -= 0.01
         if row['Close'] < row['ra200'] and row['Close'] < row['ra100'] and row['Close'] < row['ra400']:
             combined_data.at[index, 'invest'] += 0.01
+
+    # Calculate the accumulation of the invest column
+    combined_data['accum_invest'] = combined_data['invest'].cumsum()
+
+    # Cap the accum_invest column between 0 and 1
+    combined_data['accum_invest'] = combined_data['accum_invest'].clip(lower=0, upper=1)
     
 
     # Save the combined data
