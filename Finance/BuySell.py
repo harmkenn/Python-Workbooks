@@ -1,11 +1,8 @@
-import yfinance as yf
+import streamlit as st
 import pandas as pd
+import yfinance as yf
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
-import streamlit as st
-
-# Read the existing nasdaq_data.csv file
-nasdaq_data = pd.read_csv('nasdaq_data.csv', index_col=0, skiprows=lambda x: x >= len(nasdaq_data) - 5)
 
 def get_nasdaq_data(start_date, end_date):
     """
@@ -22,18 +19,18 @@ def get_nasdaq_data(start_date, end_date):
     # NASDAQ composite index ticker
     nasdaq_ticker = "^IXIC"
 
-    # Create a date range
-    start_date = datetime.strptime(start_date, "%Y-%m-%d")
-    end_date = datetime.strptime(end_date, "%Y-%m-%d")
-
     # Fetch data
     data = yf.download(nasdaq_ticker, start=start_date, end=end_date)
 
     return data
 
 @st.cache_data
-def load_data():
-# Get the latest date from the collected data
+def get_combined_data():
+    # Load existing data
+    nasdaq_data = pd.read_csv('nasdaq_data.csv', index_col=0)
+
+    # Get the latest date from the collected data
+    latest_date = pd.to_datetime(nasdaq_data.index[-1]).date()
     today = datetime.today().date()
 
     start_date = latest_date.strftime("%Y-%m-%d")
@@ -42,32 +39,32 @@ def load_data():
     nasdaq_data_new = get_nasdaq_data(start_date, end_date)
 
     combined_data = pd.concat([nasdaq_data, nasdaq_data_new])
+
+    # Calculate rolling averages
+    combined_data['ra200'] = combined_data['Close'].rolling(window=200).mean()
+    combined_data['ra100'] = combined_data['Close'].rolling(window=100).mean()
+    combined_data['ra400'] = combined_data['Close'].rolling(window=400).mean()
+
+    # Save the combined data
     combined_data.to_csv('nasdaq_data.csv')
-
-
-    combined_data['Date2'] = combined_data.index
-    combined_data.set_index('Date2', inplace=True)
 
     return combined_data
 
-
-def plot_data(data):
-    fig, ax = plt.subplots(figsize=(20, 6))
-    data.plot(y=['Close', 'ra200', 'ra100', 'ra400'], legend=True, ax=ax)
-    st.pyplot(fig)
-
 def main():
-    st.title("NASDAQ Composite Index")
+    st.title("NASDAQ Data")
 
-    combined_data = load_data()
+    combined_data = get_combined_data()
 
-    # Slice the DataFrame to include only the last 200 days
-    last_200_days = combined_data.tail(2000)
+    # Plot the daterange
+    max_line = len(combined_data)
 
-    plot_data(last_200_days)
+    start = st.slider("Start Day", min_value=1, max_value=max_line-200, value=1000, step=1)
+    end = st.slider("End Day", min_value=start+200, max_value=max_line, value=1200, step=1)
 
-    st.write(combined_data.head())
-    st.write(combined_data.tail())
+    date_range_zoom = combined_data.iloc[start:end]
+    fig, ax = plt.subplots(figsize=(20, 6))
+    date_range_zoom.plot(y=['Close', 'ra200', 'ra100', 'ra400'], legend=True, ax=ax)
+    st.pyplot(fig)
 
 if __name__ == "__main__":
     main()
