@@ -45,6 +45,16 @@ def get_combined_data():
     combined_data['ra100'] = combined_data['Close'].rolling(window=100).mean()
     combined_data['ra400'] = combined_data['Close'].rolling(window=400).mean()
 
+    # Calculate investment amount row by row
+    combined_data['invest'] = 0
+    for index, row in combined_data.iterrows():
+        if row['Close'] < row['ra200']:
+            combined_data.at[index, 'invest'] += 0.25
+        if row['Close'] < row['ra100']:
+            combined_data.at[index, 'invest'] += 0.25
+        if row['Close'] < row['ra400']:
+            combined_data.at[index, 'invest'] += 0.25
+
     # Save the combined data
     combined_data.to_csv('Finance/nasdaq_data.csv')
 
