@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 from datetime import datetime, timedelta
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 def get_nasdaq_data(start_date, end_date):
     """
@@ -58,13 +58,18 @@ def main():
     # Plot the daterange
     max_line = len(combined_data)
 
-    start = st.slider("Start Day", min_value=1, max_value=max_line-200, value=1000, step=1)
-    end = st.slider("End Day", min_value=start+200, max_value=max_line, value=1200, step=1)
+    start = st.slider("Start Day", min_value=1, max_value=max_line-200, value=1, step=1)
+    end = st.slider("End Day", min_value=start+200, max_value=max_line, value=max_line, step=1)
 
     date_range_zoom = combined_data.iloc[start:end]
-    fig, ax = plt.subplots(figsize=(20, 6))
-    date_range_zoom.plot(y=['Close', 'ra200', 'ra100', 'ra400'], legend=True, ax=ax)
-    st.pyplot(fig)
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close'], name='Close', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra200'], name='RA200', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra100'], name='RA100', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra400'], name='RA400', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+
+    st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main()
