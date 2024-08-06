@@ -27,7 +27,7 @@ def get_nasdaq_data(start_date, end_date):
 @st.cache_data
 def get_combined_data():
     # Load existing data
-    nasdaq_data = pd.read_csv('nasdaq_data.csv', index_col=0)
+    nasdaq_data = pd.read_csv('Finance/nasdaq_data.csv', index_col=0)
 
     # Get the latest date from the collected data
     latest_date = pd.to_datetime(nasdaq_data.index[-1]).date()
@@ -46,7 +46,7 @@ def get_combined_data():
     combined_data['ra400'] = combined_data['Close'].rolling(window=400).mean()
 
     # Save the combined data
-    combined_data.to_csv('nasdaq_data.csv')
+    combined_data.to_csv('Finance/nasdaq_data.csv')
 
     return combined_data
 
