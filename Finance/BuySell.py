@@ -40,7 +40,7 @@ def get_combined_data():
     nasdaq_data_new['ra100'] = nasdaq_data_new['Close'].rolling(window=100).mean()
     nasdaq_data_new['ra400'] = nasdaq_data_new['Close'].rolling(window=400).mean()
 
-    nasdaq_data_new['PE'] = nasdaq_data_new['Close'] / nasdaq_data_new['ra200']
+    
 
     # Save the new data
     nasdaq_data_new.to_csv('Finance/nasdaq_data.csv')
@@ -68,5 +68,17 @@ def main():
 
     st.plotly_chart(fig, use_container_width=True)
 
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close']/date_range_zoom['ra100'], 
+        name='PE100', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close']/date_range_zoom['ra200'], 
+        name='PE200', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close']/date_range_zoom['ra400'], 
+        name='PE400', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    st.plotly_chart(fig, use_container_width=True)
+    
+    st.write('PE100: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra100']))
+    st.write('PE200: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra200']))
+    st.write('PE400: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra400']))
 if __name__ == "__main__":
     main()
