@@ -33,8 +33,8 @@ def get_combined_data():
     latest_date = pd.to_datetime(nasdaq_data.index[-1]).date()
     today = datetime.today().date()
 
-    start_date = latest_date.strftime("%Y-%m-%d")
-    end_date = today.strftime("%Y-%m-%d")
+    start_date = latest_date
+    end_date = today
 
     nasdaq_data_new = get_nasdaq_data(start_date, end_date)
 
