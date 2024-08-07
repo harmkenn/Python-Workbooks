@@ -26,31 +26,26 @@ def get_nasdaq_data(start_date, end_date):
 
 @st.cache_data
 def get_combined_data():
-    # Load existing data
-    nasdaq_data = pd.read_csv('Finance/nasdaq_data.csv', index_col=0)
-
-    # Get the latest date from the collected data
-    latest_date = pd.to_datetime(nasdaq_data.index[-1]).date()
+    # Get the current date
     today = datetime.today().date()
 
-    start_date = latest_date
-    end_date = today
+    # Calculate the start date 20 years ago
+    start_date = today - timedelta(days=20*365)
 
-    nasdaq_data_new = get_nasdaq_data(start_date, end_date)
-
-    combined_data = pd.concat([nasdaq_data, nasdaq_data_new])
+    # Fetch new data for the last 20 years up to today
+    nasdaq_data_new = get_nasdaq_data(start_date, today)
 
     # Calculate rolling averages
-    combined_data['ra200'] = combined_data['Close'].rolling(window=200).mean()
-    combined_data['ra100'] = combined_data['Close'].rolling(window=100).mean()
-    combined_data['ra400'] = combined_data['Close'].rolling(window=400).mean()
+    nasdaq_data_new['ra200'] = nasdaq_data_new['Close'].rolling(window=200).mean()
+    nasdaq_data_new['ra100'] = nasdaq_data_new['Close'].rolling(window=100).mean()
+    nasdaq_data_new['ra400'] = nasdaq_data_new['Close'].rolling(window=400).mean()
 
-    combined_data['PE'] = combined_data['Close'] / combined_data['ra200']
+    nasdaq_data_new['PE'] = nasdaq_data_new['Close'] / nasdaq_data_new['ra200']
 
-    # Save the combined data
-    combined_data.to_csv('Finance/nasdaq_data.csv')
+    # Save the new data
+    nasdaq_data_new.to_csv('Finance/nasdaq_data.csv')
 
-    return combined_data
+    return nasdaq_data_new
 
 def main():
     st.title("NASDAQ Data")
