@@ -17,7 +17,7 @@ def get_nasdaq_data(start_date, end_date):
     """
 
     # NASDAQ composite index ticker
-    nasdaq_ticker = "^IXIC"
+    nasdaq_ticker = ["^IXIC","RMQHX"]
 
     # Fetch data
     data = yf.download(nasdaq_ticker, start=start_date, end=end_date)
