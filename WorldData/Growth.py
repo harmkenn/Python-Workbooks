@@ -18,7 +18,7 @@ country = st.sidebar.selectbox('Select a Country', countries)
 
 # Filter the data based on the selected country
 filtered_df = df[df['Country Name'] == country]
-st.write(filtered_df)
+#st.write(filtered_df)
 
 
 # Add number input for each column
@@ -71,6 +71,8 @@ fig.update_layout(title='Future Population Projection (2023-2073)',
 
 # Display the plot
 st.plotly_chart(fig)
+
+st.write(df)
 
 
 
