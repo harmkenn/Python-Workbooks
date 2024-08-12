@@ -2,11 +2,31 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+from sklearn.ensemble import GradientBoostingRegressor
 
 st.set_page_config(layout="wide",)
 
 # Load the CSV file into a pandas DataFrame
 df = pd.read_csv('WorldData/Population Growth.csv')
+
+# Split data into features (X) and target (y)
+X = df.iloc[:, [2, 4, 5, 6, 7, 8]]
+gr = df.iloc[:, [3]]
+
+# Set regression model parameters
+params = {
+    "n_estimators": 500,
+    "max_depth": 4,
+    "min_samples_split": 5,
+    "learning_rate": 0.01,
+    "loss": "squared_error",  # Least squares loss (you can adjust this)
+}
+
+# Initialize the Gradient Boosting Regressor
+reg_gr = GradientBoostingRegressor(**params)
+
+# Fit the model to the training data
+reg_gr.fit(X, gr)
 
 # Create a Streamlit app
 st.title('Population Growth Data')
