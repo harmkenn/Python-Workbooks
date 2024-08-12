@@ -75,8 +75,9 @@ for column in columns:
 # Make the prediction
 input = df.iloc[0:1,[2,4,5,6,7,8]]
 st.write(input)
-input.loc[0] = array([ni['Population2023'],ni["FertilityRate2022"],ni["LifeExpectancy2022"],ni["DeathRate2022"],ni["MortalityRate2022"],ni["NetMigration2022"])
+input.loc[0] = array([ni['Population2023'],ni["FertilityRate2022"],ni["LifeExpectancy2022"],ni["DeathRate2022"],ni["MortalityRate2022"],ni["NetMigration2022"]])
 gr_pred = reg_gr.predict(input)
+st.write(gr_pred)
 
 
 # Create a range of years from 2023 to 2073
