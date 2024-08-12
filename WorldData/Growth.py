@@ -9,6 +9,16 @@ st.set_page_config(layout="wide",)
 # Load the CSV file into a pandas DataFrame
 df = pd.read_csv('WorldData/Population Growth.csv')
 
+
+
+# Create a Streamlit app
+st.title('Population Growth Data')
+
+# Add a dropdown menu with all the country names
+df = df.dropna()
+
+# ML to predict Growth Rate
+
 # Split data into features (X) and target (y)
 X = df.iloc[:, [2, 4, 5, 6, 7, 8]]
 gr = df.iloc[:, [3]]
@@ -28,11 +38,7 @@ reg_gr = GradientBoostingRegressor(**params)
 # Fit the model to the training data
 reg_gr.fit(X, gr)
 
-# Create a Streamlit app
-st.title('Population Growth Data')
 
-# Add a dropdown menu with all the country names
-df = df.dropna()
 countries = df['Country Name'].unique()
 
 country = st.sidebar.selectbox('Select a Country', countries)
