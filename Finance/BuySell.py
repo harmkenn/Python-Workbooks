@@ -36,8 +36,8 @@ def get_combined_data():
     nasdaq_data_new = get_nasdaq_data(start_date, today)
 
     # Calculate rolling averages
-    nasdaq_data_new['ra200'] = nasdaq_data_new['Close'].rolling(window=200).mean()
     nasdaq_data_new['ra100'] = nasdaq_data_new['Close'].rolling(window=100).mean()
+    nasdaq_data_new['ra200'] = nasdaq_data_new['Close'].rolling(window=200).mean()
     nasdaq_data_new['ra400'] = nasdaq_data_new['Close'].rolling(window=400).mean()
 
     
@@ -61,10 +61,11 @@ def main():
     date_range_zoom = combined_data.iloc[start:end]
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close'], name='Close', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
-    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra200'], name='RA200', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
     fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra100'], name='RA100', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra200'], name='RA200', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    
     fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra400'], name='RA400', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
+    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close'], name='Close', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
 
     st.plotly_chart(fig, use_container_width=True)
 
