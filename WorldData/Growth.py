@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 
+st.set_page_config(layout="wide",)
+
 # Load the CSV file into a pandas DataFrame
 df = pd.read_csv('WorldData/Population Growth.csv')
 
