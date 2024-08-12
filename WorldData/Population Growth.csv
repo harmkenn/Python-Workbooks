@@ -1,4 +1,4 @@
-Country Name,Country Code,"Population2023","GrowthRate2023","FirtilityRate2022","LifeExpectancy2022","DeathRate2022","MortalityRate2022","NetMigration2022"
+Country Name,Country Code,"Population2023","GrowthRate2023","FertilityRate2022","LifeExpectancy2022","DeathRate2022","MortalityRate2022","NetMigration2022"
 Aruba,ABW,106277,-0.001578279862839982,1.179,74.992,11.084,,160.5
 Africa Eastern and Southern,AFE,739108306,0.02531586712284306,4.288787507398918,62.89903064853823,7.8409513727738975,40.7976245515238,-273015.5
 Afghanistan,AFG,42239854,0.02701473866068116,4.523,62.879,6.906,44.8,-65846.0

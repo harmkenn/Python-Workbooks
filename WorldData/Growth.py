@@ -50,7 +50,7 @@ filtered_df = df[df['Country Name'] == country]
 columns = filtered_df.columns
 
 # Create a dictionary to store the number inputs
-number_inputs = {}
+ni = {}
 
 # Loop through each column and create a number input
 for column in columns:
@@ -70,13 +70,13 @@ for column in columns:
                                         value=filtered_df.iloc[0][column],
                                         step=step,
                                         format=format)
-        number_inputs[column] = value
+        ni[column] = value
 
 # Make the prediction
-input = df.iloc[0:1,2:9]
+input = df.iloc[0:1,[2,4,5,6,7,8]]
 st.write(input)
-#shot.loc[0] = array([l_lat,l_alt,i_alt,mass,GTAz,AOL,QE,v0])
-#gr_pred = reg_r.predict(shot)
+input.loc[0] = array([ni['Population2023'],ni["FertilityRate2022"],ni["LifeExpectancy2022"],ni["DeathRate2022"],ni["MortalityRate2022"],ni["NetMigration2022"])
+gr_pred = reg_gr.predict(input)
 
 
 # Create a range of years from 2023 to 2073
@@ -85,8 +85,8 @@ years = np.arange(2023, 2074)
 # Create a list to store the future population values
 future_population = []
 
-start_pop = number_inputs['Population2023']
-growth_rate = number_inputs['GrowthRate2023']
+start_pop = ni['Population2023']
+growth_rate = ni['GrowthRate2023']
 
 # Loop through each year and calculate the future population
 for year in years:
