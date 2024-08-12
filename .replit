@@ -1,0 +1,12 @@
+modules = ["web", "nodejs-20", "python-3.12"]
+run = "streamlit run undefined"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "streamlit run undefined"]
+
+[[ports]]
+localPort = 8501
+externalPort = 80
