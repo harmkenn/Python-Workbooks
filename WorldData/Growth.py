@@ -38,7 +38,6 @@ reg_gr = GradientBoostingRegressor(**params)
 # Fit the model to the training data
 reg_gr.fit(X, gr)
 
-
 countries = df['Country Name'].unique()
 
 country = st.sidebar.selectbox('Select a Country', countries)
@@ -72,6 +71,13 @@ for column in columns:
                                         step=step,
                                         format=format)
         number_inputs[column] = value
+
+# Make the prediction
+input = df.iloc[0:1,2:9]
+st.write(input)
+#shot.loc[0] = array([l_lat,l_alt,i_alt,mass,GTAz,AOL,QE,v0])
+#gr_pred = reg_r.predict(shot)
+
 
 # Create a range of years from 2023 to 2073
 years = np.arange(2023, 2074)
