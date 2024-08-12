@@ -76,7 +76,7 @@ for column in columns:
 input = filtered_df.iloc[[0],[2,4,5,6,7,8]]
 input.loc[0] = np.array([ni['Population2023'],ni["FertilityRate2022"],ni["LifeExpectancy2022"],ni["DeathRate2022"],ni["MortalityRate2022"],ni["NetMigration2022"]])
 gr_pred = reg_gr.predict(input)
-st.sidebar.write(gr_pred[0])
+st.sidebar.write("Predicted Growth Rate: "+str(gr_pred[0]))
 
 
 # Create a range of years from 2023 to 2073
