@@ -17,7 +17,7 @@ def get_nasdaq_data(start_date, end_date):
     """
 
     # NASDAQ composite index ticker
-    nasdaq_ticker = ["^IXIC","RMQHX"]
+    nasdaq_ticker = ["^IXIC"]
 
     # Fetch data
     data = yf.download(nasdaq_ticker, start=start_date, end=end_date)
@@ -34,7 +34,7 @@ def get_combined_data():
 
     # Fetch new data for the last 20 years up to today
     nasdaq_data_new = get_nasdaq_data(start_date, today)
-
+    #st.write(nasdaq_data_new)
     # Calculate rolling averages
     nasdaq_data_new['ra100'] = nasdaq_data_new['Close'].rolling(window=100).mean()
     nasdaq_data_new['ra200'] = nasdaq_data_new['Close'].rolling(window=200).mean()
