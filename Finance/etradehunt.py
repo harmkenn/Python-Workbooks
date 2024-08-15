@@ -4,7 +4,7 @@ import plotly.graph_objs as go
 import numpy as np
 
 # List of index symbols
-index_symbols = ["^IXIC", "^GSPC", "^DJI", 'AMAGX','BMGAX','BPTRX','DGAGX','DXQLX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','GOLDX','JAGTX','LGRRX','NBGEX','PGRTX','PGTAX','PRDGX','PSX','RMQHX','ROGSX','SMPIX','SMPSX','STAFX','UOPIX','VIHAX'
+index_symbols = ["^IXIC", "^GSPC", "^DJI", 'AMAGX','BPTRX','DXQLX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','JAGTX','LGRRX','NBGEX','PGTAX','PRDGX','RMQHX','ROGSX','SMPIX','SMPSX','UOPIX','VIHAX'
 ]
 
 # Initialize an empty figure
