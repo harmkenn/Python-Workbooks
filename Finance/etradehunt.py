@@ -11,7 +11,7 @@ fig = go.Figure()
 # Loop through the index symbols
 for index_symbol in index_symbols:
     # Fetch historical data for the current index
-    data = yf.download(index_symbol, period="5y", interval="1d")
+    data = yf.download(index_symbol, period="10y", interval="1d")
 
     # Normalize closing prices to start at 1
     data['Close'] = data['Close'] / data['Close'][0]
