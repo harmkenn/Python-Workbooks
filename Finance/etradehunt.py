@@ -1,12 +1,18 @@
 import streamlit as st
 import yfinance as yf
 import plotly.graph_objs as go
+import numpy as np
 
 # List of index symbols
-index_symbols = ["^IXIC", "^GSPC", "^DJI","RMQHX"]
+index_symbols = ["^IXIC", "^GSPC", "^DJI", "RMQHX"]
 
 # Initialize an empty figure
 fig = go.Figure()
+
+# Function to calculate CAGR
+def calculate_cagr(data):
+    n = len(data)
+    return ((data + 1).prod()**(1/n) - 1) * 100
 
 # Loop through the index symbols
 for index_symbol in index_symbols:
@@ -16,6 +22,15 @@ for index_symbol in index_symbols:
     # Normalize closing prices to start at 1
     data['Close'] = data['Close'] / data['Close'][0]
 
+    # Calculate annual returns
+    data['Returns'] = data['Close'].pct_change() * 100
+
+    # Calculate Standard Deviation  
+    std_dev = data['Returns'].std() * np.sqrt(252)
+
+    # Calculate CAGR
+    cagr = calculate_cagr(data['Returns'])
+
     # Add a scatter trace (line) for closing prices of each index
     fig.add_trace(go.Scatter(
         x=data.index,
@@ -23,6 +38,10 @@ for index_symbol in index_symbols:
         mode='lines',
         name=index_symbol
     ))
+
+    # Print or display results
+    print(f"{index_symbol} Standard Deviation: {std_dev:.2f}%")
+    print(f"{index_symbol} CAGR: {cagr:.2f}%")
 
 # Set chart layout and title
 fig.update_layout(
