@@ -38,10 +38,6 @@ for index_symbol in index_symbols:
         name=index_symbol
     ))
 
-    # Print or display results
-    print(f"{index_symbol} Standard Deviation: {std_dev:.2f}%")
-    print(f"{index_symbol} CAGR: {cagr:.2f}%")
-
 # Set chart layout and title
 fig.update_layout(
     title="Stock Indices - 5-Year Closing Prices (Normalized to Start at 1)",
