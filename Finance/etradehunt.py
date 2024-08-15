@@ -3,7 +3,7 @@ import yfinance as yf
 import plotly.graph_objs as go
 
 # List of index symbols
-index_symbols = ["^IXIC", "^GSPC", "^DJI"]
+index_symbols = ["^IXIC", "^GSPC", "^DJI","RMQHX"]
 
 # Initialize an empty figure
 fig = go.Figure()
