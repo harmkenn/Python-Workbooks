@@ -13,8 +13,8 @@ for index_symbol in index_symbols:
     # Fetch historical data for the current index
     data = yf.download(index_symbol, period="5y", interval="1d")
 
-    # Normalize closing prices (scale between 0 and 1)
-    data['Close'] = (data['Close'] - data['Close'].min()) / (data['Close'].max() - data['Close'].min())
+    # Normalize closing prices to start at 1
+    data['Close'] = data['Close'] / data['Close'][0]
 
     # Add a scatter trace (line) for closing prices of each index
     fig.add_trace(go.Scatter(
@@ -26,7 +26,7 @@ for index_symbol in index_symbols:
 
 # Set chart layout and title
 fig.update_layout(
-    title="Stock Indices - 5-Year Closing Prices (Normalized)",
+    title="Stock Indices - 5-Year Closing Prices (Normalized to Start at 1)",
     xaxis_title='',
     yaxis_title='Normalized Price',
     xaxis_rangeslider_visible=False,
