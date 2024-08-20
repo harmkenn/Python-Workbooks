@@ -29,7 +29,7 @@ def get_combined_data():
     # Get the current date
     today = datetime.today().date()
 
-    # Calculate the start date 20 years ago
+    # Calculate the start date 20 years ago   
     start_date = today - timedelta(days=20*365)
 
     # Fetch new data for the last 20 years up to today
