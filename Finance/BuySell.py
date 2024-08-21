@@ -55,10 +55,10 @@ def main():
     # Plot the daterange
     max_line = len(combined_data)
 
-    start = st.slider("Start Day", min_value=1, max_value=max_line-200, value=1, step=1)
-    end = st.slider("End Day", min_value=start+200, max_value=max_line, value=max_line, step=1)
+    #start = st.slider("Start Day", min_value=1, max_value=max_line-200, value=1, step=1)
+    #end = st.slider("End Day", min_value=start+200, max_value=max_line, value=max_line, step=1)
 
-    date_range_zoom = combined_data.iloc[start:end]
+    date_range_zoom = combined_data.iloc[1:max_line]
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['ra100'], name='RA100', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
