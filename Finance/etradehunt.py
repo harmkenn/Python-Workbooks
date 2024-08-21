@@ -43,7 +43,8 @@ fig.update_layout(
     xaxis_title='',
     yaxis_title='Normalized Price',
     xaxis_rangeslider_visible=False,
-    plot_bgcolor='lightgray',
+    plot_bgcolor='white',  # Change plot background color to white
+    paper_bgcolor='white', # Change the entire figure background color to white
     width=800,
     height=600
 )
