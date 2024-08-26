@@ -10,8 +10,8 @@ interval = "1m"  # 1-minute interval to capture precise times
 # Download intraday data
 futures_intraday = yf.download(symbol, period=period, interval=interval)
 
-# Convert index to Eastern Time (EDT)
-futures_intraday.index = futures_intraday.index.tz_convert('US/Eastern')
+# Localize the index to UTC and then convert to Eastern Time (EDT)
+futures_intraday.index = futures_intraday.index.tz_localize('UTC').tz_convert('US/Eastern')
 
 # Filter data for 01:30 and 09:30 EDT
 prices_0130 = futures_intraday.between_time("01:30", "01:30")
