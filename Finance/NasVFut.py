@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 # Define the time range
 end_date = datetime.now()
-start_date = end_date - timedelta(days=300)
+start_date = end_date - timedelta(days=100)
 
 # Fetch data from Yahoo Finance
 @st.cache_data
