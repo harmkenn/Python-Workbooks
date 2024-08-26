@@ -4,17 +4,29 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # Function to fetch the required prices
-def fetch_prices(ticker, start_time, end_time):
+def fetch_prices(ticker, start_time_str, end_time_str):
+    # Download historical data
     data = yf.download(ticker, period='1mo', interval='1m')
-    data['Datetime'] = data.index
-    data['Time'] = data['Datetime'].dt.time
+
+    # Ensure the index is datetime
+    data.index = pd.to_datetime(data.index)
+
+    # Create time objects for comparison
+    start_time = datetime.strptime(start_time_str, '%H:%M').time()
+    end_time = datetime.strptime(end_time_str, '%H:%M').time()
 
     # Find the closest times within a 1-minute range
-    start_prices = data[data['Time'].between((datetime.combine(datetime.today(), start_time) - timedelta(minutes=1)).time(),
-                                             (datetime.combine(datetime.today(), start_time) + timedelta(minutes=1)).time())]['Close']
+    start_time_range = (datetime.combine(datetime.today(), start_time) - timedelta(minutes=1)).time()
+    end_time_range = (datetime.combine(datetime.today(), end_time) + timedelta(minutes=1)).time()
 
-    end_prices = data[data['Time'].between((datetime.combine(datetime.today(), end_time) - timedelta(minutes=1)).time(),
-                                           (datetime.combine(datetime.today(), end_time) + timedelta(minutes=1)).time())]['Close']
+    # Extract time from index
+    data['Time'] = data.index.time
+
+    # Filter the data for start and end times
+    start_prices = data[(data['Time'] >= start_time_range) & (data['Time'] <= end_time_range)]['Close']
+
+    end_prices = data[(data['Time'] >= start_time_range) & (data['Time'] <= end_time_range)]['Close']
+
     return start_prices, end_prices
 
 # Streamlit app
@@ -22,11 +34,11 @@ st.title('Nasdaq 100 Futures Prices')
 st.write('Fetching start and end prices for NQ=F from Yahoo Finance')
 
 # Define the times
-start_time = datetime.strptime('05:30', '%H:%M').time()
-end_time = datetime.strptime('13:30', '%H:%M').time()
+start_time_str = '05:30'
+end_time_str = '13:30'
 
 # Fetch the prices
-start_prices, end_prices = fetch_prices('NQ=F', start_time, end_time)
+start_prices, end_prices = fetch_prices('NQ=F', start_time_str, end_time_str)
 
 # Display the prices
 st.write('Start Prices at 05:30 UTC:')
