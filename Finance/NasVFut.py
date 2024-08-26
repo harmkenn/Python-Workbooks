@@ -10,7 +10,7 @@ start_date = end_date - timedelta(days=30)
 # Fetch data from Yahoo Finance
 @st.cache_data
 def fetch_data():
-    data = yf.download('NQ=F', start=start_date, end=end_date, interval='1h')
+    data = yf.download('^IXIC', start=start_date, end=end_date, interval='1h')
     return data
 
 # Main function to display the data
