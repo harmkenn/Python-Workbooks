@@ -5,9 +5,8 @@ import streamlit as st
 # Fetch NQ=F data for the last month
 nq_data = yf.download('NQ=F', period='1mo', interval='1m')
 
-# Check if the index is timezone-aware, if not, localize it to UTC
-if not hasattr(nq_data.index, 'tz') or nq_data.index.tz is None:
-    nq_data.index = nq_data.index.tz_localize('UTC')
+# Convert the index to a DatetimeIndex and localize to UTC
+nq_data.index = pd.to_datetime(nq_data.index).tz_localize('UTC')
 
 # Filter data for 05:30 UTC (Open) and 13:30 UTC (Close)
 open_prices = nq_data.between_time('05:30', '05:31')['Open']
