@@ -1,47 +1,30 @@
-import streamlit as st
 import yfinance as yf
 import pandas as pd
+import streamlit as st
 from datetime import datetime, timedelta
 
-# Function to fetch the required prices
-def fetch_prices(ticker, start_time_str, end_time_str):
-    # Download historical data
-    data = yf.download(ticker, period='1mo', interval='1m')
+# Define the time range
+end_date = datetime.now()
+start_date = end_date - timedelta(days=30)
 
-    # Ensure the index is datetime
-    data.index = pd.to_datetime(data.index)
+# Fetch data from Yahoo Finance
+@st.cache_data
+def fetch_data():
+    data = yf.download('NQ=F', start=start_date, end=end_date, interval='1h')
+    return data
 
-    # Create time objects for comparison
-    start_time = datetime.strptime(start_time_str, '%H:%M').time()
-    end_time = datetime.strptime(end_time_str, '%H:%M').time()
+# Main function to display the data
+def main():
+    st.title('Hourly Prices for NQ=F')
+    st.write(f"Displaying hourly prices from {start_date.date()} to {end_date.date()}")
 
-    # Find the closest times within a 1-minute range
-    start_time_range = (datetime.combine(datetime.today(), start_time) - timedelta(minutes=1)).time()
-    end_time_range = (datetime.combine(datetime.today(), end_time) + timedelta(minutes=1)).time()
+    # Fetch and display the data
+    data = fetch_data()
+    if not data.empty:
+        st.write("Hourly price data:")
+        st.dataframe(data)
+    else:
+        st.write("No data available for the selected period.")
 
-    # Extract time from index
-    data['Time'] = data.index.time
-
-    # Filter the data for start and end times
-    start_prices = data[(data['Time'] >= start_time_range) & (data['Time'] <= end_time_range)]['Close']
-
-    end_prices = data[(data['Time'] >= start_time_range) & (data['Time'] <= end_time_range)]['Close']
-
-    return start_prices, end_prices
-
-# Streamlit app
-st.title('Nasdaq 100 Futures Prices')
-st.write('Fetching start and end prices for NQ=F from Yahoo Finance')
-
-# Define the times
-start_time_str = '05:30'
-end_time_str = '13:30'
-
-# Fetch the prices
-start_prices, end_prices = fetch_prices('NQ=F', start_time_str, end_time_str)
-
-# Display the prices
-st.write('Start Prices at 05:30 UTC:')
-st.write(start_prices if not start_prices.empty else 'No data found for 05:30 UTC.')
-st.write('End Prices at 13:30 UTC:')
-st.write(end_prices if not end_prices.empty else 'No data found for 13:30 UTC.')
+if __name__ == "__main__":
+    main()
