@@ -9,10 +9,12 @@ index_symbols = ["^IXIC", "^FTSE"]
 # Initialize an empty figure
 fig = go.Figure()
 
+
 # Function to calculate CAGR
 def calculate_cagr(data):
     n = len(data)
     return ((data.iloc[-1] / data.iloc[0])**(1 / n) - 1) * 100
+
 
 # Loop through the index symbols
 for index_symbol in index_symbols:

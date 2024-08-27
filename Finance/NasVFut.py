@@ -3,38 +3,51 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta
 
-# Define the time range
+# Define the time range for the last 30 days
 end_date = datetime.now()
-start_date = end_date - timedelta(days=200)
+start_date = end_date - timedelta(days=30)
+
 
 # Fetch data from Yahoo Finance
 @st.cache_data
-def fetch_data():
+def fetch_data(ticker):
     # Fetch daily data
-    data = yf.download('NQ=F', start=start_date, end=end_date, interval='1d')
+    data = yf.download(ticker, start=start_date, end=end_date, interval='1d')
     return data
 
-# Extract price at 13:00 UTC
+
+# Extract price at close
 def extract_price(data):
-    # Since interval='1d', data is daily, and there's no need to filter by time within this interval
-    # but for completeness, ensure data is in expected time zone and format
-    data.index = pd.to_datetime(data.index).tz_localize('UTC')
-    return data
+    return data[['Close']]
+
 
 # Main function to display the data
 def main():
-    st.title('Daily Price for NQ=F at 13:00 UTC')
-    st.write(f"Displaying daily prices at 13:00 UTC from {start_date.date()} to {end_date.date()}")
+    st.title('Closing Prices for NASDAQ (^IXIC) and FTSE (^FTSE)')
 
-    # Fetch and display the data
-    data = fetch_data()
-    if not data.empty:
-        # Extract and display the price
-        data = extract_price(data)
-        st.write("Daily price data at 13:00 UTC:")
-        st.dataframe(data[['Close']])  # Displaying only the 'Close' prices
+    # Fetch and display the data for NASDAQ
+    nasdaq_data = fetch_data('^IXIC')
+    if not nasdaq_data.empty:
+        st.write(
+            f"Closing prices for NASDAQ (^IXIC) from {start_date.date()} to {end_date.date()}:"
+        )
+        nasdaq_data = extract_price(nasdaq_data)
+        st.dataframe(nasdaq_data)
     else:
-        st.write("No data available for the selected period.")
+        st.write(
+            "No data available for NASDAQ (^IXIC) in the selected period.")
+
+    # Fetch and display the data for FTSE
+    ftse_data = fetch_data('^FTSE')
+    if not ftse_data.empty:
+        st.write(
+            f"Closing prices for FTSE (^FTSE) from {start_date.date()} to {end_date.date()}:"
+        )
+        ftse_data = extract_price(ftse_data)
+        st.dataframe(ftse_data)
+    else:
+        st.write("No data available for FTSE (^FTSE) in the selected period.")
+
 
 if __name__ == "__main__":
     main()
