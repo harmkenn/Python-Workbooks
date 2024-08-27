@@ -12,8 +12,7 @@ fig = go.Figure()
 # Function to calculate CAGR
 def calculate_cagr(data):
     n = len(data)
-    return ((data + 1).prod()**(1 / n) - 1) * 100
-
+    return ((data.iloc[-1] / data.iloc[0])**(1 / n) - 1) * 100
 
 # Loop through the index symbols
 for index_symbol in index_symbols:
@@ -29,6 +28,10 @@ for index_symbol in index_symbols:
     # Calculate Standard Deviation
     std_dev = data['Returns'].std() * np.sqrt(252)
     st.write(f"Standard Deviation for {index_symbol}: {std_dev:.2f}%")
+
+    # Calculate CAGR
+    cagr = calculate_cagr(data['Close'])
+    st.write(f"CAGR for {index_symbol}: {cagr:.2f}%")
 
     # Add a scatter trace (line) for closing prices of each index
     fig.add_trace(
@@ -49,5 +52,3 @@ fig.update_layout(
 
 # Display the chart using Streamlit
 st.write(fig)
-
-st.write()
