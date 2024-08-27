@@ -4,7 +4,7 @@ import plotly.graph_objs as go
 import numpy as np
 
 # List of index symbols
-index_symbols = ["^IXIC", "NQ=F"]
+index_symbols = ["^IXIC", "FTSE"]
 
 # Initialize an empty figure
 fig = go.Figure()
