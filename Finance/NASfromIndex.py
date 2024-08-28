@@ -3,8 +3,6 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
 
 # Define the time range for the last 60 days
 end_date = datetime.now()
@@ -65,25 +63,17 @@ def main():
     X = combined_data[['^FTSE % Change', 'NQ=F % Change', '^N225 % Change']]
     y = combined_data['^IXIC % Change']
 
-    # Split the data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
-
     # Initialize the GradientBoostingRegressor model
     model = GradientBoostingRegressor()
 
-    # Train the model
-    model.fit(X_train, y_train)
+    # Train the model on the entire dataset
+    model.fit(X, y)
 
-    # Predict on the test data
+    # Predict on the entire dataset
     y_pred = model.predict(X)
 
-    # Display the model performance
-    st.subheader("Model Performance")
-    st.write(f"Mean Squared Error: {mean_squared_error(y_test, y_pred)}")
-    st.write(f"R-squared: {r2_score(y_test, y_pred)}")
-
-    # Display actual vs predicted
-    comparison = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
+    # Display the actual and predicted values
+    comparison = pd.DataFrame({'Actual ^IXIC % Change': y, 'Predicted ^IXIC % Change': y_pred})
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     st.dataframe(comparison)
 
