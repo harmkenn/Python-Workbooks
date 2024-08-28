@@ -21,7 +21,7 @@ def extract_price(data, ticker):
 
 # Main function to display the data
 def main():
-    st.title('Prediction of NASDAQ (^IXIC) Percent Change using FTSE (^FTSE) and NIKKEI (^N225)')
+    st.title('Prediction of NASDAQ (^IXIC) Percent Change using FTSE (^FTSE), NIKKEI (^N225), and DAX (^GDAXI)')
 
     # Initialize an empty DataFrame
     combined_data = pd.DataFrame()
@@ -44,6 +44,12 @@ def main():
         nikkei_data = extract_price(nikkei_data, '^N225')
         combined_data = pd.concat([combined_data, nikkei_data], axis=1)
 
+    # Fetch and combine data for DAX
+    dax_data = fetch_data('^GDAXI')
+    if not dax_data.empty:
+        dax_data = extract_price(dax_data, '^GDAXI')
+        combined_data = pd.concat([combined_data, dax_data], axis=1)
+
     # Compute the percent change for each index
     percent_change = combined_data.pct_change().rename(columns=lambda x: f'{x} % Change')
 
@@ -54,7 +60,7 @@ def main():
     combined_data = combined_data.dropna()
 
     # Define the features (X) and the target (y)
-    X = combined_data[['^FTSE % Change', '^N225 % Change']]
+    X = combined_data[['^FTSE % Change', '^N225 % Change', '^GDAXI % Change']]
     y = combined_data['^IXIC % Change']
 
     # Initialize the GradientBoostingRegressor model
@@ -71,14 +77,15 @@ def main():
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     st.dataframe(comparison)
 
-    # User inputs for today's FTSE and NIKKEI percent changes
+    # User inputs for today's FTSE, NIKKEI, and DAX percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
     ftse_today = st.number_input("Enter today's FTSE % Change:", format="%.5f", value=0.0, step=0.00001)
     nikkei_today = st.number_input("Enter today's NIKKEI % Change:", format="%.5f", value=0.0, step=0.00001)
+    dax_today = st.number_input("Enter today's DAX % Change:", format="%.5f", value=0.0, step=0.00001)
 
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
-        today_prediction = model.predict([[ftse_today, nikkei_today]])
+        today_prediction = model.predict([[ftse_today, nikkei_today, dax_today]])
         st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
 if __name__ == "__main__":
