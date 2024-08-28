@@ -72,5 +72,15 @@ def main():
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     st.dataframe(comparison)
 
+    # User inputs for today's FTSE and NIKKEI percent changes
+    st.subheader("Predict Today's NASDAQ Percent Change")
+    ftse_today = st.number_input("Enter today's FTSE % Change:", value=0.0, step=0.01)
+    nikkei_today = st.number_input("Enter today's NIKKEI % Change:", value=0.0, step=0.01)
+
+    # Predict today's NASDAQ % Change based on user inputs
+    if st.button("Predict NASDAQ % Change"):
+        today_prediction = model.predict([[ftse_today, nikkei_today]])
+        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.2f}%")
+
 if __name__ == "__main__":
     main()
