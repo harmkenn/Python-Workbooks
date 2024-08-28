@@ -79,9 +79,10 @@ def main():
 
     # User inputs for today's FTSE, NIKKEI, and DAX percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
-    ftse_today = st.number_input("Enter today's FTSE % Change:", format="%.5f", value=0.0, step=0.00001)
+
     nikkei_today = st.number_input("Enter today's NIKKEI % Change:", format="%.5f", value=0.0, step=0.00001)
     dax_today = st.number_input("Enter today's DAX % Change:", format="%.5f", value=0.0, step=0.00001)
+    ftse_today = st.number_input("Enter today's FTSE % Change:", format="%.5f", value=0.0, step=0.00001)
 
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
