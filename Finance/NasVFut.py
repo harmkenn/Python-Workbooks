@@ -14,49 +14,47 @@ def fetch_data(ticker):
     data = yf.download(ticker, start=start_date, end=end_date, interval='1d')
     return data
 
-# Extract price at close
-def extract_price(data):
-    return data[['Close']]
+# Extract price at close and rename the column to the ticker
+def extract_price(data, ticker):
+    return data[['Close']].rename(columns={'Close': ticker})
 
 # Main function to display the data
 def main():
     st.title('Closing Prices for NASDAQ (^IXIC), FTSE (^FTSE), NASDAQ Futures (NQ=F), and NIKKEI (^N225)')
 
-    # Fetch and display the data for NASDAQ
+    # Initialize an empty DataFrame
+    combined_data = pd.DataFrame()
+
+    # Fetch and combine data for NASDAQ
     nasdaq_data = fetch_data('^IXIC')
     if not nasdaq_data.empty:
-        st.write(f"Closing prices for NASDAQ (^IXIC) from {start_date.date()} to {end_date.date()}:")
-        nasdaq_data = extract_price(nasdaq_data)
-        st.dataframe(nasdaq_data)
-    else:
-        st.write("No data available for NASDAQ (^IXIC) in the selected period.")
+        nasdaq_data = extract_price(nasdaq_data, '^IXIC')
+        combined_data = pd.concat([combined_data, nasdaq_data], axis=1)
 
-    # Fetch and display the data for FTSE
+    # Fetch and combine data for FTSE
     ftse_data = fetch_data('^FTSE')
     if not ftse_data.empty:
-        st.write(f"Closing prices for FTSE (^FTSE) from {start_date.date()} to {end_date.date()}:")
-        ftse_data = extract_price(ftse_data)
-        st.dataframe(ftse_data)
-    else:
-        st.write("No data available for FTSE (^FTSE) in the selected period.")
+        ftse_data = extract_price(ftse_data, '^FTSE')
+        combined_data = pd.concat([combined_data, ftse_data], axis=1)
 
-    # Fetch and display the data for NASDAQ Futures
+    # Fetch and combine data for NASDAQ Futures
     nq_f_data = fetch_data('NQ=F')
     if not nq_f_data.empty:
-        st.write(f"Closing prices for NASDAQ Futures (NQ=F) from {start_date.date()} to {end_date.date()}:")
-        nq_f_data = extract_price(nq_f_data)
-        st.dataframe(nq_f_data)
-    else:
-        st.write("No data available for NASDAQ Futures (NQ=F) in the selected period.")
+        nq_f_data = extract_price(nq_f_data, 'NQ=F')
+        combined_data = pd.concat([combined_data, nq_f_data], axis=1)
 
-    # Fetch and display the data for NIKKEI
+    # Fetch and combine data for NIKKEI
     nikkei_data = fetch_data('^N225')
     if not nikkei_data.empty:
-        st.write(f"Closing prices for NIKKEI (^N225) from {start_date.date()} to {end_date.date()}:")
-        nikkei_data = extract_price(nikkei_data)
-        st.dataframe(nikkei_data)
+        nikkei_data = extract_price(nikkei_data, '^N225')
+        combined_data = pd.concat([combined_data, nikkei_data], axis=1)
+
+    # Display the combined data
+    if not combined_data.empty:
+        st.write(f"Combined closing prices from {start_date.date()} to {end_date.date()}:")
+        st.dataframe(combined_data)
     else:
-        st.write("No data available for NIKKEI (^N225) in the selected period.")
+        st.write("No data available for the selected indices in the selected period.")
 
 if __name__ == "__main__":
     main()
