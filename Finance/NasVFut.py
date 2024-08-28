@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 # Define the time range for the last 30 days
 end_date = datetime.now()
-start_date = end_date - timedelta(days=200)
+start_date = end_date - timedelta(days=30)
 
 # Fetch data from Yahoo Finance
 @st.cache_data
@@ -20,7 +20,7 @@ def extract_price(data):
 
 # Main function to display the data
 def main():
-    st.title('Closing Prices for NASDAQ (^IXIC), FTSE (^FTSE), and NASDAQ Futures (NQ=F)')
+    st.title('Closing Prices for NASDAQ (^IXIC), FTSE (^FTSE), NASDAQ Futures (NQ=F), and NIKKEI (^N225)')
 
     # Fetch and display the data for NASDAQ
     nasdaq_data = fetch_data('^IXIC')
@@ -48,6 +48,15 @@ def main():
         st.dataframe(nq_f_data)
     else:
         st.write("No data available for NASDAQ Futures (NQ=F) in the selected period.")
+
+    # Fetch and display the data for NIKKEI
+    nikkei_data = fetch_data('^N225')
+    if not nikkei_data.empty:
+        st.write(f"Closing prices for NIKKEI (^N225) from {start_date.date()} to {end_date.date()}:")
+        nikkei_data = extract_price(nikkei_data)
+        st.dataframe(nikkei_data)
+    else:
+        st.write("No data available for NIKKEI (^N225) in the selected period.")
 
 if __name__ == "__main__":
     main()
