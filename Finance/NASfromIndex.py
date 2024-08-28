@@ -21,7 +21,7 @@ def extract_price(data, ticker):
 
 # Main function to display the data
 def main():
-    st.title('Prediction of NASDAQ (^IXIC) Percent Change using Other Indices')
+    st.title('Prediction of NASDAQ (^IXIC) Percent Change using FTSE (^FTSE) and NIKKEI (^N225)')
 
     # Initialize an empty DataFrame
     combined_data = pd.DataFrame()
@@ -37,12 +37,6 @@ def main():
     if not ftse_data.empty:
         ftse_data = extract_price(ftse_data, '^FTSE')
         combined_data = pd.concat([combined_data, ftse_data], axis=1)
-
-    # Fetch and combine data for NASDAQ Futures
-    nq_f_data = fetch_data('NQ=F')
-    if not nq_f_data.empty:
-        nq_f_data = extract_price(nq_f_data, 'NQ=F')
-        combined_data = pd.concat([combined_data, nq_f_data], axis=1)
 
     # Fetch and combine data for NIKKEI
     nikkei_data = fetch_data('^N225')
@@ -60,7 +54,8 @@ def main():
     combined_data = combined_data.dropna()
 
     # Define the features (X) and the target (y)
-    X = combined_data[['^FTSE % Change', 'NQ=F % Change', '^N225 % Change']]
+    # Exclude NASDAQ Futures (NQ=F) from the features
+    X = combined_data[['^FTSE % Change', '^N225 % Change']]
     y = combined_data['^IXIC % Change']
 
     # Initialize the GradientBoostingRegressor model
