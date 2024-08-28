@@ -54,7 +54,6 @@ def main():
     combined_data = combined_data.dropna()
 
     # Define the features (X) and the target (y)
-    # Exclude NASDAQ Futures (NQ=F) from the features
     X = combined_data[['^FTSE % Change', '^N225 % Change']]
     y = combined_data['^IXIC % Change']
 
@@ -74,13 +73,13 @@ def main():
 
     # User inputs for today's FTSE and NIKKEI percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
-    ftse_today = st.number_input("Enter today's FTSE % Change:", value=0.0, step=0.01)
-    nikkei_today = st.number_input("Enter today's NIKKEI % Change:", value=0.0, step=0.01)
+    ftse_today = st.number_input("Enter today's FTSE % Change:", format="%.5f", value=0.0, step=0.00001)
+    nikkei_today = st.number_input("Enter today's NIKKEI % Change:", format="%.5f", value=0.0, step=0.00001)
 
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
         today_prediction = model.predict([[ftse_today, nikkei_today]])
-        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.2f}%")
+        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
 if __name__ == "__main__":
     main()
