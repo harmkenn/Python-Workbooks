@@ -4,6 +4,9 @@ import streamlit as st
 from datetime import datetime, timedelta
 from sklearn.ensemble import GradientBoostingRegressor
 
+# Set the page layout to wide
+st.set_page_config(layout="wide")
+
 # Define the time range for the last 60 days
 end_date = datetime.now()
 start_date = end_date - timedelta(days=60)
@@ -75,7 +78,7 @@ def main():
     # Display the actual and predicted values
     comparison = pd.DataFrame({'^N225 % Change':X['^N225 % Change'], '^GDAXI % Change':X['^GDAXI % Change'],'^FTSE % Change':X['^FTSE % Change'], 'Actual ^IXIC % Change': y, 'Predicted ^IXIC % Change': y_pred})
     st.write("Actual vs Predicted NASDAQ Percent Change:")
-    st.dataframe(comparison)
+    st.dataframe(comparison, use_container_width=True)
 
     # User inputs for today's FTSE, NIKKEI, and DAX percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
