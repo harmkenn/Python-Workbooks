@@ -3,6 +3,7 @@ import pandas as pd
 import yfinance as yf
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
+import numpy as np
 
 def get_nasdaq_data(start_date, end_date):
     """
@@ -68,18 +69,58 @@ def main():
     fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close'], name='Close', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
 
     st.plotly_chart(fig, use_container_width=True)
-
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close']/date_range_zoom['ra100'], 
-        name='PE100', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
-    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close']/date_range_zoom['ra200'], 
-        name='PE200', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
-    fig.add_trace(go.Scatter(x=date_range_zoom.index, y=date_range_zoom['Close']/date_range_zoom['ra400'], 
-        name='PE400', hovertemplate='Date: %{x}<br>Price: %{y:.2f}'))
-    st.plotly_chart(fig, use_container_width=True)
-    
+   
     st.write('PE100: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra100']))
     st.write('PE200: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra200']))
     st.write('PE400: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra400']))
+
+# List of index symbols
+index_symbols = ["^IXIC",'AMAGX','BPTRX','DXQLX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','JAGTX','PGTAX','PRDGX','RMQHX','ROGSX','SMPIX','SMPSX','UOPIX']
+
+# Initialize an empty figure
+fig = go.Figure()
+
+# Function to calculate CAGR
+def calculate_cagr(data):
+    n = len(data)
+    return ((data + 1).prod()**(1/n) - 1) * 100
+
+# Loop through the index symbols
+for index_symbol in index_symbols:
+    # Fetch historical data for the current index
+    data = yf.download(index_symbol, period="5y", interval="1d")
+
+    # Normalize closing prices to start at 1
+    data['Close'] = data['Close'] / data['Close'][0]
+
+    # Calculate annual returns
+    data['Returns'] = data['Close'].pct_change() * 100
+
+    # Calculate Standard Deviation  
+    std_dev = data['Returns'].std() * np.sqrt(252)
+    st.write(f"Standard Deviation for {index_symbol}: {std_dev:.2f}%")
+
+    # Add a scatter trace (line) for closing prices of each index
+    fig.add_trace(go.Scatter(
+        x=data.index,
+        y=data['Close'],
+        mode='lines',
+        name=index_symbol
+    ))
+
+# Set chart layout and title
+fig.update_layout(
+    title="Stock Indices - 5-Year Closing Prices (Normalized to Start at 1)",
+    xaxis_title='',
+    yaxis_title='Normalized Price',
+    xaxis_rangeslider_visible=False,
+    plot_bgcolor='white',  # Change plot background color to white
+    paper_bgcolor='white', # Change the entire figure background color to white
+    width=800,
+    height=600
+)
+
+# Display the chart using Streamlit
+st.write(fig)
 if __name__ == "__main__":
     main()
