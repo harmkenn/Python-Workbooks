@@ -99,7 +99,7 @@ def main():
 
 
     # Display the actual and predicted values
-    comparison = pd.DataFrame({'^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'],'^IXIC yesterday':X['^IXIC % yesterday'], 'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
+    comparison = pd.DataFrame({'^IXIC yesterday':X['^IXIC % yesterday'], '^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'], 'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     st.dataframe(comparison, use_container_width=True)
 
