@@ -9,9 +9,9 @@ from sklearn.ensemble import GradientBoostingRegressor
 st.set_page_config(layout="wide")
 
 
-# Define the time range for the last 60 days
+# Define the time range for the last 90 days
 end_date = datetime.now()
-start_date = end_date - timedelta(days=60)
+start_date = end_date - timedelta(days=90)
 
 
 # Fetch data from Yahoo Finance
@@ -29,7 +29,7 @@ def extract_price(data, ticker):
 
 # Main function to display the data
 def main():
-    st.title('Prediction of NASDAQ (^IXIC) Percent Change using FTSE (^FTSE), NIKKEI (^N225), DAX (^GDAXI), and Shanghai Composite (000001.SS)')
+    st.title('Prediction of NASDAQ (^IXIC) From (^FTSE), NIKKEI (^N225), DAX (^GDAXI), and Shanghai Composite (000001.SS)')
 
 
     # Initialize an empty DataFrame
@@ -84,7 +84,7 @@ def main():
 
 
     # Define the features (X) and the target (y)
-    X = combined_data[['^FTSE % Change', '^N225 % Change', '^GDAXI % Change', '000001.SS % Change']]
+    X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change' ]]
     y = combined_data['^IXIC % Change']
 
 
@@ -101,7 +101,7 @@ def main():
 
 
     # Display the actual and predicted values
-    comparison = pd.DataFrame({'^N225 % Change':X['^N225 % Change'], '^GDAXI % Change':X['^GDAXI % Change'],'^FTSE % Change':X['^FTSE % Change'], '000001.SS % Change':X['000001.SS % Change'], 'Actual ^IXIC % Change': y, 'Predicted ^IXIC % Change': y_pred})
+    comparison = pd.DataFrame({'^N225 % Change':X['^N225 % Change'], '000001.SS % Change':X['000001.SS % Change'], '^GDAXI % Change':X['^GDAXI % Change'],'^FTSE % Change':X['^FTSE % Change'], 'Predicted ^IXIC % Change': y_pred, 'Actual ^IXIC % Change': y})
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     st.dataframe(comparison, use_container_width=True)
 
