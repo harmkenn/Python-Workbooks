@@ -83,7 +83,7 @@ def main():
     
     # Define the features (X) and the target (y)
     X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change']]
-    X = pd.concat([X, yn], axis=1).drop(X.index[0])
+    X = pd.concat([yn,X], axis=1).drop(X.index[0])
     y = combined_data['^IXIC % Change'][1:]
 
     # Initialize the GradientBoostingRegressor model
