@@ -29,7 +29,7 @@ def extract_price(data, ticker):
 
 # Main function to display the data
 def main():
-    st.title('Prediction of NASDAQ (^IXIC) From (^FTSE), NIKKEI (^N225), DAX (^GDAXI), and Shanghai Composite (000001.SS)')
+    #st.title('Prediction of NASDAQ (^IXIC) From (^FTSE), NIKKEI (^N225), DAX (^GDAXI), and Shanghai Composite (000001.SS)')
 
 
     # Initialize an empty DataFrame
@@ -100,9 +100,7 @@ def main():
 
     # Display the actual and predicted values
     comparison = pd.DataFrame({'^IXIC yesterday':X['^IXIC % yesterday'], '^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'], 'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
-    st.write("Actual vs Predicted NASDAQ Percent Change:")
-    pd.options.display.float_format = '{:.15f}'.format
-    st.dataframe(comparison, use_container_width=True)
+    
 
 
     # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite percent changes
@@ -132,6 +130,10 @@ def main():
     if st.button("Predict NASDAQ % Change"):
         today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today]])
         st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
+
+    st.write("Actual vs Predicted NASDAQ Percent Change:")
+    pd.options.display.float_format = '{:.15f}'.format
+    st.dataframe(comparison, use_container_width=True)
 
 
 if __name__ == "__main__":
