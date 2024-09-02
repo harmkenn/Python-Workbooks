@@ -137,7 +137,7 @@ def main():
         today_prediction = model.predict([[combined_data['^IXIC % Change'][-1], nikkei_today, ssec_today, dax_today, ftse_today]])
         st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
-    model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]])
+    st.write(model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]]))
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     pd.options.display.float_format = '{:.15f}'.format
     st.dataframe(comparison, use_container_width=True)
