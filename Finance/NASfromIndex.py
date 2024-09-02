@@ -35,12 +35,24 @@ def main():
     # Initialize an empty DataFrame
     combined_data = pd.DataFrame()
 
+    # Fetch and combine data for NIKKEI
+    nikkei_data = fetch_data('^N225')
+    if not nikkei_data.empty:
+        nikkei_data = extract_price(nikkei_data, '^N225')
+        combined_data = pd.concat([combined_data, nikkei_data], axis=1)
 
-    # Fetch and combine data for NASDAQ
-    nasdaq_data = fetch_data('^IXIC')
-    if not nasdaq_data.empty:
-        nasdaq_data = extract_price(nasdaq_data, '^IXIC')
-        combined_data = pd.concat([combined_data, nasdaq_data], axis=1)
+
+    # Fetch and combine data for Shanghai Composite
+    ssec_data = fetch_data('000001.SS')
+    if not ssec_data.empty:
+        ssec_data = extract_price(ssec_data, '000001.SS')
+        combined_data = pd.concat([combined_data, ssec_data], axis=1)
+
+    # Fetch and combine data for DAX
+    dax_data = fetch_data('^GDAXI')
+    if not dax_data.empty:
+        dax_data = extract_price(dax_data, '^GDAXI')
+        combined_data = pd.concat([combined_data, dax_data], axis=1)
 
 
     # Fetch and combine data for FTSE
@@ -50,25 +62,11 @@ def main():
         combined_data = pd.concat([combined_data, ftse_data], axis=1)
 
 
-    # Fetch and combine data for NIKKEI
-    nikkei_data = fetch_data('^N225')
-    if not nikkei_data.empty:
-        nikkei_data = extract_price(nikkei_data, '^N225')
-        combined_data = pd.concat([combined_data, nikkei_data], axis=1)
-
-
-    # Fetch and combine data for DAX
-    dax_data = fetch_data('^GDAXI')
-    if not dax_data.empty:
-        dax_data = extract_price(dax_data, '^GDAXI')
-        combined_data = pd.concat([combined_data, dax_data], axis=1)
-
-
-    # Fetch and combine data for Shanghai Composite
-    ssec_data = fetch_data('000001.SS')
-    if not ssec_data.empty:
-        ssec_data = extract_price(ssec_data, '000001.SS')
-        combined_data = pd.concat([combined_data, ssec_data], axis=1)
+    # Fetch and combine data for NASDAQ
+    nasdaq_data = fetch_data('^IXIC')
+    if not nasdaq_data.empty:
+        nasdaq_data = extract_price(nasdaq_data, '^IXIC')
+        combined_data = pd.concat([combined_data, nasdaq_data], axis=1)
 
 
     # Compute the percent change for each index
@@ -117,7 +115,7 @@ def main():
     
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
-        today_prediction = model.predict([[ftse_today, nikkei_today, dax_today, ssec_today]])
+        today_prediction = model.predict([[nikkei_today, ssec_today, dax_today, ftse_today]])
         st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
 
