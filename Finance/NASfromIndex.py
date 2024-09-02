@@ -107,12 +107,25 @@ def main():
 
     # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
+    nikkei = yf.Ticker("^N225")
+    data = nikkei.history(period="1d")
+    current_n225 = data["Close"].iloc[-1]
+    ssec = yf.Ticker("000001.SS")
+    data = ssec.history(period="1d")
+    current_ssec = data["Close"].iloc[-1]
+    dax = yf.Ticker("^GDAXI")
+    data = dax.history(period="1d")
+    current_dax = data["Close"].iloc[-1]
+    ftse = yf.Ticker("^FTSE")
+    data = ftse.history(period="1d")
+    current_ftse = data["Close"].iloc[-1]
+    
 
-    nasdaq_yesterday = st.number_input("Enter yesterday's NASDAQ % Change:", format="%.5f", value=0.0, step=0.00001)
-    nikkei_today = st.number_input("Enter today's NIKKEI % Change:", format="%.5f", value=0.0, step=0.00001)
-    ssec_today = st.number_input("Enter today's Shanghai Composite % Change:", format="%.5f", value=0.0, step=0.00001)
-    dax_today = st.number_input("Enter today's DAX % Change:", format="%.5f", value=0.0, step=0.00001)
-    ftse_today = st.number_input("Enter today's FTSE % Change:", format="%.5f", value=0.0, step=0.00001)
+    nasdaq_yesterday = st.number_input(f"Enter yesterday's NASDAQ % Change: {combined_data['^IXIC % Change'][-1]}", format="%.5f", value=0.0, step=0.00001)
+    nikkei_today = st.number_input(f"Enter today's NIKKEI % Change: {(nikkei_data['^N225'][-1]-nikkei_data['^N225'][-2])/nikkei_data['^N225'][-2]}", format="%.5f", value=0.0, step=0.00001)
+    ssec_today = st.number_input(f"Enter today's Shanghai Composite % Change: {(ssec_data['000001.SS'][-1]-ssec_data['000001.SS'][-2])/ssec_data['000001.SS'][-2]}", format="%.5f", value=0.0, step=0.00001)
+    dax_today = st.number_input(f"Enter today's DAX % Change: {(current_dax-dax_data['^GDAXI'][-1])/dax_data['^GDAXI'][-1]}", format="%.5f", value=0.0, step=0.00001)
+    ftse_today = st.number_input(f"Enter today's FTSE % Change: {(current_ftse-ftse_data['^FTSE'][-1])/ftse_data['^FTSE'][-1]}", format="%.5f", value=0.0, step=0.00001)
     
     
     # Predict today's NASDAQ % Change based on user inputs
