@@ -9,9 +9,9 @@ from sklearn.ensemble import GradientBoostingRegressor
 st.set_page_config(layout="wide")
 
 
-# Define the time range for the last 90 days
+# Define the time range for the last 366 days
 end_date = datetime.now()
-start_date = end_date - timedelta(days=90)
+start_date = end_date - timedelta(days=366)
 
 
 # Fetch data from Yahoo Finance
