@@ -79,12 +79,12 @@ def main():
 
     # Drop rows with NaN values (usually the first row)
     combined_data = combined_data.dropna()
-
-
+    yn = pd.DataFrame({'^IXIC % yesterday':combined_data['^IXIC % Change'].shift(1)})
+    
     # Define the features (X) and the target (y)
-    X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change' ]]
-    y = combined_data['^IXIC % Change']
-
+    X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change']]
+    X = pd.concat([X, yn], axis=1).drop(X.index[0])
+    y = combined_data['^IXIC % Change'][1:]
 
     # Initialize the GradientBoostingRegressor model
     model = GradientBoostingRegressor()
@@ -99,7 +99,7 @@ def main():
 
 
     # Display the actual and predicted values
-    comparison = pd.DataFrame({'^N225 % Change':X['^N225 % Change'], '000001.SS % Change':X['000001.SS % Change'], '^GDAXI % Change':X['^GDAXI % Change'],'^FTSE % Change':X['^FTSE % Change'], 'Predicted ^IXIC % Change': y_pred, 'Actual ^IXIC % Change': y})
+    comparison = pd.DataFrame({'^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'],'^IXIC yesterday':X['^IXIC % yesterday'], 'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     st.dataframe(comparison, use_container_width=True)
 
@@ -107,15 +107,16 @@ def main():
     # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
 
-
+    nasdaq_yesterday = st.number_input("Enter yesterday's NASDAQ % Change:", format="%.5f", value=0.0, step=0.00001)
     nikkei_today = st.number_input("Enter today's NIKKEI % Change:", format="%.5f", value=0.0, step=0.00001)
     ssec_today = st.number_input("Enter today's Shanghai Composite % Change:", format="%.5f", value=0.0, step=0.00001)
     dax_today = st.number_input("Enter today's DAX % Change:", format="%.5f", value=0.0, step=0.00001)
     ftse_today = st.number_input("Enter today's FTSE % Change:", format="%.5f", value=0.0, step=0.00001)
     
+    
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
-        today_prediction = model.predict([[nikkei_today, ssec_today, dax_today, ftse_today]])
+        today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today]])
         st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
 
