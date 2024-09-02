@@ -123,7 +123,7 @@ def main():
     last_ssec = (ssec_data['000001.SS'][-1]-ssec_data['000001.SS'][-2])/ssec_data['000001.SS'][-2]
     curr_dax = (current_dax-dax_data['^GDAXI'][-1])/dax_data['^GDAXI'][-1]
     curr_ftse = (current_ftse-ftse_data['^FTSE'][-1])/ftse_data['^FTSE'][-1]
-    
+    st.write(model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]]))
 
     nasdaq_yesterday = st.number_input(f"Enter yesterday's NASDAQ % Change: {last_nq}", format="%.5f", value=0.0, step=0.00001)
     nikkei_today = st.number_input(f"Enter today's NIKKEI % Change: {last_n225}", format="%.5f", value=0.0, step=0.00001)
@@ -131,8 +131,8 @@ def main():
     dax_today = st.number_input(f"Enter today's DAX % Change: {curr_dax}", format="%.5f", value=0.0, step=0.00001)
     ftse_today = st.number_input(f"Enter today's FTSE % Change: {curr_ftse}", format="%.5f", value=0.0, step=0.00001)
     
-    st.write(model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]]))
     
+
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
         today_prediction = model.predict([[combined_data['^IXIC % Change'][-1], nikkei_today, ssec_today, dax_today, ftse_today]])
