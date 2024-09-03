@@ -139,7 +139,7 @@ def main():
     ssec_today = st.number_input(f"Enter today's Shanghai Composite % Change: {last_ssec}", format="%.5f", value=0.0, step=0.00001)
     dax_today = st.number_input(f"Enter today's DAX % Change: {curr_dax}", format="%.5f", value=0.0, step=0.00001)
     ftse_today = st.number_input(f"Enter today's FTSE % Change: {curr_ftse}", format="%.5f", value=0.0, step=0.00001)
-    nqf_today = st.number_input(f"Enter today's FTSE % Change: {curr_nqf}", format="%.5f", value=0.0, step=0.00001)
+    nqf_today = st.number_input(f"Enter today's NQ=F % Change: {curr_nqf}", format="%.5f", value=0.0, step=0.00001)
     
 
     # Predict today's NASDAQ % Change based on user inputs
