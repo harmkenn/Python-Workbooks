@@ -123,7 +123,7 @@ def main():
     last_ssec = (ssec_data['000001.SS'][-1]-ssec_data['000001.SS'][-2])/ssec_data['000001.SS'][-2]
     curr_dax = (current_dax-dax_data['^GDAXI'][-1])/dax_data['^GDAXI'][-1]
     curr_ftse = (current_ftse-ftse_data['^FTSE'][-1])/ftse_data['^FTSE'][-1]
-    st.write(model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]]))
+    st.write(f"{model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]][0]):.6f}")
 
     nasdaq_yesterday = st.number_input(f"Enter yesterday's NASDAQ % Change: {last_nq}", format="%.5f", value=0.0, step=0.00001)
     nikkei_today = st.number_input(f"Enter today's NIKKEI % Change: {last_n225}", format="%.5f", value=0.0, step=0.00001)
