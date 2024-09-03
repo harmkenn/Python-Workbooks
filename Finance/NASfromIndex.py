@@ -145,7 +145,7 @@ def main():
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
         today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today, nqf_today]])
-        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
+        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}")
 
     
     st.write("Actual vs Predicted NASDAQ Percent Change:")
