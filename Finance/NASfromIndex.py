@@ -111,8 +111,8 @@ def main():
     # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
     nikkei = yf.Ticker("^N225")
-    n225_data = nikkei.history(period="1d")
-    current_n225 = n225_data["Close"].iloc[-1]
+    data = nikkei.history(period="1d")
+    current_n225 = data["Close"].iloc[-1]
     ssec = yf.Ticker("000001.SS")
     data = ssec.history(period="1d")
     current_ssec = data["Close"].iloc[-1]
@@ -127,7 +127,7 @@ def main():
     current_nqf = data["Close"].iloc[-1]
 
     last_nq = combined_data['^IXIC % Change'][-1]
-    last_n225 = (current_n225-n225_data['^N225'][-1])/n225_data['^N225'][-1]
+    last_n225 = (nikkei_data['^N225'][-1]-nikkei_data['^N225'][-2])/nikkei_data['^N225'][-2]
     last_ssec = (ssec_data['000001.SS'][-1]-ssec_data['000001.SS'][-2])/ssec_data['000001.SS'][-2]
     curr_dax = (current_dax-dax_data['^GDAXI'][-1])/dax_data['^GDAXI'][-1]
     curr_ftse = (current_ftse-ftse_data['^FTSE'][-1])/ftse_data['^FTSE'][-1]
@@ -145,7 +145,7 @@ def main():
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
         today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today, nqf_today]])
-        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}")
+        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
     
     st.write("Actual vs Predicted NASDAQ Percent Change:")
