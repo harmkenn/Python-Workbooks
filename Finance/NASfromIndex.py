@@ -64,7 +64,7 @@ def main():
     # Fetch and combine data for NASDAQ
     nf_data = fetch_data('NQ=F')
     if not nf_data.empty:
-        nasdaq_data = extract_price(nf_data, 'NQ=F')
+        nf_data = extract_price(nf_data, 'NQ=F')
         combined_data = pd.concat([combined_data, nf_data], axis=1)
 
     # Fetch and combine data for NASDAQ
