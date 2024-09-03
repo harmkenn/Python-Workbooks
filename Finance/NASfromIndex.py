@@ -61,6 +61,11 @@ def main():
         ftse_data = extract_price(ftse_data, '^FTSE')
         combined_data = pd.concat([combined_data, ftse_data], axis=1)
 
+    # Fetch and combine data for NASDAQ
+    nf_data = fetch_data('NQ=F')
+    if not nf_data.empty:
+        nasdaq_data = extract_price(nf_data, 'NQ=F')
+        combined_data = pd.concat([combined_data, nf_data], axis=1)
 
     # Fetch and combine data for NASDAQ
     nasdaq_data = fetch_data('^IXIC')
@@ -82,7 +87,7 @@ def main():
     yn = pd.DataFrame({'^IXIC % yesterday':combined_data['^IXIC % Change'].shift(1)})
     
     # Define the features (X) and the target (y)
-    X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change']]
+    X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change', 'NQ=F % Change']]
     X = pd.concat([yn,X], axis=1).drop(X.index[0])
     y = combined_data['^IXIC % Change'][1:]
 
@@ -99,7 +104,7 @@ def main():
 
 
     # Display the actual and predicted values
-    comparison = pd.DataFrame({'^IXIC yesterday':X['^IXIC % yesterday'], '^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'], 'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
+    comparison = pd.DataFrame({'^IXIC yesterday':X['^IXIC % yesterday'], '^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'],'NQ=F %':X['NQ=F % Change'] ,'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
     
 
 
@@ -117,25 +122,29 @@ def main():
     ftse = yf.Ticker("^FTSE")
     data = ftse.history(period="1d")
     current_ftse = data["Close"].iloc[-1]
+    nqf = yf.Ticker("NQ=F")
+    data = nqf.history(period="1d")
+    current_nqf = data["Close"].iloc[-1]
 
     last_nq = combined_data['^IXIC % Change'][-1]
     last_n225 = (nikkei_data['^N225'][-1]-nikkei_data['^N225'][-2])/nikkei_data['^N225'][-2]
     last_ssec = (ssec_data['000001.SS'][-1]-ssec_data['000001.SS'][-2])/ssec_data['000001.SS'][-2]
     curr_dax = (current_dax-dax_data['^GDAXI'][-1])/dax_data['^GDAXI'][-1]
     curr_ftse = (current_ftse-ftse_data['^FTSE'][-1])/ftse_data['^FTSE'][-1]
-    st.write(f"{model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]])[0]:.6f}")
+    curr_nqf = (current_nqf-ftse_data['NQ=F'][-1])/ftse_data['NQ=F'][-1]
+    st.write(f"{model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse,curr_nqf]])[0]:.6f}")
 
     nasdaq_yesterday = st.number_input(f"Enter yesterday's NASDAQ % Change: {last_nq}", format="%.5f", value=0.0, step=0.00001)
     nikkei_today = st.number_input(f"Enter today's NIKKEI % Change: {last_n225}", format="%.5f", value=0.0, step=0.00001)
     ssec_today = st.number_input(f"Enter today's Shanghai Composite % Change: {last_ssec}", format="%.5f", value=0.0, step=0.00001)
     dax_today = st.number_input(f"Enter today's DAX % Change: {curr_dax}", format="%.5f", value=0.0, step=0.00001)
     ftse_today = st.number_input(f"Enter today's FTSE % Change: {curr_ftse}", format="%.5f", value=0.0, step=0.00001)
-    
+    nqf_today = st.number_input(f"Enter today's FTSE % Change: {curr_nqf}", format="%.5f", value=0.0, step=0.00001)
     
 
     # Predict today's NASDAQ % Change based on user inputs
     if st.button("Predict NASDAQ % Change"):
-        today_prediction = model.predict([[combined_data['^IXIC % Change'][-1], nikkei_today, ssec_today, dax_today, ftse_today]])
+        today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today, nqf_today]])
         st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
     
