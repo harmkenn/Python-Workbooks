@@ -128,7 +128,7 @@ def main():
 
     last_nq = combined_data['^IXIC % Change'][-1]
     last_n225 = (current_n225-nikkei_data['^N225'][-1])/nikkei_data['^N225'][-1]
-    last_ssec = (ssec_data['000001.SS'][-1]-ssec_data['000001.SS'][-2])/ssec_data['000001.SS'][-2]
+    last_ssec = (current_ssec-ssec_data['000001.SS'][-1])/ssec_data['000001.SS'][-1]
     curr_dax = (dax_data['^GDAXI'][-1]-dax_data['^GDAXI'][-2])/dax_data['^GDAXI'][-2]
     curr_ftse = (ftse_data['^FTSE'][-1]-ftse_data['^FTSE'][-2])/ftse_data['^FTSE'][-2]
     curr_nqf = (nf_data['NQ=F'][-1]-nf_data['NQ=F'][-2])/nf_data['NQ=F'][-2]
