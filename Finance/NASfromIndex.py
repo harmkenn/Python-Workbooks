@@ -110,21 +110,10 @@ def main():
 
     # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
-    nikkei = yf.Ticker("^N225")
-    data = nikkei.history(period="1d")
-    current_n225 = data["Close"].iloc[-1]
-    ssec = yf.Ticker("000001.SS")
-    data = ssec.history(period="1d")
-    current_ssec = data["Close"].iloc[-1]
-    dax = yf.Ticker("^GDAXI")
-    data = dax.history(period="1d")
-    current_dax = data["Close"].iloc[-1]
-    ftse = yf.Ticker("^FTSE")
-    data = ftse.history(period="1d")
-    current_ftse = data["Close"].iloc[-1]
-    nqf = yf.Ticker("NQ=F")
-    data = nqf.history(period="1d")
-    current_nqf = data["Close"].iloc[-1]
+    stock = yf.Ticker('^N225')
+    hist = stock.history(period='1d')
+    percentage_change = hist['Close'].pct_change()
+    st.write(f"N225: {percentage_change}")
 
     last_nq = combined_data['^IXIC % Change'][-1]
     last_n225 = (nikkei_data['^N225'][-1]-nikkei_data['^N225'][-2])/nikkei_data['^N225'][-2]
