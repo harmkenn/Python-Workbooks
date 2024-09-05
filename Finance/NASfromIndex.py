@@ -109,20 +109,22 @@ def main():
     curr_dax = (dax_data['^GDAXI'][-1]-dax_data['^GDAXI'][-2])/dax_data['^GDAXI'][-2]
     curr_ftse = (ftse_data['^FTSE'][-1]-ftse_data['^FTSE'][-2])/ftse_data['^FTSE'][-2]
 
-    st.write(f"{model.predict([[last_nq,last_n225,last_ssec,curr_dax,curr_ftse]])[0]:.6f}")
+    a1, a2 = st.columns(2)
 
-    nasdaq_yesterday = st.number_input(f"Enter yesterday's NASDAQ % Change: {last_nq}", format="%.5f", value=0.0, step=0.00001)
-    nikkei_today = st.number_input(f"Enter today's NIKKEI % Change: {last_n225}", format="%.5f", value=0.0, step=0.00001)
-    ssec_today = st.number_input(f"Enter today's Shanghai Composite % Change: {last_ssec}", format="%.5f", value=0.0, step=0.00001)
-    dax_today = st.number_input(f"Enter today's DAX % Change: {curr_dax}", format="%.5f", value=0.0, step=0.00001)
-    ftse_today = st.number_input(f"Enter today's FTSE % Change: {curr_ftse}", format="%.5f", value=0.0, step=0.00001)
-
+    with a1:
+        nasdaq_yesterday = st.number_input(f"Enter yesterday's NASDAQ % Change: {last_nq}", format="%.5f", value=0.0, step=0.00001)
+        nikkei_today = st.number_input(f"Enter today's NIKKEI % Change: {last_n225}", format="%.5f", value=0.0, step=0.00001)
+        ssec_today = st.number_input(f"Enter today's Shanghai Composite % Change: {last_ssec}", format="%.5f", value=0.0, step=0.00001)
+    with a2:
+        dax_today = st.number_input(f"Enter today's DAX % Change: {curr_dax}", format="%.5f", value=0.0, step=0.00001)
+        ftse_today = st.number_input(f"Enter today's FTSE % Change: {curr_ftse}", format="%.5f", value=0.0, step=0.00001)
     
-
-    # Predict today's NASDAQ % Change based on user inputs
-    if st.button("Predict NASDAQ % Change"):
-        today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today]])
-        st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
+        
+    
+        # Predict today's NASDAQ % Change based on user inputs
+        if st.button("Predict NASDAQ % Change"):
+            today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today]])
+            st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
 
     
     st.write("Actual vs Predicted NASDAQ Percent Change:")
