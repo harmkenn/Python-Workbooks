@@ -100,16 +100,6 @@ def main():
     # Display the actual and predicted values
     comparison = pd.DataFrame({'^IXIC yesterday':X['^IXIC % yesterday'], '^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'],'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
     
-    # Create a Ticker object
-    stock = yf.Ticker('QLD')
-
-    # Get the historical data for the last 1 day (including after-hours data)
-    hist = stock.history(period='1d', interval='1m')  # '1m' for minute-level data
-
-    # Print the last few rows to check after-hours prices
-    st.write(hist.tail())
-
-
     # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite percent changes
     st.subheader("Predict Today's NASDAQ Percent Change")
 
