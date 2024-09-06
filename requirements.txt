@@ -20,3 +20,4 @@ scipy
 nbformat
 selenium
 scrapy
+undetected_chromedriver
