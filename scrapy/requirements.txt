@@ -1,0 +1,23 @@
+# pip install -r requirements.txt
+streamlit
+numpy
+pandas
+plotly
+scikit-learn
+pip
+matplotlib
+openpyxl
+requests
+levenshtein
+keras
+pydataset
+SpeechRecognition
+pyinstaller
+yfinance
+geopandas
+matplotlib
+scipy
+nbformat
+selenium
+scrapy
+undetected_chromedriver
