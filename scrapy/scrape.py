@@ -1,10 +1,7 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.chrome.service import Service
 import time
-import undetected_chromedriver as uc
-from selenium.webdriver.common.by import By
-import time
-import re
+
 
 
 
