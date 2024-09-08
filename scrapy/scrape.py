@@ -7,14 +7,12 @@ from selenium.webdriver.common.by import By
 import time
 import re
 
-
-
 def scrape_website(website):
   print('Launching chrome browser...')
 
-  # Set up undetected-chromedriver
-  options = uc.ChromeOptions()
-  options.add_argument("--disable-blink-features=AutomationControlled")
+  chrome_driver_path = './chromedriver.exe'
+  options = webdriver.ChromeOptions()
+  driver = webdriver.Chrome(service=Service(chrome_driver_path), options=options)
 
   # Create the WebDriver instance
   driver = uc.Chrome(options=options)
