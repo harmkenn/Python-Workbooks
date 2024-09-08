@@ -75,7 +75,7 @@ def main():
     st.write('PE400: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra400']))
 
 # List of index symbols
-index_symbols = ["^IXIC",'AMAGX','BPTRX','DXQLX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','JAGTX','PGTAX','PRDGX','RMQHX','ROGSX','SMPIX','SMPSX','UOPIX','SQQQ','QLD']
+index_symbols = ["^IXIC",'AMAGX','BPTRX','DXQLX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','JAGTX','PGTAX','PRDGX','RMQHX','ROGSX','SMPIX','SMPSX','UOPIX','SQQQ','TQQQ']
 
 # Initialize an empty figure
 fig = go.Figure()
