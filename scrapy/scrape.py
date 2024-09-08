@@ -1,6 +1,7 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.chrome.service import Service
 import undetected_chromedriver as uc
+from bs4 import BeautifulSoup
 import time
 
 def scrape_website(website):
@@ -22,5 +23,14 @@ def scrape_website(website):
     return html
   finally:
     driver.quit()
+
+def extract_body_content(html_content):
+  soup = BeautifulSoup(html_content, 'html.parser')
+  body_content = soup.body
+  if body_content:
+    return str(body_content)
+  return "Body content not found."
+
+# https://youtu.be/Oo8-nEuDBkk?si=bUQr0kAADI17dD2n&t=1469
     
   
