@@ -4,9 +4,9 @@ import streamlit as st
 from scrape import scrape_website
 
 st.title('AI Web Scraper')
-url = st.text_input('Enter URL: ')
+url = st.text_input('Enter URL: ', 'https://www.bing.com/')
 
 if st.button('Scrape'):
   st.write('Scrapping...'  )
   result = scrape_website(url)
-  print(result)
+  st.write(result)
