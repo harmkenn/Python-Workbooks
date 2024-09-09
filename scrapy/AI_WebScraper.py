@@ -6,7 +6,10 @@ from scrape import scrape_website
 st.title('AI Web Scraper')
 url = st.text_input('Enter URL: ', 'https://www.bing.com/')
 
+st.button("Click here after logging in")
+
 if st.button('Scrape'):
+  st.button("Click here after logging in")
   st.write('Scrapping...'  )
   result = scrape_website(url)
   st.write(result)
