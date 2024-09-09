@@ -20,7 +20,7 @@ def extract_price(data, ticker):
 
 # Main function to display the data
 def main():
-    st.title('Closing Prices and Percent Changes for NASDAQ (^IXIC), FTSE (^FTSE), NASDAQ Futures (NQ=F), and NIKKEI (^N225)')
+    st.title('Nasdaq vs Nasdaq Futures')
 
     # Initialize an empty DataFrame
     combined_data = pd.DataFrame()
@@ -31,23 +31,11 @@ def main():
         nasdaq_data = extract_price(nasdaq_data, '^IXIC')
         combined_data = pd.concat([combined_data, nasdaq_data], axis=1)
 
-    # Fetch and combine data for FTSE
-    ftse_data = fetch_data('^FTSE')
-    if not ftse_data.empty:
-        ftse_data = extract_price(ftse_data, '^FTSE')
-        combined_data = pd.concat([combined_data, ftse_data], axis=1)
-
     # Fetch and combine data for NASDAQ Futures
     nq_f_data = fetch_data('NQ=F')
     if not nq_f_data.empty:
         nq_f_data = extract_price(nq_f_data, 'NQ=F')
         combined_data = pd.concat([combined_data, nq_f_data], axis=1)
-
-    # Fetch and combine data for NIKKEI
-    nikkei_data = fetch_data('^N225')
-    if not nikkei_data.empty:
-        nikkei_data = extract_price(nikkei_data, '^N225')
-        combined_data = pd.concat([combined_data, nikkei_data], axis=1)
 
     # Compute the percent change for each index
     percent_change = combined_data.pct_change().rename(columns=lambda x: f'{x} % Change')
@@ -61,6 +49,15 @@ def main():
         st.dataframe(combined_data)
     else:
         st.write("No data available for the selected indices in the selected period.")
+
+    download = combined_data.to_csv(index=True).encode('utf-8')
+    st.download_button(
+        label="Download CSV",
+        data=download,
+        file_name='nasdaq_data.csv',
+        mime='text/csv',
+        help="Click to download the CSV file containing the NASDAQ data."
+    )
 
 if __name__ == "__main__":
     main()
