@@ -7,11 +7,9 @@ import time
 def scrape_website(website):
   print('Launching chrome browser...')
 
-  # Set up undetected-chromedriver
   options = uc.ChromeOptions()
   options.add_argument("--disable-blink-features=AutomationControlled")
-
-  # Create the WebDriver instance
+  #options.binary_location = "C:\Program Files\Google\Chrome\Application\chrome.exe"    # Replace with actual path
   driver = uc.Chrome(options=options)
 
   try:

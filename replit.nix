@@ -1,5 +1,6 @@
 {pkgs}: {
   deps = [
+    pkgs.streamlit
     pkgs.geckodriver
     pkgs.xsimd
     pkgs.libxcrypt
