@@ -79,7 +79,7 @@ def main():
     # Drop rows with NaN values (usually the first row)
     combined_data = combined_data.dropna()
     yn = pd.DataFrame({'^IXIC % yesterday':combined_data['^IXIC % Change'].shift(1)})
-    download = combined_data.to_csv(index=False).encode('utf-8')
+    
     
     # Define the features (X) and the target (y)
     X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change']]
@@ -131,7 +131,7 @@ def main():
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     pd.options.display.float_format = '{:.15f}'.format
     st.dataframe(comparison, use_container_width=True)
-
+    download = comparison.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="Download CSV",
         data=download,
