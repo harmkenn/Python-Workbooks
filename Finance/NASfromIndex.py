@@ -79,7 +79,7 @@ def main():
     # Drop rows with NaN values (usually the first row)
     combined_data = combined_data.dropna()
     yn = pd.DataFrame({'^IXIC % yesterday':combined_data['^IXIC % Change'].shift(1)})
-    pd.to_csv(combined_data,'nasdaq_data.csv',index=False)
+    combined_data.to_csv('nasdaq_data.csv',index=False)
     
     # Define the features (X) and the target (y)
     X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change']]
