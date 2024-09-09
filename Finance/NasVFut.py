@@ -3,9 +3,9 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta
 
-# Define the time range for the last 370 days
+# Define the time range for the last 2000 days
 end_date = datetime.now()
-start_date = end_date - timedelta(days=370)
+start_date = end_date - timedelta(days=2000)
 
 # Fetch data from Yahoo Finance
 @st.cache_data
