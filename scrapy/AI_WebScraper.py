@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 import time
 from selenium.webdriver import Remote, ChromeOptions
 from selenium.webdriver.chromium.remote_connection import ChromiumRemoteConnection
+from langchain_ollama import OllamaLLM
+from langchain_core.prompts import ChatPromptTemplate
 
 def extract_body_content(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -74,7 +76,7 @@ if "dom_content" in st.session_state:
 if st.button('Finished') and st.session_state.loaded:
     st.session_state.driver.quit()
   
-# https://youtu.be/Oo8-nEuDBkk?si=bUQr0kAADI17dD2n&t=1469
+# https://youtu.be/Oo8-nEuDBkk?si=W1rU0kR3XB1sJJ3s&t=1989
 
   
 

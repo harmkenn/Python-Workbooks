@@ -21,3 +21,4 @@ nbformat
 selenium
 scrapy
 undetected_chromedriver
+langchain_ollama
