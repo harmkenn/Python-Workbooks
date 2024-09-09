@@ -131,7 +131,8 @@ def main():
     st.write("Actual vs Predicted NASDAQ Percent Change:")
     pd.options.display.float_format = '{:.15f}'.format
     st.dataframe(comparison, use_container_width=True)
-    download = comparison.to_csv(index=False).encode('utf-8')
+    
+    download = comparison.to_csv(index=True).encode('utf-8')
     st.download_button(
         label="Download CSV",
         data=download,
