@@ -7,6 +7,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+etf_symbol = "TQQQ"
+start_date = pd.Timestamp.today() - pd.Timedelta(days=10)
+end_date = pd.Timestamp.today()
+interval = "1m"  # 1-minute interval
+
 ticker = yf.Ticker(etf_symbol)
 data = ticker.history(start=start_date, end=end_date, interval=interval)
 
