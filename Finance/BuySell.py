@@ -15,10 +15,12 @@ interval = "1m"  # 1-minute interval
 ticker = yf.Ticker(etf_symbol)
 data = ticker.history(start=start_date, end=end_date, interval=interval)
 
+st.write(data)
+
 # Combine all prices into one dataset
 df = data[['Open', 'High', 'Low', 'Close']]
 
-# No need to group by day here
+
 
 # Create a boxplot for all minutes
 sns.boxplot(data=df, orient='h')
