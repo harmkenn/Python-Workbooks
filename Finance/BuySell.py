@@ -5,25 +5,23 @@ from datetime import datetime, timedelta
 import plotly.graph_objects as go
 import numpy as np
 import matplotlib.pyplot as plt
-
-etf_symbol = "TQQQ"
-start_date = pd.Timestamp.today() - pd.Timedelta(days=5)
-end_date = pd.Timestamp.today()
-interval = "1m"  # 1-minute interval
+import seaborn as sns
 
 ticker = yf.Ticker(etf_symbol)
 data = ticker.history(start=start_date, end=end_date, interval=interval)
 
-# Create a DataFrame with the desired columns
+# Combine all prices into one dataset
 df = data[['Open', 'High', 'Low', 'Close']]
 
-# Group the data by date and create a boxplot
-df.groupby(df.index.date).boxplot()
- 
+# No need to group by day here
+
+# Create a boxplot for all minutes
+sns.boxplot(data=df, orient='h')
+
 # Customize the plot (optional)
-plt.title("TQQQ Price Distribution (Daily)")
-plt.xlabel("Date")
-plt.ylabel("Price")
+plt.title("TQQQ Price Distribution (All Minutes)")
+plt.xlabel("Price")
+plt.ylabel("Price Component")
 
 # Display the plot in Streamlit
 st.pyplot()
@@ -98,7 +96,7 @@ def main():
     st.write('PE400: '+str(combined_data.iloc[-1]['Close']/combined_data.iloc[-1]['ra400']))
 
 # List of index symbols
-index_symbols = ["^IXIC",'AMAGX','BPTRX','DXQLX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','JAGTX','PGTAX','PRDGX','RMQHX','ROGSX','SMPIX','SMPSX','UOPIX','SQQQ','TQQQ']
+index_symbols = ["^IXIC",'AMAGX','BPTRX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','JAGTX','PGTAX','PRDGX','RMQHX','ROGSX','SMPIX','SMPSX','UOPIX','SQQQ','TQQQ']
 
 # Initialize an empty figure
 fig = go.Figure()
