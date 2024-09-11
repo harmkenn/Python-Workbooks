@@ -19,6 +19,11 @@ df = data[['Open', 'High', 'Low', 'Close']]
 
 # Group the data by date and create a boxplot
 df.groupby(df.index.date).boxplot()
+ 
+# Customize the plot (optional)
+plt.title("TQQQ Price Distribution (Daily)")
+plt.xlabel("Date")
+plt.ylabel("Price")
 
 # Display the plot in Streamlit
 st.pyplot()
