@@ -7,32 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-etf_symbol = "TQQQ"
-start_date = pd.Timestamp.today() - pd.Timedelta(days=10)
-end_date = pd.Timestamp.today()
-interval = "1m"  # 1-minute interval
-
-ticker = yf.Ticker(etf_symbol)
-data = ticker.history(start=start_date, end=end_date, interval=interval)
-
-st.write(data)
-
-# Combine all prices into one dataset
-df = data[['Open', 'High', 'Low', 'Close']]
-
-
-
-# Create a boxplot for all minutes
-sns.boxplot(data=df, orient='h')
-
-# Customize the plot (optional)
-plt.title("TQQQ Price Distribution (All Minutes)")
-plt.xlabel("Price")
-plt.ylabel("Price Component")
-
-# Display the plot in Streamlit
-st.pyplot()
-
 def get_nasdaq_data(start_date, end_date):
     """
     Fetches NASDAQ composite index closing prices from Yahoo Finance.
