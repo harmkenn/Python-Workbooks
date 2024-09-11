@@ -23,3 +23,4 @@ scrapy
 undetected_chromedriver
 bs4
 langchain_ollama
+seaborn
