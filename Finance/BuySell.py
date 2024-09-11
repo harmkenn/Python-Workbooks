@@ -4,6 +4,24 @@ import yfinance as yf
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
 import numpy as np
+import matplotlib.pyplot as plt
+
+etf_symbol = "TQQQ"
+start_date = pd.Timestamp.today() - pd.Timedelta(days=5)
+end_date = pd.Timestamp.today()
+interval = "1m"  # 1-minute interval
+
+ticker = yf.Ticker(etf_symbol)
+data = ticker.history(start=start_date, end=end_date, interval=interval)
+
+# Create a DataFrame with the desired columns
+df = data[['Open', 'High', 'Low', 'Close']]
+
+# Group the data by date and create a boxplot
+df.groupby(df.index.date).boxplot()
+
+# Display the plot in Streamlit
+st.pyplot()
 
 def get_nasdaq_data(start_date, end_date):
     """
