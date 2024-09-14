@@ -29,7 +29,7 @@ def extract_price(data, ticker):
 
 # Main function to display the data
 def main():
-    #st.title('Prediction of NASDAQ (^IXIC) From (^FTSE), NIKKEI (^N225), DAX (^GDAXI), and Shanghai Composite (000001.SS)')
+    #st.title('Prediction of TQQQ (TQQQ) From (^FTSE), NIKKEI (^N225), DAX (^GDAXI), and Shanghai Composite (000001.SS)')
 
 
     # Initialize an empty DataFrame
@@ -61,11 +61,11 @@ def main():
         ftse_data = extract_price(ftse_data, '^FTSE')
         combined_data = pd.concat([combined_data, ftse_data], axis=1)
 
-    # Fetch and combine data for NASDAQ
-    nasdaq_data = fetch_data('^IXIC')
-    if not nasdaq_data.empty:
-        nasdaq_data = extract_price(nasdaq_data, '^IXIC')
-        combined_data = pd.concat([combined_data, nasdaq_data], axis=1)
+    # Fetch and combine data for TQQQ
+    tqqq_data = fetch_data('TQQQ')
+    if not tqqq_data.empty:
+        tqqq_data = extract_price(tqqq_data, 'TQQQ')
+        combined_data = pd.concat([combined_data, tqqq_data], axis=1)
 
 
     # Compute the percent change for each index
@@ -78,13 +78,13 @@ def main():
 
     # Drop rows with NaN values (usually the first row)
     combined_data = combined_data.dropna()
-    yn = pd.DataFrame({'^IXIC % yesterday':combined_data['^IXIC % Change'].shift(1)})
+    yn = pd.DataFrame({'TQQQ % yesterday':combined_data['TQQQ % Change'].shift(1)})
     
     
     # Define the features (X) and the target (y)
     X = combined_data[['^N225 % Change', '000001.SS % Change','^GDAXI % Change', '^FTSE % Change']]
     X = pd.concat([yn,X], axis=1).drop(X.index[0])
-    y = combined_data['^IXIC % Change'][1:]
+    y = combined_data['TQQQ % Change'][1:]
 
     # Initialize the GradientBoostingRegressor model
     model = GradientBoostingRegressor()
@@ -99,12 +99,12 @@ def main():
 
 
     # Display the actual and predicted values
-    comparison = pd.DataFrame({'^IXIC yesterday':X['^IXIC % yesterday'], '^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'],'Predicted ^IXIC %': y_pred, 'Actual ^IXIC %': y})
+    comparison = pd.DataFrame({'TQQQ yesterday':X['TQQQ % yesterday'], '^N225 %':X['^N225 % Change'], '000001.SS %':X['000001.SS % Change'], '^GDAXI %':X['^GDAXI % Change'],'^FTSE %':X['^FTSE % Change'],'Predicted TQQQ %': y_pred, 'Actual TQQQ %': y})
     
     # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite percent changes
-    st.subheader("Predict Today's NASDAQ Percent Change")
+    st.subheader("Predict Today's TQQQ Percent Change")
 
-    last_nq = combined_data['^IXIC % Change'][-1]
+    last_nq = combined_data['TQQQ % Change'][-1]
     last_n225 = (nikkei_data['^N225'][-1]-nikkei_data['^N225'][-2])/nikkei_data['^N225'][-2]
     last_ssec = (ssec_data['000001.SS'][-1]-ssec_data['000001.SS'][-2])/ssec_data['000001.SS'][-2]
     curr_dax = (dax_data['^GDAXI'][-1]-dax_data['^GDAXI'][-2])/dax_data['^GDAXI'][-2]
@@ -113,7 +113,7 @@ def main():
     a1, a2 = st.columns(2)
 
     with a1:
-        nasdaq_yesterday = st.number_input(f"Enter yesterday's NASDAQ % Change: {last_nq}", format="%.5f", value=0.0, step=0.00001)
+        TQQQ_yesterday = st.number_input(f"Enter yesterday's TQQQ % Change: {last_nq}", format="%.5f", value=0.0, step=0.00001)
         nikkei_today = st.number_input(f"Enter today's NIKKEI % Change: {last_n225}", format="%.5f", value=0.0, step=0.00001)
         ssec_today = st.number_input(f"Enter today's Shanghai Composite % Change: {last_ssec}", format="%.5f", value=0.0, step=0.00001)
     with a2:
@@ -122,13 +122,13 @@ def main():
     
         
     
-        # Predict today's NASDAQ % Change based on user inputs
-        if st.button("Predict NASDAQ % Change"):
-            today_prediction = model.predict([[nasdaq_yesterday, nikkei_today, ssec_today, dax_today, ftse_today]])
-            st.write(f"Predicted NASDAQ % Change for today: {today_prediction[0]:.5f}%")
+        # Predict today's TQQQ % Change based on user inputs
+        if st.button("Predict TQQQ % Change"):
+            today_prediction = model.predict([[TQQQ_yesterday, nikkei_today, ssec_today, dax_today, ftse_today]])
+            st.write(f"Predicted TQQQ % Change for today: {today_prediction[0]:.5f}%")
 
     
-    st.write("Actual vs Predicted NASDAQ Percent Change:")
+    st.write("Actual vs Predicted TQQQ Percent Change:")
     pd.options.display.float_format = '{:.15f}'.format
     st.dataframe(comparison, use_container_width=True)
     
@@ -136,9 +136,9 @@ def main():
     st.download_button(
         label="Download CSV",
         data=download,
-        file_name='nasdaq_data.csv',
+        file_name='TQQQ_data.csv',
         mime='text/csv',
-        help="Click to download the CSV file containing the NASDAQ data."
+        help="Click to download the CSV file containing the TQQQ data."
     )
 
 
