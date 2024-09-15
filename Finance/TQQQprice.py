@@ -121,49 +121,49 @@ def main():
 
     with a1:
         TQQQ_yesterday_low = st.number_input(f"Enter yesterday's TQQQ Low: {combined_data['TQQQ Low'].iloc[-1]}", format="%.2f", value=combined_data['TQQQ Low'].iloc[-1], step=0.01)
+        TQQQ_yesterday_high = st.number_input(f"Enter yesterday's TQQQ High: {combined_data['TQQQ High'].iloc[-1]}", format="%.2f", value=combined_data['TQQQ High'].iloc[-1], step=0.01)
+        TQQQ_yesterday_close = st.number_input(f"Enter yesterday's TQQQ Close: {last_nq}", format="%.2f", value=last_nq, step=0.01)
         nikkei_today_low = st.number_input(f"Enter today's NIKKEI Low: {combined_data['N225 Low'].iloc[-1]}", format="%.2f", value=combined_data['N225 Low'].iloc[-1], step=0.01)
-        ssec_today_low = st.number_input(f"Enter today's Shanghai Composite Low: {combined_data['SSEC Low'].iloc[-1]}", format="%.2f", value=combined_data['SSEC Low'].iloc[-1], step=0.01)
-        dax_today_low = st.number_input(f"Enter today's DAX Low: {combined_data['GDAXI Low'].iloc[-1]}", format="%.2f", value=combined_data['GDAXI Low'].iloc[-1], step=0.01)
-        ftse_today_low = st.number_input(f"Enter today's FTSE Low: {combined_data['FTSE Low'].iloc[-1]}", format="%.2f", value=combined_data['FTSE Low'].iloc[-1], step=0.01)
+        nikkei_today_high = st.number_input(f"Enter today's NIKKEI High: {combined_data['N225 High'].iloc[-1]}", format="%.2f", value=combined_data['N225 High'].iloc[-1], step=0.01)
+        nikkei_today_close = st.number_input(f"Enter today's NIKKEI Close: {last_n225}", format="%.2f", value=last_n225, step=0.01)
         
     with a2:
-        TQQQ_yesterday_high = st.number_input(f"Enter yesterday's TQQQ High: {combined_data['TQQQ High'].iloc[-1]}", format="%.2f", value=combined_data['TQQQ High'].iloc[-1], step=0.01)
-        nikkei_today_high = st.number_input(f"Enter today's NIKKEI High: {combined_data['N225 High'].iloc[-1]}", format="%.2f", value=combined_data['N225 High'].iloc[-1], step=0.01)
+        ssec_today_low = st.number_input(f"Enter today's Shanghai Composite Low: {combined_data['SSEC Low'].iloc[-1]}", format="%.2f", value=combined_data['SSEC Low'].iloc[-1], step=0.01)
         ssec_today_high = st.number_input(f"Enter today's Shanghai Composite High: {combined_data['SSEC High'].iloc[-1]}", format="%.2f", value=combined_data['SSEC High'].iloc[-1], step=0.01)
+        ssec_today_close = st.number_input(f"Enter today's Shanghai Composite Close: {last_ssec}", format="%.2f", value=last_ssec, step=0.01)
+        dax_today_low = st.number_input(f"Enter today's DAX Low: {combined_data['GDAXI Low'].iloc[-1]}", format="%.2f", value=combined_data['GDAXI Low'].iloc[-1], step=0.01)
         dax_today_high = st.number_input(f"Enter today's DAX High: {combined_data['GDAXI High'].iloc[-1]}", format="%.2f", value=combined_data['GDAXI High'].iloc[-1], step=0.01)
-        ftse_today_high = st.number_input(f"Enter today's FTSE High: {combined_data['FTSE High'].iloc[-1]}", format="%.2f", value=combined_data['FTSE High'].iloc[-1], step=0.01)
+        dax_today_close = st.number_input(f"Enter today's DAX Close: {curr_dax}", format="%.2f", value=curr_dax, step=0.01)
         
     with a3:
-        TQQQ_yesterday_close = st.number_input(f"Enter yesterday's TQQQ Close: {last_nq}", format="%.2f", value=last_nq, step=0.01)
-        nikkei_today_close = st.number_input(f"Enter today's NIKKEI Close: {last_n225}", format="%.2f", value=last_n225, step=0.01)
-        ssec_today_close = st.number_input(f"Enter today's Shanghai Composite Close: {last_ssec}", format="%.2f", value=last_ssec, step=0.01)
-        dax_today_close = st.number_input(f"Enter today's DAX Close: {curr_dax}", format="%.2f", value=curr_dax, step=0.01)
+        ftse_today_low = st.number_input(f"Enter today's FTSE Low: {combined_data['FTSE Low'].iloc[-1]}", format="%.2f", value=combined_data['FTSE Low'].iloc[-1], step=0.01)
+        ftse_today_high = st.number_input(f"Enter today's FTSE High: {combined_data['FTSE High'].iloc[-1]}", format="%.2f", value=combined_data['FTSE High'].iloc[-1], step=0.01)
         ftse_today_close = st.number_input(f"Enter today's FTSE Close: {curr_ftse}", format="%.2f", value=curr_ftse, step=0.01)
 
-    # Create a DataFrame with the same column names as the original training data
-    today_data = pd.DataFrame({
-        'y Low': [TQQQ_yesterday_low],
-        'y High': [TQQQ_yesterday_high],
-        'y Close': [TQQQ_yesterday_close],
-        'N225 Low': [nikkei_today_low],
-        'N225 High': [nikkei_today_high],
-        'N225 Close': [nikkei_today_close],
-        'SSEC Low': [ssec_today_low],
-        'SSEC High': [ssec_today_high],
-        'SSEC Close': [ssec_today_close],
-        'GDAXI Low': [dax_today_low],
-        'GDAXI High': [dax_today_high],
-        'GDAXI Close': [dax_today_close],
-        'FTSE Low': [ftse_today_low],
-        'FTSE High': [ftse_today_high],
-        'FTSE Close': [ftse_today_close]
-    })
+        # Create a DataFrame with the same column names as the original training data
+        today_data = pd.DataFrame({
+            'y Low': [TQQQ_yesterday_low],
+            'y High': [TQQQ_yesterday_high],
+            'y Close': [TQQQ_yesterday_close],
+            'N225 Low': [nikkei_today_low],
+            'N225 High': [nikkei_today_high],
+            'N225 Close': [nikkei_today_close],
+            'SSEC Low': [ssec_today_low],
+            'SSEC High': [ssec_today_high],
+            'SSEC Close': [ssec_today_close],
+            'GDAXI Low': [dax_today_low],
+            'GDAXI High': [dax_today_high],
+            'GDAXI Close': [dax_today_close],
+            'FTSE Low': [ftse_today_low],
+            'FTSE High': [ftse_today_high],
+            'FTSE Close': [ftse_today_close]
+        })
 
-    # Predict today's TQQQ Close based on user inputs
-    if st.button("Predict Today's TQQQ"):
-        tp = model.predict(today_data)
-        st.write(f'Low: {round(tp[0][0],2)}, High: {round(tp[0][1],2)}, Close: {round(tp[0][2],2)}')
-        st.write(f'Low:{round((tp[0][0] - TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, High: {round((tp[0][1]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, Close: {round((tp[0][2]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}% From Yesterday close of: {round(TQQQ_yesterday_close,2)} ')
+        # Predict today's TQQQ Close based on user inputs
+        if st.button("Predict Today's TQQQ"):
+            tp = model.predict(today_data)
+            st.write(f'Low: {round(tp[0][0],2)}, High: {round(tp[0][1],2)}, Close: {round(tp[0][2],2)}')
+            st.write(f'Low:{round((tp[0][0] - TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, High: {round((tp[0][1]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, Close: {round((tp[0][2]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}% From Yesterday close of: {round(TQQQ_yesterday_close,2)} ')
 
     st.write("Actual vs Predicted TQQQ Close:")
     X = X.apply(lambda x: x.map(lambda y: format(y, '.2f')))
