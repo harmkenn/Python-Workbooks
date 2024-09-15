@@ -105,7 +105,7 @@ def main():
     y_pred = model.predict(X)
     
     # Create a DataFrame with the predicted values and dates as index
-    tqqq_pred = pd.DataFrame(y_pred, columns=['P TQQQ Low', 'P TQQQ High', 'P TQQQ Close'], index=X.index)
+    tqqq_pred = pd.DataFrame(y_pred, columns=['P Low', 'P High', 'P Close'], index=X.index)
    
     # Concatenate the predicted and actual DataFrames
     comparison = pd.concat([tqqq_pred, y], axis=1)
