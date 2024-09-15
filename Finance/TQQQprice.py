@@ -12,9 +12,9 @@ st.set_page_config(layout="wide")
 
 
 
-# Define the time range for the last 368 days
+# Define the time range for the last 2000 days
 end_date = datetime.now()
-start_date = end_date - timedelta(days=368)
+start_date = end_date - timedelta(days=2000)
 
 
 
