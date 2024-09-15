@@ -156,8 +156,10 @@ def main():
 
     st.write("Actual vs Predicted TQQQ Close:")
     X = X.apply(lambda x: x.map(lambda y: format(y, '.2f')))
+    X = X.sort_index(ascending=False)
     st.dataframe(X)
     comparison = comparison.apply(lambda x: x.map(lambda y: format(y, '.2f')))
+    comparison = comparison.sort_index(ascending=False)
     st.dataframe(comparison, use_container_width=True)
     
     
