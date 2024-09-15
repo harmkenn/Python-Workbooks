@@ -158,12 +158,12 @@ def main():
             'FTSE High': [ftse_today_high],
             'FTSE Close': [ftse_today_close]
         })
-
+ 
         # Predict today's TQQQ Close based on user inputs
         if st.button("Predict Today's TQQQ"):
             tp = model.predict(today_data)
             st.write(f'Low: {round(tp[0][0],2)}, High: {round(tp[0][1],2)}, Close: {round(tp[0][2],2)}')
-            st.write(f'Low:{round((tp[0][0] - TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, High: {round((tp[0][1]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, Close: {round((tp[0][2]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}% From Yesterday close of: {round(TQQQ_yesterday_close,2)} ')
+            st.write(f'Low:{round((tp[0][0] - TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, High: {round((tp[0][1]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%, Close: {round((tp[0][2]- TQQQ_yesterday_close)/TQQQ_yesterday_close*100,2)}%')
 
     st.write("Actual vs Predicted TQQQ Close:")
     X = X.apply(lambda x: x.map(lambda y: format(y, '.2f')))
