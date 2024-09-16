@@ -125,21 +125,21 @@ def main():
     with a2:
         N225_y = st.number_input(f"Enter {yesterdate} N225 Close: {combined_data['N225 Close'].iloc[-1]}",
                                  format="%.2f",value=combined_data['N225 Close'].iloc[-1],step=0.01)
-        N225_today = st.number_input(f"Enter {today_date} N225 Close: {combined_data['N225 Close'].iloc[-1]}",
+        N225_today = st.number_input(f"Enter {today_date} N225 Close: ",
                                      format="%.2f",value=combined_data['N225 Close'].iloc[-1],step=0.01)
         ssec_y = st.number_input(f"Enter {yesterdate} SSEC Close: {combined_data['SSEC Close'].iloc[-1]}",
                                  format="%.2f",value=combined_data['SSEC Close'].iloc[-1],step=0.01)
-        ssec_today = st.number_input(f"Enter {today_date} SSEC Close: {combined_data['SSEC Close'].iloc[-1]}",
+        ssec_today = st.number_input(f"Enter {today_date} SSEC Close: ",
                                      format="%.2f",value=combined_data['SSEC Close'].iloc[-1],step=0.01)
 
     with a3:
         dax_y = st.number_input(f"Enter {yesterdate} DAX Close: {combined_data['DAX Close'].iloc[-1]}",
                                 format="%.2f",value=combined_data['DAX Close'].iloc[-1],step=0.01)
-        dax_today = st.number_input(f"Enter {today_date} DAX Close: {combined_data['DAX Close'].iloc[-1]}",
+        dax_today = st.number_input(f"Enter {today_date} DAX Close:",
                                     format="%.2f",value=combined_data['DAX Close'].iloc[-1],step=0.01)
         ftse_y = st.number_input(f"Enter {yesterdate} FTSE Close: {combined_data['FTSE Close'].iloc[-1]}",
                                  format="%.2f",value=combined_data['FTSE Close'].iloc[-1],step=0.01)
-        ftse_today = st.number_input(f"Enter {today_date} FTSE Close: {combined_data['FTSE Close'].iloc[-1]}",
+        ftse_today = st.number_input(f"Enter {today_date} FTSE Close: ",
                                      format="%.2f",value=combined_data['FTSE Close'].iloc[-1],step=0.01)
 
     with a1:
