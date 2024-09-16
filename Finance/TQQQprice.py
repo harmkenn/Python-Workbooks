@@ -79,7 +79,7 @@ def main():
         'y FTSE': combined_data['FTSE Close'].shift(1)
     })
     combined_data = pd.concat([yn, combined_data],axis=1).drop(combined_data.index[0])
-
+    combined_data.index = pd.to_datetime(combined_data.index).strftime('%Y-%m-%d')
     # Define the features (X) and the target (y)
     X = combined_data[[
         'y Low', 'y High', 'y Close', 'y N225', 'N225 Close', 'y SSEC',
@@ -88,6 +88,7 @@ def main():
 
     y = combined_data[['TQQQ Low', 'TQQQ High', 'TQQQ Close']]
     yesterdate = combined_data.index.max()
+    
     st.write(yesterdate)
     # Create a multi-output regression model
     model = MultiOutputRegressor(GradientBoostingRegressor())
