@@ -46,7 +46,7 @@ def main():
         N225_data = extract_data(N225_data, 'N225')
         combined_data = pd.concat([combined_data, N225_data], axis=1)
 
-    # Fetch and combine data for Shanghai Composite
+    # Fetch and combine data for SSEC
     ssec_data = fetch_data('000001.SS')
     if not ssec_data.empty:
         ssec_data = extract_data(ssec_data, 'SSEC')
@@ -109,7 +109,7 @@ def main():
     # Concatenate the predicted and actual DataFrames
     comparison = pd.concat([tqqq_pred, y], axis=1)
 
-    # User inputs for {today_date} FTSE, N225, DAX, and Shanghai Composite prices
+    # User inputs for {today_date} FTSE, N225, DAX, and SSEC prices
     st.subheader(f"Predict {today_date} TQQQ")
 
     a1, a2, a3 = st.columns(3)
@@ -133,7 +133,7 @@ def main():
 
     with a2:
         N225_y = st.number_input(
-            f"Enter {yesterdate} N225 Close: {combined_data['N225 Close'].iloc[-2]}",
+            f"Enter {yesterdate} N225 Close: {combined_data['N225 Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['N225 Close'].iloc[-2],
             step=0.01)
@@ -143,12 +143,12 @@ def main():
             value=combined_data['N225 Close'].iloc[-1],
             step=0.01)
         ssec_y = st.number_input(
-            f"Enter {yesterdate} Shanghai Composite Close: {combined_data['SSEC Close'].iloc[-2]}",
+            f"Enter {yesterdate} SSEC Close: {combined_data['SSEC Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['SSEC Close'].iloc[-2],
             step=0.01)
         ssec_today = st.number_input(
-            f"Enter {today_date} Shanghai Composite Close: {combined_data['SSEC Close'].iloc[-1]}",
+            f"Enter {today_date} SSEC Close: {combined_data['SSEC Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['SSEC Close'].iloc[-1],
             step=0.01)
