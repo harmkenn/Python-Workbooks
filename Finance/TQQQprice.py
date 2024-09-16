@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 
-# Get today's date
+# Get {today_date} date
 today_date = datetime.today().strftime('%Y-%m-%d')
 
 # Set the page layout to wide
@@ -40,11 +40,11 @@ def main():
     # Initialize an empty DataFrame
     combined_data = pd.DataFrame()
 
-    # Fetch and combine data for NIKKEI
-    nikkei_data = fetch_data('^N225')
-    if not nikkei_data.empty:
-        nikkei_data = extract_data(nikkei_data, 'N225')
-        combined_data = pd.concat([combined_data, nikkei_data], axis=1)
+    # Fetch and combine data for N225
+    N225_data = fetch_data('^N225')
+    if not N225_data.empty:
+        N225_data = extract_data(N225_data, 'N225')
+        combined_data = pd.concat([combined_data, N225_data], axis=1)
 
     # Fetch and combine data for Shanghai Composite
     ssec_data = fetch_data('000001.SS')
@@ -109,68 +109,68 @@ def main():
     # Concatenate the predicted and actual DataFrames
     comparison = pd.concat([tqqq_pred, y], axis=1)
 
-    # User inputs for today's FTSE, NIKKEI, DAX, and Shanghai Composite prices
-    st.subheader("Predict Today's TQQQ")
+    # User inputs for {today_date} FTSE, N225, DAX, and Shanghai Composite prices
+    st.subheader(f"Predict {today_date} TQQQ")
 
     a1, a2, a3 = st.columns(3)
 
     with a1:
         TQQQ_yesterday_low = st.number_input(
-            f"Enter yesterday's TQQQ Low: {combined_data['TQQQ Low'].iloc[-1]}",
+            f"Enter {yesterdate} TQQQ Low: {combined_data['TQQQ Low'].iloc[-1]}",
             format="%.2f",
             value=combined_data['TQQQ Low'].iloc[-1],
             step=0.01)
         TQQQ_yesterday_high = st.number_input(
-            f"Enter yesterday's TQQQ High: {combined_data['TQQQ High'].iloc[-1]}",
+            f"Enter {yesterdate} TQQQ High: {combined_data['TQQQ High'].iloc[-1]}",
             format="%.2f",
             value=combined_data['TQQQ High'].iloc[-1],
             step=0.01)
         TQQQ_yesterday_close = st.number_input(
-            f"Enter yesterday's TQQQ Close: {combined_data['TQQQ Close'].iloc[-1]}",
+            f"Enter {yesterdate} TQQQ Close: {combined_data['TQQQ Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['TQQQ Close'].iloc[-1],
             step=0.01)
 
     with a2:
-        nikkei_y = st.number_input(
-            f"Enter {yesterdate} NIKKEI Close: {combined_data['N225 Close'].iloc[-2]}",
+        N225_y = st.number_input(
+            f"Enter {yesterdate} N225 Close: {combined_data['N225 Close'].iloc[-2]}",
             format="%.2f",
             value=combined_data['N225 Close'].iloc[-2],
             step=0.01)
-        nikkei_today = st.number_input(
-            f"Enter {today_date} NIKKEI Close: {combined_data['N225 Close'].iloc[-1]}",
+        N225_today = st.number_input(
+            f"Enter {today_date} N225 Close: {combined_data['N225 Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['N225 Close'].iloc[-1],
             step=0.01)
         ssec_y = st.number_input(
-            f"Enter today's Shanghai Composite Close: {combined_data['SSEC Close'].iloc[-2]}",
+            f"Enter {yesterdate} Shanghai Composite Close: {combined_data['SSEC Close'].iloc[-2]}",
             format="%.2f",
             value=combined_data['SSEC Close'].iloc[-2],
             step=0.01)
         ssec_today = st.number_input(
-            f"Enter today's Shanghai Composite Close: {combined_data['SSEC Close'].iloc[-1]}",
+            f"Enter {today_date} Shanghai Composite Close: {combined_data['SSEC Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['SSEC Close'].iloc[-1],
             step=0.01)
 
     with a3:
         dax_y = st.number_input(
-            f"Enter today's DAX Close: {combined_data['DAX Close'].iloc[-2]}",
+            f"Enter {yesterdate} DAX Close: {combined_data['DAX Close'].iloc[-2]}",
             format="%.2f",
             value=combined_data['DAX Close'].iloc[-2],
             step=0.01)
         dax_today = st.number_input(
-            f"Enter today's DAX Close: {combined_data['DAX Close'].iloc[-1]}",
+            f"Enter {today_date} DAX Close: {combined_data['DAX Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['DAX Close'].iloc[-1],
             step=0.01)
         ftse_y = st.number_input(
-            f"Enter today's FTSE Close: {combined_data['FTSE Close'].iloc[-2]}",
+            f"Enter {yesterdate} FTSE Close: {combined_data['FTSE Close'].iloc[-2]}",
             format="%.2f",
             value=combined_data['FTSE Close'].iloc[-2],
             step=0.01)
         ftse_today = st.number_input(
-            f"Enter today's FTSE Close: {combined_data['FTSE Close'].iloc[-1]}",
+            f"Enter {today_date} FTSE Close: {combined_data['FTSE Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['FTSE Close'].iloc[-1],
             step=0.01)
@@ -181,8 +181,8 @@ def main():
             'y Low': [TQQQ_yesterday_low],
             'y High': [TQQQ_yesterday_high],
             'y Close': [TQQQ_yesterday_close],
-            'y N225': [nikkei_y],
-            'N225 Close': [nikkei_today],
+            'y N225': [N225_y],
+            'N225 Close': [N225_today],
             'y SSEC': [ssec_y],
             'SSEC Close': [ssec_today],
             'y DAX': [dax_y],
@@ -191,8 +191,8 @@ def main():
             'FTSE Close': [ftse_today]
         })
 
-        # Predict today's TQQQ Close based on user inputs
-        if st.button("Predict Today's TQQQ"):
+        # Predict {today_date} TQQQ Close based on user inputs
+        if st.button(f"Predict {today_date} TQQQ"):
             tp = model.predict(today_data)
             st.write(
                 f'Low: {round(tp[0][0],2)}, High: {round(tp[0][1],2)}, Close: {round(tp[0][2],2)}'
