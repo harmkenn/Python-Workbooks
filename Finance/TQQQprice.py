@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 
+# Get today's date
+today_date = datetime.today().strftime('%Y-%m-%d')
+
 # Set the page layout to wide
 st.set_page_config(layout="wide")
 
@@ -88,8 +91,7 @@ def main():
 
     y = combined_data[['TQQQ Low', 'TQQQ High', 'TQQQ Close']]
     yesterdate = combined_data.index.max()
-    
-    st.write(yesterdate)
+
     # Create a multi-output regression model
     model = MultiOutputRegressor(GradientBoostingRegressor())
 
@@ -131,12 +133,12 @@ def main():
 
     with a2:
         nikkei_y = st.number_input(
-            f"Enter Yesterday's NIKKEI Close: {combined_data['N225 Close'].iloc[-2]}",
+            f"Enter {yesterdate} NIKKEI Close: {combined_data['N225 Close'].iloc[-2]}",
             format="%.2f",
             value=combined_data['N225 Close'].iloc[-2],
             step=0.01)
         nikkei_today = st.number_input(
-            f"Enter today's NIKKEI Close: {combined_data['N225 Close'].iloc[-1]}",
+            f"Enter {today_date} NIKKEI Close: {combined_data['N225 Close'].iloc[-1]}",
             format="%.2f",
             value=combined_data['N225 Close'].iloc[-1],
             step=0.01)
