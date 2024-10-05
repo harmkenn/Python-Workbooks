@@ -42,6 +42,26 @@ for i in range(1, len(tqqq_data)):
     tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')]
     tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')]
 
+    # Check if the price rose 3%
+    if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc):
+        # Sell 1/4 of the shares
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell'
+        shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
+        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc))
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
+
+    # Check if the price rose 6%
+    if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc):
+        # Sell 1/4 of the shares
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell2'
+        shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
+        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
+
     # Check if the price dropped 3%
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')] < tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-inc):
         # Buy shares with 1/4 of the available cash
@@ -52,16 +72,6 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
 
-    # Check if the price rose 3%
-    elif tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc):
-        # Sell 1/4 of the shares
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell'
-        shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
-        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc))
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
-
     # Check if the price dropped 6%
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')] < tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc):
         # Buy shares with 1/4 of the available cash
@@ -71,16 +81,6 @@ for i in range(1, len(tqqq_data)):
         shares_to_buy = cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
-
-    # Check if the price rose 6%
-    elif tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc):
-        # Sell 1/4 of the shares
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell2'
-        shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
-        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
 
     tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move $')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')]
     tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')]
