@@ -45,7 +45,7 @@ for i in range(1, len(tqqq_data)):
     # Check if the price rose 3%
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc):
         # Sell 1/4 of the shares
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell'
         shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
         cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc))
@@ -55,7 +55,7 @@ for i in range(1, len(tqqq_data)):
     # Check if the price rose 6%
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc):
         # Sell 1/4 of the shares
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell2'
         shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
         cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
@@ -65,7 +65,7 @@ for i in range(1, len(tqqq_data)):
     # Check if the price dropped 3%
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')] < tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-inc):
         # Buy shares with 1/4 of the available cash
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Buy'
         cash_to_spend = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] / chunk
         shares_to_buy = cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-inc))
@@ -75,7 +75,7 @@ for i in range(1, len(tqqq_data)):
     # Check if the price dropped 6%
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')] < tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc):
         # Buy shares with 1/4 of the available cash
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]-tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Buy2'
         cash_to_spend = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] / chunk
         shares_to_buy = cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc))
@@ -88,7 +88,7 @@ for i in range(1, len(tqqq_data)):
 tqqq_data['value'] = tqqq_data['Shares'] * tqqq_data['Close']
 tqqq_data["total"] = tqqq_data["Cash"] + tqqq_data["value"]
 
-st.dataframe(tqqq_data.iloc[::-1])
+st.dataframe(tqqq_data.iloc[::-1], width=None, use_container_width=True)
 
 # Add the OHLC graph to the Streamlit app
 st.plotly_chart(fig, use_container_width=True)
