@@ -15,6 +15,8 @@ end_date = dt.date.today().strftime('%Y-%m-%d')  # today's date
 
 tqqq_data = yf.download("TQQQ", start=start_date, end=end_date)
 
+tqqq_data = tqqq_data.drop(['Volume', 'Adj Close'], axis=1)
+
 # Create the OHLC graph
 fig = go.Figure(data=[go.Candlestick(
     x=tqqq_data.index,
@@ -25,9 +27,9 @@ fig = go.Figure(data=[go.Candlestick(
 )])
 
 # Initialize the starting cash and shares
-tqqq_data['Drop'] = 0
-tqqq_data['Raise'] = 0
-tqqq_data['Move $'] = 0
+tqqq_data['Drop'] = 0.0
+tqqq_data['Raise'] = 0.0
+tqqq_data['Move $'] = 0.0
 tqqq_data['Move shares'] = 0
 tqqq_data['Cash'] = 100000.00
 tqqq_data['Shares'] = 0
@@ -47,7 +49,7 @@ for i in range(1, len(tqqq_data)):
         # Sell 1/4 of the shares
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell'
-        shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
+        shares_to_sell = round(tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk ,0)
         cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
@@ -57,7 +59,7 @@ for i in range(1, len(tqqq_data)):
         # Sell 1/4 of the shares
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell2'
-        shares_to_sell = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk
+        shares_to_sell = round(tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] / chunk,0)
         cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
@@ -68,7 +70,7 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Buy'
         cash_to_spend = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] / chunk
-        shares_to_buy = cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-inc))
+        shares_to_buy = round(cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-inc)),0)
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
 
@@ -78,12 +80,12 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]-tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Buy2'
         cash_to_spend = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] / chunk
-        shares_to_buy = cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc))
+        shares_to_buy = round(cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc)),0)
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
 
-    tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move $')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')]
-    tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')]
+    tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move $')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] - tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')]
+    tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] - tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')]
 
 tqqq_data['value'] = tqqq_data['Shares'] * tqqq_data['Close']
 tqqq_data["total"] = tqqq_data["Cash"] + tqqq_data["value"]
@@ -91,5 +93,6 @@ tqqq_data["total"] = tqqq_data["Cash"] + tqqq_data["value"]
 st.dataframe(tqqq_data.iloc[::-1], width=None, use_container_width=True)
 
 # Add the OHLC graph to the Streamlit app
+
 st.plotly_chart(fig, use_container_width=True)
 
