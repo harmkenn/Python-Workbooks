@@ -25,7 +25,7 @@ fig = go.Figure(data=[go.Candlestick(
     low=tqqq_data["Low"],
     close=tqqq_data["Close"]
 )])
-
+ 
 # Initialize the starting cash and shares
 tqqq_data['Drop'] = 0.0
 tqqq_data['Raise'] = 0.0
