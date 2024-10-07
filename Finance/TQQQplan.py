@@ -32,7 +32,7 @@ tqqq_data['Raise'] = 0.0
 tqqq_data['Move $'] = 0.0
 tqqq_data['Move shares'] = 0
 tqqq_data['Cash'] = 100000.00
-tqqq_data['Shares'] = 0
+tqqq_data['Shares'] = 3872
 tqqq_data['Buy/Sell'] = ''
 
 inc = .03
