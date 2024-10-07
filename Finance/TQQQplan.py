@@ -95,6 +95,14 @@ tqqq_data['change'] = tqqq_data['total'].pct_change()
 
 st.dataframe(tqqq_data.iloc[::-1], width=None, use_container_width=True)
 
+# Add a button to download the data as a CSV
+st.download_button(
+    label="Download CSV",
+    data=tqqq_data.to_csv(index=False),
+    file_name="tqqq_data.csv",
+    mime="text/csv"
+)
+
 # Add the OHLC graph to the Streamlit app
 
 st.plotly_chart(fig, use_container_width=True)
