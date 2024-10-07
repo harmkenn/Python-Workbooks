@@ -91,6 +91,7 @@ for i in range(1, len(tqqq_data)):
 
 tqqq_data['value'] = tqqq_data['Shares'] * tqqq_data['Close']
 tqqq_data["total"] = tqqq_data["Cash"] + tqqq_data["value"]
+tqqq_data['change'] = tqqq_data['total'].pct_change()
 
 st.dataframe(tqqq_data.iloc[::-1], width=None, use_container_width=True)
 
