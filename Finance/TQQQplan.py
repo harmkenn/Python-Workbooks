@@ -5,15 +5,15 @@ import plotly.graph_objects as go
 import datetime as dt
 
 # Set the page layout to wide
-st.set_page_config(layout="wide", page_title="QQQ Plan")
+st.set_page_config(layout="wide", page_title="QLD Plan")
 
 # Define the app title
-st.title("QQQ Plan")
+st.title("QLD Plan")
 
 start_date = st.date_input("Select start date", value=dt.date(2020, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 end_date = dt.date.today().strftime('%Y-%m-%d')  # today's date
 
-tqqq_data = yf.download("QQQ", start=start_date, end=end_date)
+tqqq_data = yf.download("QLD", start=start_date, end=end_date)
 
 tqqq_data = tqqq_data.drop(['Volume', 'Adj Close'], axis=1)
 
