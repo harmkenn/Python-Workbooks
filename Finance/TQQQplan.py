@@ -13,7 +13,7 @@ st.title("TQQQ Plan")
 start_date = st.date_input("Select start date", value=dt.date(2020, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 end_date = dt.date.today().strftime('%Y-%m-%d')  # today's date
 
-tqqq_data = yf.download("TQQQ", start=start_date, end=end_date)
+tqqq_data = yf.download("QQQ", start=start_date, end=end_date)
 
 tqqq_data = tqqq_data.drop(['Volume', 'Adj Close'], axis=1)
 
