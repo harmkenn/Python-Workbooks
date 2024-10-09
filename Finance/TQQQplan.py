@@ -14,7 +14,7 @@ c1, c2, c3, c4 = st.columns(4)
 with c1:
     ticker = st.text_input("Ticker", "TQQQ")
 with c2:
-    inc = st.number_input("Increment", min_value=0.010, max_value=1.010, value=0.010, step=0.005, format="%.3f")
+    inc = st.number_input("Increment", min_value=0.001, max_value=1.010, value=0.010, step=0.005, format="%.3f")
 with c3:
     start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c4:
