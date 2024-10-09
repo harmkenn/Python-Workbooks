@@ -8,7 +8,7 @@ import datetime as dt
 st.set_page_config(layout="wide", page_title="QQQ Plan")
 
 # Define the app title
-st.title("TQQQ Plan")
+st.title("QQQ Plan")
 
 start_date = st.date_input("Select start date", value=dt.date(2020, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 end_date = dt.date.today().strftime('%Y-%m-%d')  # today's date
