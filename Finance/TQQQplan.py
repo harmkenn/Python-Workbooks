@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import datetime as dt
 
 # Set the page layout to wide
-st.set_page_config(layout="wide", page_title="TQQQ Plan")
+st.set_page_config(layout="wide", page_title="QQQ Plan")
 
 # Define the app title
 st.title("TQQQ Plan")
