@@ -39,7 +39,10 @@ tqqq_data['Raise'] = 0.0
 tqqq_data['Move $'] = 0.0
 tqqq_data['Move shares'] = 0
 tqqq_data['Cash'] = 100000.00
-tqqq_data['Shares'] = 1000
+# Calculate the initial number of shares
+start_price = tqqq_data.iloc[0]['Close']
+initial_shares = int(100000 / start_price)
+tqqq_data['Shares'] = initial_shares
 tqqq_data['Buy/Sell'] = ''
 
 chunk = 4
