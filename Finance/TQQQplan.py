@@ -10,11 +10,17 @@ st.set_page_config(layout="wide", page_title="TQQQ Plan")
 # Define the app title
 st.title("TQQQ Plan")
 
-start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
-end_date = st.date_input("Select end date", value=dt.date.today(), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
-#end_date = dt.date.today().strftime('%Y-%m-%d')  # today's date
+c1, c2, c3, c4 = st.columns(4)
+with c1:
+    ticker = st.text_input("Ticker", "TQQQ")
+with c2:
+    inc = st.number_input("Increment", min_value=0.01, max_value=0.05, value=0.01, step=0.01)
+with c3:
+    start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
+with c4:
+    end_date = st.date_input("Select end date", value=dt.date.today(), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 
-tqqq_data = yf.download("TQQQ", start=start_date, end=end_date)
+tqqq_data = yf.download(ticker, start=start_date, end=end_date)
 
 tqqq_data = tqqq_data.drop(['Volume', 'Adj Close'], axis=1)
 
@@ -36,7 +42,6 @@ tqqq_data['Cash'] = 100000.00
 tqqq_data['Shares'] = 1000
 tqqq_data['Buy/Sell'] = ''
 
-inc = .03
 chunk = 4
 
 # Iterate through each day
