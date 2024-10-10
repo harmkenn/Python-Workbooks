@@ -4,11 +4,7 @@ import yfinance as yf
 import plotly.graph_objects as go
 import datetime as dt
 
-# Set the page layout to wide
-st.set_page_config(layout="wide", page_title="TQQQ Plan")
 
-# Define the app title
-st.title("TQQQ Plan")
 
 c1, c2, c3, c4 = st.columns(4)
 with c1:
@@ -19,7 +15,11 @@ with c3:
     start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c4:
     end_date = st.date_input("Select end date", value=dt.date.today(), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
+# Set the page layout to wide
+st.set_page_config(layout="wide", page_title=f"{ticker} Plan")
 
+# Define the app title
+st.title(f"{ticker} Plan")
 tqqq_data = yf.download(ticker, start=start_date, end=end_date)
 
 tqqq_data = tqqq_data.drop(['Volume', 'Adj Close'], axis=1)
