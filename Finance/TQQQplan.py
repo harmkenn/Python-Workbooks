@@ -16,7 +16,7 @@ with c1:
 with c2:
     inc = st.number_input("Trigger", min_value=0.001, max_value=1.010, value=0.010, step=0.005, format="%.3f")
 with c3:
-    chunk = st.number_input("Chunk", min_value=.1, max_value=1, value=.25, step=.05, format="%.3f")
+    chunk = st.number_input("Chunk", min_value=.05, max_value=.95, value=.25, step=.05, format="%.3f")
 with c4:
     start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c5:
