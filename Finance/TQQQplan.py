@@ -63,12 +63,14 @@ for i in range(1, len(tqqq_data)):
              tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         chunks = int(floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('chunks')] = chunks
-        for i in range(chunks):
+        i = 1
+        while i <= chunks:
             tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell'
             shares_to_sell = int(tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] * chunk)
             cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc))
             tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
             tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
+            i += 1
 
     # Check if the price dropped one trigger
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')] < tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-inc):
