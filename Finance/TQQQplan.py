@@ -47,6 +47,7 @@ start_price = tqqq_data.iloc[0]['Close']
 initial_shares = int(100000 / start_price)
 tqqq_data['Shares'] = initial_shares
 tqqq_data['Buy/Sell'] = ''
+tqqq_data['chunks'] = 0
 
 
 
@@ -61,7 +62,7 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
              tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         chunks = floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc)
-        tqqq_data['chunks'] = chunks
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('chunks')] = chunks
         while tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > 100:
             
         # Sell first chunk of the shares
