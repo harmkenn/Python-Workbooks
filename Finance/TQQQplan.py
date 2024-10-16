@@ -82,7 +82,7 @@ for i in range(1, len(tqqq_data)):
             chunks = floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')]/inc)
             tqqq_data.iloc[i, tqqq_data.columns.get_loc('chunks')] = chunks
             cash_left = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')]
-            share_to_receive = 0
+            shares_to_receive = 0
             j = 1
             while j <= chunks:
                 tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Buy'+str(j)
