@@ -14,9 +14,9 @@ c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
     ticker = st.text_input("Ticker", "TQQQ")
 with c2:
-    inc = st.number_input("Trigger", min_value=0.001, max_value=1.010, value=0.010, step=0.005, format="%.3f")
+    inc = st.number_input("Trigger", min_value=0.001, max_value=1.010, value=0.030, step=0.005, format="%.3f")
 with c3:
-    chunk = st.number_input("Chunk", min_value=.1, max_value=.99, value=.25, step=.05, format="%.3f")
+    chunk = st.number_input("Chunk", min_value=.1, max_value=.99, value=..3, step=.05, format="%.3f")
 with c4:
     start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c5:
@@ -74,10 +74,10 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
                                                                  tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell2'
-        shares_to_sell = int(shares_to_sell + tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
-        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
+        shares_to_sell2 = int(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
+        cash_to_receive2 = shares_to_sell2 * (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] - shares_to_sell2
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] + cash_to_receive2
 
     # Check if the price rose three triggers
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+3*inc):
