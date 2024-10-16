@@ -61,7 +61,7 @@ for i in range(1, len(tqqq_data)):
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
              tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
-        chunks = floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc)
+        chunks = int(floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('chunks')] = chunks
         for i in range(chunks):
             
