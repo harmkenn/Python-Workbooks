@@ -3,6 +3,7 @@ import pandas as pd
 import yfinance as yf
 import plotly.graph_objects as go
 import datetime as dt
+import numpy import floor
 
 # Set the page layout to wide
 st.set_page_config(layout="wide", page_title=f"Investment Plan")
@@ -59,7 +60,7 @@ for i in range(1, len(tqqq_data)):
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
              tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
-        chunks = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc.floor()
+        chunks = floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc)
         st.write(chuncks)
         while tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > 100:
             
