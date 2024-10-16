@@ -57,9 +57,14 @@ for i in range(1, len(tqqq_data)):
 
     # Check if the price rose one Trigger
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc):
-        # Sell first chunk of the shares
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
-                                                                 tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+             tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
+        chunks = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc.floor()
+        st.write(chuncks)
+        while tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > sellat:
+            
+        # Sell first chunk of the shares
+        
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell'
         shares_to_sell = int(tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] * chunk)
         cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc))
