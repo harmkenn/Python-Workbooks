@@ -64,7 +64,7 @@ for i in range(1, len(tqqq_data)):
         chunks = int(floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('chunks')] = chunks
         for i in range(chunks):
-            tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = i
+            tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell'
             shares_to_sell = int(tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] * chunk)
             cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+inc))
             tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
