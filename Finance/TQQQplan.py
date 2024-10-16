@@ -74,7 +74,7 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
                                                                  tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell2'
-        shares_to_sell = int(shares_to_sell + tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
+        shares_to_sell = int(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
         cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
@@ -85,7 +85,7 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
                                                                  tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell3'
-        shares_to_sell = int(shares_to_sell + tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
+        shares_to_sell = int(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
         cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+3*inc))
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
