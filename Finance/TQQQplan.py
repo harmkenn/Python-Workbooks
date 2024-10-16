@@ -61,7 +61,7 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
              tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         chunks = floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')]/inc)
-        st.write(chuncks)
+        tqqq_data['chunks'] = chunks
         while tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > 100:
             
         # Sell first chunk of the shares
