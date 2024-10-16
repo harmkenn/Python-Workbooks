@@ -12,11 +12,11 @@ st.title(f"Investment Plan")
 
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
-    ticker = st.text_input("Ticker", "TQQQ")
+    ticker = st.text_input("Ticker", "SOXL")
 with c2:
-    inc = st.number_input("Trigger", min_value=0.001, max_value=1.010, value=0.010, step=0.005, format="%.3f")
+    inc = st.number_input("Trigger", min_value=0.001, max_value=1.010, value=0.030, step=0.005, format="%.3f")
 with c3:
-    chunk = st.number_input("Chunk", min_value=.1, max_value=1, value=.25, step=.05, format="%.3f")
+    chunk = st.number_input("Chunk", min_value=.05, max_value=.95, value=.30, step=.05, format="%.3f")
 with c4:
     start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c5:
@@ -74,10 +74,10 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
                                                                  tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell2'
-        shares_to_sell = int(shares_to_sell + tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
-        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
+        shares_to_sell = int(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
+        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+2*inc))
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
 
     # Check if the price rose three triggers
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')] > tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+3*inc):
@@ -85,10 +85,10 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Raise')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('High')]-tqqq_data.iloc[i-1,
                                                                  tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Sell3'
-        shares_to_sell = int(shares_to_sell + tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
-        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1+3*inc))
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
+        shares_to_sell = int(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] * chunk)
+        cash_to_receive = shares_to_sell * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1+3*inc))
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] - shares_to_sell
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] + cash_to_receive
 
     # Check if the price dropped one trigger
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')] < tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-inc):
@@ -108,11 +108,11 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]-tqqq_data.iloc[i-1,
                                                                 tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Buy2'
-        cash_to_spend = cash_to_spend + tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] * chunk
-        shares_to_buy = int(cash_to_spend / (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1-2*inc)))
-        cash_to_spend = shares_to_buy * (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1-2*inc))
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
+        cash_to_spend = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] * chunk
+        shares_to_buy = int(cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc)))
+        cash_to_spend = shares_to_buy * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-2*inc))
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
 
     # Check if the price dropped three triggers
     if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')] < tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-3*inc):
@@ -120,11 +120,11 @@ for i in range(1, len(tqqq_data)):
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]-tqqq_data.iloc[i-1,
                                                                 tqqq_data.columns.get_loc('Close')])/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
         tqqq_data.iloc[i, tqqq_data.columns.get_loc('Buy/Sell')] = 'Buy3'
-        cash_to_spend = cash_to_spend + tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] * chunk
-        shares_to_buy = int(cash_to_spend / (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1-3*inc)))
-        cash_to_spend = shares_to_buy * (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Close')] * (1-3*inc))
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
-        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
+        cash_to_spend = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] * chunk
+        shares_to_buy = int(cash_to_spend / (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-3*inc)))
+        cash_to_spend = shares_to_buy * (tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] * (1-3*inc))
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] + shares_to_buy
+        tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] - cash_to_spend
 
     tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move $')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Cash')] - tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Cash')]
     tqqq_data.iloc[i, tqqq_data.columns.get_loc('Move shares')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Shares')] - tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Shares')]
@@ -147,3 +147,4 @@ st.download_button(
 # Add the OHLC graph to the Streamlit app
 
 st.plotly_chart(fig, use_container_width=True)
+
