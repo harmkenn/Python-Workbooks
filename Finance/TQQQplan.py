@@ -77,7 +77,7 @@ for i in range(1, len(tqqq_data)):
 
         # Check if the price decreased by at least one Trigger
         if tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')] < (1-inc):
-            tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = (tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')
+            tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')] = tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]
             #1 - tqqq_data.iloc[i, tqqq_data.columns.get_loc('Low')]/tqqq_data.iloc[i-1, tqqq_data.columns.get_loc('Close')]
             chunks = floor(tqqq_data.iloc[i, tqqq_data.columns.get_loc('Drop')]/inc)
             tqqq_data.iloc[i, tqqq_data.columns.get_loc('chunks')] = chunks
