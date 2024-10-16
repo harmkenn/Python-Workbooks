@@ -12,11 +12,11 @@ st.title(f"Investment Plan")
 
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
-    ticker = st.text_input("Ticker", "TQQQ")
+    ticker = st.text_input("Ticker", "SOXL")
 with c2:
-    inc = st.number_input("Trigger", min_value=0.001, max_value=1.010, value=0.010, step=0.005, format="%.3f")
+    inc = st.number_input("Trigger", min_value=0.001, max_value=1.010, value=0.030, step=0.005, format="%.3f")
 with c3:
-    chunk = st.number_input("Chunk", min_value=.05, max_value=.95, value=.25, step=.05, format="%.3f")
+    chunk = st.number_input("Chunk", min_value=.05, max_value=.95, value=.30, step=.05, format="%.3f")
 with c4:
     start_date = st.date_input("Select start date", value=dt.date(2022, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c5:
