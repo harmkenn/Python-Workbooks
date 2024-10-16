@@ -3,7 +3,7 @@ import pandas as pd
 import yfinance as yf
 import plotly.graph_objects as go
 import datetime as dt
-import numpy import floor
+from numpy import floor
 
 # Set the page layout to wide
 st.set_page_config(layout="wide", page_title=f"Investment Plan")
