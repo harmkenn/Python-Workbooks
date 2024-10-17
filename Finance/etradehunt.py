@@ -49,7 +49,7 @@ for ticker in tickers:
         x=data.index,
         y=data['Close'],
         mode='lines',
-        name=index_symbol
+        name= ticker
     ))
 
 # Set chart layout and title
@@ -66,5 +66,3 @@ fig.update_layout(
 
 # Display the chart using Streamlit
 st.write(fig)
-
-st.write()
