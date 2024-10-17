@@ -12,6 +12,7 @@ st.title("ETF Search")
 c1, c2, c3, c4 = st.columns(4)
 with c1:
     tickers = st.text_input("Enter ticker symbols (comma-separated):", value="AAPL,GOOG,AMZN")
+    tickers = tickers.split(",")
 with c2:
     start_date = st.date_input("Select start date", value=dt.date(2019, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c3:
