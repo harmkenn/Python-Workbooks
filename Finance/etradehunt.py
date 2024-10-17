@@ -2,6 +2,7 @@ import streamlit as st
 import yfinance as yf
 import plotly.graph_objs as go
 import numpy as np
+import datetime as dt
 
 # Set the page layout to wide
 st.set_page_config(layout="wide", page_title=f"ETF Search")
