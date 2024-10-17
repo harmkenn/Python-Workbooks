@@ -7,9 +7,16 @@ import numpy as np
 st.set_page_config(layout="wide", page_title=f"ETF Search")
 # Step 1: Set up the Streamlit interface
 st.title("ETF Search")
-
+# Inputs for strategy parameters
+c1, c2, c3, c4 = st.columns(4)
+with c1:
+    tickers = st.text_input("Ticker", ["^IXIC",'TQQQ',"SOXL", 'SPUU'])
+with c2:
+    start_date = st.date_input("Select start date", value=dt.date(2019, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
+with c3:
+    end_date = st.date_input("Select end date", value=dt.date.today(), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 # List of index symbols
-index_symbols = ["^IXIC",'TQQQ',"SOXL", 'SPUU']
+
 
 # Initialize an empty figure
 fig = go.Figure()
@@ -20,9 +27,11 @@ def calculate_cagr(data):
     return ((data + 1).prod()**(1/n) - 1) * 100
 
 # Loop through the index symbols
-for index_symbol in index_symbols:
-    # Fetch historical data for the current index
-    data = yf.download(index_symbol, period="5y", interval="1d")
+for index_symbol in tickers:
+    
+    # Step 2: Fetch historical data
+    data = yf.download(ticker, start=start_date, end=end_date, interval='1d')
+    data = data.drop(['Volume', 'Adj Close'], axis=1)
 
     # Normalize closing prices to start at 1
     data['Close'] = data['Close'] / data['Close'][0]
