@@ -42,17 +42,19 @@ def intraday_trading(data, start_cash, num_shares, sell_pct=2, buy_pct=2):
         high = data['High'].iloc[i]
         low = data['Low'].iloc[i]
         close = data['Close'].iloc[i-1]  # Previous close
+        up = data['Close'].iloc[i-1]*(1+sell_pct/100)  # Target price for selling
+        down = data['Close'].iloc[i-1]*(1-buy_pct/100)
         
         # Sell shares on spike
         if (high - close) / close * 100 > sell_pct:
             shares_to_sell = shares * chunk  # Sell 10% of shares
-            cash += shares_to_sell * high
+            cash += shares_to_sell * up
             shares -= shares_to_sell
         
         # Buy shares on dip
         if (close - low) / close * 100 > buy_pct:
-            shares_to_buy = cash / low * chunk  # Buy 10% of cash value
-            cash -= shares_to_buy * low
+            shares_to_buy = int(cash / down * chunk)  # Buy 10% of cash value
+            cash -= shares_to_buy * down
             shares += shares_to_buy
         
         # Track portfolio value
