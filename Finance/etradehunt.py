@@ -3,8 +3,13 @@ import yfinance as yf
 import plotly.graph_objs as go
 import numpy as np
 
+# Set the page layout to wide
+st.set_page_config(layout="wide", page_title=f"Hold vs. Trade Strategy")
+# Step 1: Set up the Streamlit interface
+st.title("Buy and Hold vs Intraday Trading Strategy")
+
 # List of index symbols
-index_symbols = ["^IXIC",'AMAGX','BPTRX','DXQLX','EILGX','FADTX','FKDNX','FSELX','FSHOX','FSPTX','JAGTX','PGTAX','PRDGX','RMQHX','ROGSX','SMPIX','SMPSX','UOPIX','SQQQ','QLD']
+index_symbols = ["^IXIC",'TQQQ',"SOXL", 'SPUU']
 
 # Initialize an empty figure
 fig = go.Figure()
