@@ -28,7 +28,7 @@ def calculate_cagr(data):
     return ((data + 1).prod()**(1/n) - 1) * 100
 
 # Loop through the index symbols
-for index_symbol in tickers:
+for ticker in tickers:
     
     # Step 2: Fetch historical data
     data = yf.download(ticker, start=start_date, end=end_date, interval='1d')
