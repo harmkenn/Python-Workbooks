@@ -4,9 +4,9 @@ import plotly.graph_objs as go
 import numpy as np
 
 # Set the page layout to wide
-st.set_page_config(layout="wide", page_title=f"Hold vs. Trade Strategy")
+st.set_page_config(layout="wide", page_title=f"ETF Search")
 # Step 1: Set up the Streamlit interface
-st.title("Buy and Hold vs Intraday Trading Strategy")
+st.title("ETF Search")
 
 # List of index symbols
 index_symbols = ["^IXIC",'TQQQ',"SOXL", 'SPUU']
