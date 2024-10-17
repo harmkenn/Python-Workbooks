@@ -42,7 +42,7 @@ for ticker in tickers:
 
     # Calculate Standard Deviation  
     std_dev = data['Returns'].std() * np.sqrt(252)
-    st.write(f"Standard Deviation for {index_symbol}: {std_dev:.2f}%")
+    st.write(f"Standard Deviation for {ticker}: {std_dev:.2f}%")
     
     # Add a scatter trace (line) for closing prices of each index
     fig.add_trace(go.Scatter(
