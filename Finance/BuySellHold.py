@@ -10,7 +10,9 @@ st.set_page_config(layout="wide", page_title=f"Buy Sell Hold Strategy")
 st.title("Buy Sell Hold Strategy")
 
 # Set the ticker symbol
-ticker = st.text_input("Ticker", "TQQQ")
+c1,c2 = st.columns([1,4])
+with c1:
+    ticker = st.selectbox("Select Ticker", ["TQQQ", "SOXL", "SMH", "DGRO"])
 
 # Fetch historical data for the past year
 data = yf.download(ticker, period='5y', interval='1d')
