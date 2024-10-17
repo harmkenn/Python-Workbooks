@@ -2,6 +2,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go
+from numpy import sqrt
 
 # Set the page layout to wide
 st.set_page_config(layout="wide", page_title=f"Buy Sell Hold Strategy")
@@ -12,7 +13,7 @@ st.title("Buy Sell Hold Strategy")
 # Set the ticker symbol
 c1,c2 = st.columns([1,4])
 with c1:
-    ticker = st.selectbox("Select Ticker", ["TQQQ", "SOXL", "SMH", "DGRO"])
+    ticker = st.selectbox("Select Ticker", ["TQQQ", "SOXL", "SMH", "DGRO" , "VIG"])
 
 # Fetch historical data for the past year
 data = yf.download(ticker, period='5y', interval='1d')
@@ -20,6 +21,13 @@ data = yf.download(ticker, period='5y', interval='1d')
 # Calculate moving averages
 data['50_MA'] = data['Close'].rolling(window=50).mean()
 data['200_MA'] = data['Close'].rolling(window=200).mean()
+
+# Calculate annual returns
+data['Returns'] = data['Close'].pct_change() * 100
+
+# Calculate Standard Deviation  
+std_dev = data['Returns'].std() * sqrt(252)
+st.write(f"Standard Deviation for {ticker}: {std_dev:.2f}%")
 
 # Create the OHLC chart
 fig = go.Figure()
