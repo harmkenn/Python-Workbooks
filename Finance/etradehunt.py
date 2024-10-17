@@ -12,7 +12,7 @@ st.title("ETF Search")
 c1, c2, c3, c4 = st.columns(4)
 with c1:
     tickers = st.text_input("Enter ticker symbols (comma-separated):", value="AAPL,GOOG,AMZN")
-    tickers = tickers.split(",")
+    ticker_list = tickers.split(",")
 with c2:
     start_date = st.date_input("Select start date", value=dt.date(2019, 1, 1), min_value=dt.date(2010, 1, 1), max_value=dt.date.today())  # replace with your desired start date
 with c3:
@@ -29,7 +29,7 @@ def calculate_cagr(data):
     return ((data + 1).prod()**(1/n) - 1) * 100
 
 # Loop through the index symbols
-for ticker in tickers:
+for ticker in ticker_list:
     
     # Step 2: Fetch historical data
     data = yf.download(ticker, start=start_date, end=end_date, interval='1d')
