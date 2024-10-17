@@ -10,10 +10,10 @@ st.set_page_config(layout="wide", page_title=f"Buy Sell Hold Strategy")
 st.title("Buy Sell Hold Strategy")
 
 # Set the ticker symbol
-ticker = 'TQQQ'
+ticker = st.text_input("Ticker", "TQQQ")
 
 # Fetch historical data for the past year
-data = yf.download(ticker, period='2y', interval='1d')
+data = yf.download(ticker, period='5y', interval='1d')
 
 # Calculate moving averages
 data['50_MA'] = data['Close'].rolling(window=50).mean()
@@ -43,70 +43,3 @@ fig.update_layout(title=f'OHLC Chart for {ticker} with 50 & 200 Day Moving Avera
 # Streamlit app layout
 st.plotly_chart(fig)
 
-# Set the ticker symbol
-ticker = 'SOXL'
-
-# Fetch historical data for the past year
-data = yf.download(ticker, period='2y', interval='1d')
-
-# Calculate moving averages
-data['50_MA'] = data['Close'].rolling(window=50).mean()
-data['200_MA'] = data['Close'].rolling(window=200).mean()
-
-# Create the OHLC chart
-fig = go.Figure()
-
-# Add OHLC data
-fig.add_trace(go.Ohlc(x=data.index,
-                       open=data['Open'],
-                       high=data['High'],
-                       low=data['Low'],
-                       close=data['Close'],
-                       name='OHLC'))
-
-# Add moving averages
-fig.add_trace(go.Scatter(x=data.index, y=data['50_MA'], mode='lines', name='50-Day MA', line=dict(color='blue', width=1)))
-fig.add_trace(go.Scatter(x=data.index, y=data['200_MA'], mode='lines', name='200-Day MA', line=dict(color='red', width=1)))
-
-# Update layout
-fig.update_layout(title=f'OHLC Chart for {ticker} with 50 & 200 Day Moving Averages',
-                  xaxis_title='Date',
-                  yaxis_title='Price',
-                  xaxis_rangeslider_visible=True)
-
-# Streamlit app layout
-st.plotly_chart(fig)
-
-# Set the ticker symbol
-ticker = 'SMH'
-
-# Fetch historical data for the past year
-data = yf.download(ticker, period='2y', interval='1d')
-
-# Calculate moving averages
-data['50_MA'] = data['Close'].rolling(window=50).mean()
-data['200_MA'] = data['Close'].rolling(window=200).mean()
-
-# Create the OHLC chart
-fig = go.Figure()
-
-# Add OHLC data
-fig.add_trace(go.Ohlc(x=data.index,
-                       open=data['Open'],
-                       high=data['High'],
-                       low=data['Low'],
-                       close=data['Close'],
-                       name='OHLC'))
-
-# Add moving averages
-fig.add_trace(go.Scatter(x=data.index, y=data['50_MA'], mode='lines', name='50-Day MA', line=dict(color='blue', width=1)))
-fig.add_trace(go.Scatter(x=data.index, y=data['200_MA'], mode='lines', name='200-Day MA', line=dict(color='red', width=1)))
-
-# Update layout
-fig.update_layout(title=f'OHLC Chart for {ticker} with 50 & 200 Day Moving Averages',
-                  xaxis_title='Date',
-                  yaxis_title='Price',
-                  xaxis_rangeslider_visible=True)
-
-# Streamlit app layout
-st.plotly_chart(fig)
