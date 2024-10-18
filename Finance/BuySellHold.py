@@ -20,11 +20,7 @@ data = yf.download(ticker, period='5y', interval='1d')
 
 # Calculate moving averages
 data['50_MA'] = data['Close'].rolling(window=50).mean()
-<<<<<<< HEAD
 data['50_SD'] = data['Close'].rolling(window=50).std()
-=======
-data['100_MA'] = data['Close'].rolling(window=100).mean()
->>>>>>> 350588a95b5842f1ae0cf74803b480e1cd379f18
 data['200_MA'] = data['Close'].rolling(window=200).mean()
 data['UB'] = maximum(data['50_MA'],data['200_MA']) + data['50_SD']*1.5
 data['LB'] = minimum(data['50_MA'],data['200_MA']) - data['50_SD']*1.5
