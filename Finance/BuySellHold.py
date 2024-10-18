@@ -20,7 +20,11 @@ data = yf.download(ticker, period='5y', interval='1d')
 
 # Calculate moving averages
 data['50_MA'] = data['Close'].rolling(window=50).mean()
+<<<<<<< HEAD
 data['50_SD'] = data['Close'].rolling(window=50).std()
+=======
+data['100_MA'] = data['Close'].rolling(window=100).mean()
+>>>>>>> 350588a95b5842f1ae0cf74803b480e1cd379f18
 data['200_MA'] = data['Close'].rolling(window=200).mean()
 data['UB'] = maximum(data['50_MA'],data['200_MA']) + data['50_SD']*1.5
 data['LB'] = minimum(data['50_MA'],data['200_MA']) - data['50_SD']*1.5
@@ -53,6 +57,7 @@ fig.add_trace(go.Ohlc(x=data.index,
 
 # Add moving averages
 fig.add_trace(go.Scatter(x=data.index, y=data['50_MA'], mode='lines', name='50-Day MA', line=dict(color='blue', width=1)))
+fig.add_trace(go.Scatter(x=data.index, y=data['100_MA'], mode='lines', name='100-Day MA', line=dict(color='purple', width=1)))
 fig.add_trace(go.Scatter(x=data.index, y=data['200_MA'], mode='lines', name='200-Day MA', line=dict(color='red', width=1)))
 fig.add_trace(go.Scatter(x=data.index, y=data['UB'], mode='lines', name='Sell Line', line=dict(color='green', width=1, dash='dash')))
 fig.add_trace(go.Scatter(x=data.index, y=data['LB'], mode='lines', name='Buy Line', line=dict(color='green', width=1, dash='dash')))
