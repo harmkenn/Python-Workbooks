@@ -43,7 +43,6 @@ with c4:
     st.write(f'Buy at: {data["LB"].iloc[-1]:.2f}')
     st.write(f'Low: {data["Low"].iloc[-1]:.2f}')
 
-
 # Create the OHLC chart
 fig = go.Figure()
 
