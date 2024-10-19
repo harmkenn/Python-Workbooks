@@ -7,29 +7,56 @@ from numpy import sqrt, maximum, minimum
 # Set the page layout to wide
 st.set_page_config(layout="wide", page_title=f"Buy Sell Hold Strategy")
 
-# Step 1: Set up the Streamlit interface
+# Set up the Streamlit interface
 st.title("Buy Sell Hold Strategy")
 
 # Set the ticker symbol
-c1,c2,c3,c4 = st.columns(4)
+c1, c2, c3, c4 = st.columns(4)
 with c1:
-    ticker = st.selectbox("Select Ticker", ["TQQQ", "SOXL", "DGRO"])
+    ticker = st.selectbox("Select Ticker", ['DGRO','EDEN','GBTC','INCO','KBWP','SMIN','SOXL','SPXL','SSO','TECL','TQQQ','UPRO'])
+with c2:
+    bound = st.number_input("Bound", min_value=0.0, max_value=10.0, value=1.1, step=0.1)
 
 # Fetch historical data for the past year
-data = yf.download(ticker, period='5y', interval='1d')
+data = yf.download(ticker, period='2y', interval='1d')
 
 # Calculate moving averages
 data['50_MA'] = data['Close'].rolling(window=50).mean()
 data['50_SD'] = data['Close'].rolling(window=50).std()
 data['200_MA'] = data['Close'].rolling(window=200).mean()
-data['UB'] = maximum(data['50_MA'],data['200_MA']) + data['50_SD']*1.5
-data['LB'] = minimum(data['50_MA'],data['200_MA']) - data['50_SD']*1.5
+data['UB'] = maximum(data['50_MA'], data['200_MA']) + data['50_SD'] * bound
+data['LB'] = minimum(data['50_MA'], data['200_MA']) - data['50_SD'] * bound
 
 # Calculate annual returns
 data['Returns'] = data['Close'].pct_change() * 100
 
-# Calculate Standard Deviation  
+# Calculate Standard Deviation
 std_dev = data['Returns'].std() * sqrt(252)
+
+# Calculate RSI
+def calculate_rsi(data, window=14):
+    delta = data['Close'].diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=window).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=window).mean()
+    rs = gain / loss
+    data['RSI'] = 100 - (100 / (1 + rs))
+    return data
+
+data = calculate_rsi(data)
+
+# Calculate MFI
+def calculate_mfi(data, window=14):
+    typical_price = (data['High'] + data['Low'] + data['Close']) / 3
+    money_flow = typical_price * data['Volume']
+    positive_flow = (money_flow.where(typical_price > typical_price.shift(1), 0)).rolling(window=window).sum()
+    negative_flow = (money_flow.where(typical_price < typical_price.shift(1), 0)).rolling(window=window).sum()
+    money_flow_index = 100 - (100 / (1 + (positive_flow / negative_flow)))
+    data['MFI'] = money_flow_index
+    return data
+
+data = calculate_mfi(data)
+
+# Display Standard Deviation and Buy/Sell levels
 with c2:
     st.write(f"Standard Deviation for {ticker}: {std_dev:.2f}%")
 with c3:
@@ -39,16 +66,19 @@ with c4:
     st.write(f'Buy at: {data["LB"].iloc[-1]:.2f}')
     st.write(f'Low: {data["Low"].iloc[-1]:.2f}')
 
+# Display final RSI and MFI
+with c1:
+    st.write(f"Final RSI (30,70) for {ticker}: {data['RSI'].iloc[-1]:.2f}")
+    st.write(f"Final MFI (20,80) for {ticker}: {data['MFI'].iloc[-1]:.2f}")
+
+# Drop the first 200 rows
+data = data.iloc[200:].copy()
+
 # Create the OHLC chart
 fig = go.Figure()
 
 # Add OHLC data
-fig.add_trace(go.Ohlc(x=data.index,
-                       open=data['Open'],
-                       high=data['High'],
-                       low=data['Low'],
-                       close=data['Close'],
-                       name='OHLC'))
+fig.add_trace(go.Ohlc(x=data.index, open=data['Open'], high=data['High'], low=data['Low'], close=data['Close'], name='OHLC'))
 
 # Add moving averages
 fig.add_trace(go.Scatter(x=data.index, y=data['50_MA'], mode='lines', name='50-Day MA', line=dict(color='blue', width=1)))
@@ -64,4 +94,3 @@ fig.update_layout(title=f'OHLC Chart for {ticker} with 50 & 200 Day Moving Avera
 
 # Streamlit app layout
 st.plotly_chart(fig)
-
