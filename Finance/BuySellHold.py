@@ -23,7 +23,6 @@ with c4:
 
 # Fetch historical data for the past year
 data = yf.download(ticker, start=start_date, end=end_date, interval='1d')
-data = data.drop(['Volume', 'Adj Close'], axis=1)
 
 # Calculate moving averages
 data['50_MA'] = data['Close'].rolling(window=50).mean()
