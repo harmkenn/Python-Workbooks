@@ -71,7 +71,7 @@ with c2:
 with c3:
     st.write(f'Sell at: {data["UB"].iloc[-1]:.2f}')
     st.write(f'High: {round(data["High"].iloc[-1], 2)}')
-    st.write(f'Low: {data["Low"].iloc[-1]:.2f}')
+    st.write(f'Low: {round(data["Low"].iloc[-1], 2)}')
     st.write(f'Buy at: {data["LB"].iloc[-1]:.2f}')
 
 # Drop the first 200 rows
