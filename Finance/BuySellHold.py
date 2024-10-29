@@ -14,7 +14,7 @@ st.title("Buy Sell Hold Strategy")
 # Set the ticker symbol
 c1, c2, c3, c4 = st.columns(4)
 with c1:
-    ticker = st.selectbox("Select Ticker", ['ARGT','DGRO','EDEN','GBTC','INCO','KBWP','SMIN','SOXL','SPXL','TECL','TQQQ','UPRO'])
+    ticker = st.selectbox("Select Ticker", ['ARGT','DGRO','EDEN','INCO','KBWP','SMIN','SOXL','SPXL','TECL','TQQQ','UPRO'])
 with c2:
     bound = st.number_input("Bound", min_value=0.0, max_value=10.0, value=1.1, step=0.1)
 with c4:
