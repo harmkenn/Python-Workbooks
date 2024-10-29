@@ -70,7 +70,7 @@ with c2:
     st.write(f"Standard Deviation for {ticker}: {std_dev:.2f}%")
 with c3:
     st.write(f'Sell at: {data["UB"].iloc[-1]:.2f}')
-    st.write(f'High: {data["High"].iloc[-1]:.2f}')
+    st.write(f'High: {round(data["High"].iloc[-1], 2)}')
     st.write(f'Low: {data["Low"].iloc[-1]:.2f}')
     st.write(f'Buy at: {data["LB"].iloc[-1]:.2f}')
 
