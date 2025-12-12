@@ -173,7 +173,7 @@ if animate:
                     mode="markers",
                     marker=dict(color=colors[i], size=10),
                     name=labels[i],
-                    showlegend=(k == frame_indices[0]),
+                    showlegend=bool(k == frame_indices[0]),
                 )
             )
 
