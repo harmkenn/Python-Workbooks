@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 # Streamlit Page Setup
 # ---------------------------------------------------------
 st.set_page_config(page_title="Three‑Body Problem Explorer", layout="wide")
-st.title("Three‑Body Problem Explorer v1.1")
+st.title("Three‑Body Problem Explorer v1.2")
 st.write(
     "A clean, modern playground for exploring stable and chaotic three‑body orbits. "
     "Choose a preset or define your own initial conditions."
@@ -91,25 +91,72 @@ def preset_criss_cross():
     masses = np.array([1.0, 1.0, 1.0])
     return pos, vel, masses
 
-def preset_binary_companion():
+def preset_binary_calm():
     pos = np.array([
-        [-0.5, 0.0],
-        [ 0.5, 0.0],
-        [ 0.0, 5.0]
+        [-0.6, 0.0],
+        [ 0.6, 0.0],
+        [ 0.0, 8.0]
     ])
     vel = np.array([
-        [0.0,  0.8],
-        [0.0, -0.8],
-        [1.0,  0.0]
+        [0.0,  0.7],
+        [0.0, -0.7],
+        [0.4,  0.0]
     ])
-    masses = np.array([1.0, 1.0, 0.1])
+    masses = np.array([1.0, 1.0, 0.5])
+    return pos, vel, masses
+
+def preset_trojan():
+    R = 5.0
+    masses = np.array([10.0, 0.1, 0.1])
+    pos = np.array([
+        [0.0, 0.0],
+        [R, 0.0],
+        [R/2, R * np.sqrt(3)/2],
+    ])
+    v = 1.4
+    vel = np.array([
+        [0.0, 0.0],
+        [0.0, v],
+        [-v * np.sin(np.pi/3), v * np.cos(np.pi/3)],
+    ])
+    return pos, vel, masses
+
+def preset_rosette():
+    pos = np.array([
+        [ 1.0,  0.0],
+        [-0.5,  np.sqrt(3)/2],
+        [-0.5, -np.sqrt(3)/2],
+    ])
+    vel = np.array([
+        [ 0.0,  0.6],
+        [-0.52, -0.3],
+        [ 0.52, -0.3],
+    ])
+    masses = np.array([1.0, 1.0, 1.0])
+    return pos, vel, masses
+
+def preset_breathing_triangle():
+    pos = np.array([
+        [ 1.0,  0.0],
+        [-0.8,  0.6],
+        [-0.2, -1.0],
+    ])
+    vel = np.array([
+        [ 0.0,  0.7],
+        [-0.5, -0.1],
+        [ 0.5, -0.6],
+    ])
+    masses = np.array([1.0, 1.0, 1.0])
     return pos, vel, masses
 
 PRESETS = {
     "Equilateral Lagrange (Stable)": preset_lagrange,
     "Figure‑Eight Orbit": preset_figure_eight,
     "Henon Criss‑Cross": preset_criss_cross,
-    "Binary + Distant Companion": preset_binary_companion,
+    "Binary + Distant Companion (Calm)": preset_binary_calm,
+    "Trojan Configuration": preset_trojan,
+    "Rosette Orbit": preset_rosette,
+    "Breathing Triangle": preset_breathing_triangle,
     "Custom (Manual Input)": None,
 }
 
@@ -264,4 +311,5 @@ st.markdown("""
 - The Velocity Verlet integrator is symplectic and preserves energy well.
 - The Lagrange equilateral solution is the only truly stable 3‑body configuration.
 - The figure‑eight and criss‑cross orbits are periodic but sensitive to numerical drift.
+- Hierarchical triples and Trojan configurations are long‑lived and astrophysically realistic.
 """)
