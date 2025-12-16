@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 # Streamlit Page Setup
 # ---------------------------------------------------------
 st.set_page_config(page_title="Three‑Body Problem Explorer", layout="wide")
-st.title("Three‑Body Problem Explorer v1.0")
+st.title("Three‑Body Problem Explorer v1.1")
 st.write(
     "A clean, modern playground for exploring stable and chaotic three‑body orbits. "
     "Choose a preset or define your own initial conditions."
@@ -201,7 +201,7 @@ if animate:
                 mode="markers",
                 marker=dict(color=colors[i], size=10),
                 name=labels[i],
-                showlegend=(k == frame_indices[0]),
+                showlegend=bool(k == frame_indices[0]),
             ))
 
         frames.append(go.Frame(data=data, name=str(k)))
