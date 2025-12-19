@@ -1,7 +1,8 @@
 import streamlit as st
 import plotly.graph_objects as go
+import numpy as np
 
-st.title("Click to Place Points v2.2")
+st.title("Click to Place Points v2.3")
 
 # Store clicks in session_state
 if "points" not in st.session_state:
@@ -14,24 +15,23 @@ def handle_click(event):
         y = event["points"][0]["y"]
         st.session_state.points.append((x, y))
 
+# Create invisible grid of points to capture clicks
+grid_x, grid_y = np.meshgrid(
+    np.linspace(-5, 5, 50),
+    np.linspace(-5, 5, 50)
+)
+
 fig = go.Figure()
 
-# ✅ Add a transparent base trace so clicks register
+# ✅ Invisible click‑capture layer
 fig.add_trace(go.Scatter(
-    x=[None],
-    y=[None],
+    x=grid_x.flatten(),
+    y=grid_y.flatten(),
     mode="markers",
-    marker=dict(opacity=0),
-    showlegend=False
+    marker=dict(size=1, opacity=0),
+    showlegend=False,
+    hoverinfo="skip"
 ))
-
-fig.update_layout(
-    width=700,
-    height=700,
-    xaxis=dict(range=[-5, 5]),
-    yaxis=dict(range=[-5, 5]),
-    dragmode=False,
-)
 
 # Draw existing points
 for p in st.session_state.points:
@@ -40,6 +40,14 @@ for p in st.session_state.points:
         mode="markers",
         marker=dict(size=12, color="red")
     ))
+
+fig.update_layout(
+    width=700,
+    height=700,
+    xaxis=dict(range=[-5, 5]),
+    yaxis=dict(range=[-5, 5]),
+    dragmode=False,
+)
 
 # Display chart with click callback
 st.plotly_chart(
