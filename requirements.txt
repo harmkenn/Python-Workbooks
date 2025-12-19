@@ -25,3 +25,4 @@ bs4
 transformers
 seaborn
 bokeh
+streamlit-drawable-canvas
