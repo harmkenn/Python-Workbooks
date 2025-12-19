@@ -26,3 +26,4 @@ transformers
 seaborn
 bokeh
 streamlit-drawable-canvas
+streamlit_bokeh_events
