@@ -24,3 +24,4 @@ undetected_chromedriver
 bs4
 transformers
 seaborn
+bokeh
