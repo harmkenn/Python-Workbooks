@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-st.title("Click to Place Points v2.1")
+st.title("Click to Place Points v2.2")
 
 # Store clicks in session_state
 if "points" not in st.session_state:
@@ -15,6 +15,16 @@ def handle_click(event):
         st.session_state.points.append((x, y))
 
 fig = go.Figure()
+
+# ✅ Add a transparent base trace so clicks register
+fig.add_trace(go.Scatter(
+    x=[None],
+    y=[None],
+    mode="markers",
+    marker=dict(opacity=0),
+    showlegend=False
+))
+
 fig.update_layout(
     width=700,
     height=700,
@@ -37,5 +47,5 @@ st.plotly_chart(
     width="stretch",
     on_click=handle_click,
 )
-    
+
 st.write("Points:", st.session_state.points)
