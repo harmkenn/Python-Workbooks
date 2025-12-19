@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-st.title("Click to Place Points")
+st.title("Click to Place Points v2.0")
 
 # Store clicks in session_state
 if "points" not in st.session_state:
