@@ -26,7 +26,7 @@ def three_body_derivatives(t, y, masses):
     return [vx1, vy1, vx2, vy2, vx3, vy3, ax1, ay1, ax2, ay2, ax3, ay3]
 
 # Streamlit app
-st.title("Three-Body Problem Simulator")
+st.title("Three-Body Problem Simulator v1.0")
 
 # Sidebar for masses
 st.sidebar.header("Masses")
@@ -46,7 +46,7 @@ try:
     velocities = list(map(float, initial_velocities.split(",")))
     initial_conditions = positions + velocities
 except ValueError:
-    st.error("Please enter valid initial conditions." v1.0)
+    st.error("Please enter valid initial conditions.")
 
 # Simulation parameters
 st.sidebar.header("Simulation Parameters")
