@@ -1,109 +1,83 @@
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
 import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
 
-st.title("Three‑Body Initial Conditions Editor v4.3")
+# Function to compute the derivatives for the three-body problem
+def three_body_derivatives(t, y, masses):
+    # Unpack positions and velocities
+    x1, y1, x2, y2, x3, y3, vx1, vy1, vx2, vy2, vx3, vy3 = y
+    m1, m2, m3 = masses
 
-# -------------------------------
-# Session State Initialization
-# -------------------------------
-if "step" not in st.session_state:
-    st.session_state.step = 0  # 0–5 (circle, line, circle, line, circle, line)
-if "bodies" not in st.session_state:
-    st.session_state.bodies = []  # list of (x, y)
-if "velocities" not in st.session_state:
-    st.session_state.velocities = []  # list of (vx, vy)
+    # Compute distances
+    r12 = np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    r13 = np.sqrt((x3 - x1)**2 + (y3 - y1)**2)
+    r23 = np.sqrt((x3 - x2)**2 + (y3 - y2)**2)
 
-# -------------------------------
-# Determine Current Mode
-# -------------------------------
-is_circle_step = (st.session_state.step % 2 == 0)
-mode = "circle" if is_circle_step else "line"
+    # Compute accelerations
+    ax1 = m2 * (x2 - x1) / r12**3 + m3 * (x3 - x1) / r13**3
+    ay1 = m2 * (y2 - y1) / r12**3 + m3 * (y3 - y1) / r13**3
+    ax2 = m1 * (x1 - x2) / r12**3 + m3 * (x3 - x2) / r23**3
+    ay2 = m1 * (y1 - y2) / r12**3 + m3 * (y3 - y2) / r23**3
+    ax3 = m1 * (x1 - x3) / r13**3 + m2 * (x2 - x3) / r23**3
+    ay3 = m1 * (y1 - y3) / r13**3 + m2 * (y2 - y3) / r23**3
 
-st.subheader(f"Step {st.session_state.step + 1} of 6")
-if is_circle_step:
-    st.write("Draw a **circle** to place the next body.")
-else:
-    st.write("Draw a **line** to set the velocity for the nearest body.")
+    # Return derivatives
+    return [vx1, vy1, vx2, vy2, vx3, vy3, ax1, ay1, ax2, ay2, ax3, ay3]
 
-# -------------------------------
-# Canvas
-# -------------------------------
-canvas_result = st_canvas(
-    fill_color="rgba(255, 0, 0, 0.3)",
-    stroke_width=2,
-    stroke_color="red",
-    background_color="white",
-    height=500,
-    width=500,
-    drawing_mode=mode,
-    key=f"canvas_step_{st.session_state.step}",
-)
+# Streamlit app
+st.title("Three-Body Problem Simulator")
 
-# -------------------------------
-# Process Canvas Output
-# -------------------------------
-if canvas_result.json_data is not None:
-    objects = canvas_result.json_data.get("objects", [])
+# Sidebar for masses
+st.sidebar.header("Masses")
+m1 = st.sidebar.slider("Mass of Body 1", 0.1, 10.0, 1.0)
+m2 = st.sidebar.slider("Mass of Body 2", 0.1, 10.0, 1.0)
+m3 = st.sidebar.slider("Mass of Body 3", 0.1, 10.0, 1.0)
+masses = [m1, m2, m3]
 
-    # Only process if a new shape was drawn
-    if len(objects) > st.session_state.step:
+# Initial positions and velocities
+st.sidebar.header("Initial Conditions")
+initial_positions = st.sidebar.text_input("Initial Positions (x1, y1, x2, y2, x3, y3)", "0, 0, 1, 0, -1, 0")
+initial_velocities = st.sidebar.text_input("Initial Velocities (vx1, vy1, vx2, vy2, vx3, vy3)", "0, 0, 0, 1, 0, -1")
 
-        new_obj = objects[-1]
+# Parse input
+try:
+    positions = list(map(float, initial_positions.split(",")))
+    velocities = list(map(float, initial_velocities.split(",")))
+    initial_conditions = positions + velocities
+except ValueError:
+    st.error("Please enter valid initial conditions." v1.0)
 
-        # -------------------------------
-        # Circle → Body Position
-        # -------------------------------
-        if new_obj["type"] == "circle" and is_circle_step:
-            cx = new_obj["left"] + new_obj["radius"]
-            cy = new_obj["top"] + new_obj["radius"]
-            st.session_state.bodies.append((cx, cy))
-            st.session_state.step += 1  # auto‑advance
+# Simulation parameters
+st.sidebar.header("Simulation Parameters")
+t_span = st.sidebar.slider("Simulation Time", 0.0, 100.0, 10.0)
+t_eval = np.linspace(0, t_span, 1000)
 
-        # -------------------------------
-        # Line → Velocity Vector
-        # -------------------------------
-        elif new_obj["type"] == "line" and not is_circle_step:
-            x1, y1, x2, y2 = new_obj["x1"], new_obj["y1"], new_obj["x2"], new_obj["y2"]
+# Solve the three-body problem
+if st.button("Run Simulation"):
+    try:
+        solution = solve_ivp(
+            three_body_derivatives,
+            [0, t_span],
+            initial_conditions,
+            t_eval=t_eval,
+            args=(masses,),
+            rtol=1e-9,
+            atol=1e-9,
+        )
 
-            # Compute midpoint to find nearest body
-            mx, my = (x1 + x2) / 2, (y1 + y2) / 2
-            bodies = np.array(st.session_state.bodies)
-            dists = np.linalg.norm(bodies - np.array([mx, my]), axis=1)
-            nearest_idx = np.argmin(dists)
+        # Extract positions
+        x1, y1, x2, y2, x3, y3 = solution.y[:6]
 
-            # Velocity vector
-            vx = x2 - x1
-            vy = y2 - y1
-
-            st.session_state.velocities.append((vx, vy))
-            st.session_state.step += 1  # auto‑advance
-
-# -------------------------------
-# Display Current State
-# -------------------------------
-st.write("Bodies:", st.session_state.bodies)
-st.write("Velocities:", st.session_state.velocities)
-
-# -------------------------------
-# Ready to Run Simulation?
-# -------------------------------
-ready = (len(st.session_state.bodies) == 3 and
-         len(st.session_state.velocities) == 3)
-
-if ready:
-    st.success("All bodies and velocities defined. Ready to run simulation.")
-
-    if st.button("Run Simulation"):
-        pos_init = np.array(st.session_state.bodies)
-        vel_init = np.array(st.session_state.velocities)
-
-        st.session_state.pos_init = pos_init
-        st.session_state.vel_init = vel_init
-
-        st.write("✅ Initial conditions captured.")
-        st.write("Positions:", pos_init)
-        st.write("Velocities:", vel_init)
-
-        # You can now call your physics engine here
-        # positions = simulate(pos_init, vel_init, masses, dt, steps)
+        # Plot the results
+        fig, ax = plt.subplots()
+        ax.plot(x1, y1, label="Body 1")
+        ax.plot(x2, y2, label="Body 2")
+        ax.plot(x3, y3, label="Body 3")
+        ax.legend()
+        ax.set_xlabel("X")
+        ax.set_ylabel("Y")
+        ax.set_title("Three-Body Problem Simulation")
+        st.pyplot(fig)
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
