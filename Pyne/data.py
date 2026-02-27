@@ -18,25 +18,15 @@ def main():
         st.write("Select columns to include:")
         selected_columns = st.multiselect("Columns", df.columns.tolist(), default=df.columns.tolist())
 
-        # Row filtering
-        st.write("Filter rows based on conditions:")
-        filters = {}
-        for col in selected_columns:
-            if pd.api.types.is_numeric_dtype(df[col]):
-                min_val, max_val = st.slider(f"Filter {col} (numeric)", float(df[col].min()), float(df[col].max()), (float(df[col].min()), float(df[col].max())))
-                filters[col] = (min_val, max_val)
-            elif pd.api.types.is_string_dtype(df[col]):
-                unique_values = df[col].unique()
-                selected_values = st.multiselect(f"Filter {col} (categorical)", unique_values, default=unique_values)
-                filters[col] = selected_values
+        # Apply row filter: FTN column contains "7260R"
+        if "FTN" in df.columns:
+            filtered_df = df[df["FTN"].astype(str).str.contains("7260R", na=False)]
+        else:
+            st.error("The 'FTN' column is not found in the uploaded file.")
+            return
 
-        # Apply filters
-        filtered_df = df[selected_columns]
-        for col, condition in filters.items():
-            if isinstance(condition, tuple):  # Numeric filter
-                filtered_df = filtered_df[(filtered_df[col] >= condition[0]) & (filtered_df[col] <= condition[1])]
-            else:  # Categorical filter
-                filtered_df = filtered_df[filtered_df[col].isin(condition)]
+        # Apply column selection
+        filtered_df = filtered_df[selected_columns]
 
         # Display filtered table
         st.write("Filtered data:")
