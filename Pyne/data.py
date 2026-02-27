@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-from io import BytesIO
+from io import StringIO, BytesIO
 
-# Set wide-screen mode
+# Set wide-screen mode 1.1
 st.set_page_config(layout="wide")
 
 def main():
@@ -18,7 +18,7 @@ def main():
         if pasted_data:
             try:
                 # Convert pasted data into a DataFrame
-                df = pd.read_csv(pd.compat.StringIO(pasted_data), sep="\t")
+                df = pd.read_csv(StringIO(pasted_data), sep="\t")
                 st.write("Preview of pasted data:")
                 st.dataframe(df)
             except Exception as e:
