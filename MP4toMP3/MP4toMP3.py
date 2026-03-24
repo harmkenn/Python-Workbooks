@@ -5,22 +5,23 @@ import zipfile
 import io
 from moviepy import AudioFileClip
 
-def convert_mp4_to_mp3(uploaded_file):
+def convert_video_to_mp3(uploaded_file):
     """
-    Converts an uploaded MP4 file to MP3 format.
+    Converts an uploaded video file to MP3 format.
     Returns the MP3 binary data and the new filename.
     """
-    # Create a temporary file to save the uploaded MP4
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp_mp4:
-        tmp_mp4.write(uploaded_file.getvalue())
-        tmp_mp4_path = tmp_mp4.name
+    # Create a temporary file to save the uploaded video
+    file_extension = os.path.splitext(uploaded_file.name)[1]
+    with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp_video:
+        tmp_video.write(uploaded_file.getvalue())
+        tmp_video_path = tmp_video.name
 
     # Define the output MP3 path
-    tmp_mp3_path = tmp_mp4_path.replace(".mp4", ".mp3")
+    tmp_mp3_path = os.path.splitext(tmp_video_path)[0] + ".mp3"
     
     try:
         # Load the video file
-        video_clip = AudioFileClip(tmp_mp4_path)
+        video_clip = AudioFileClip(tmp_video_path)
         
         # Write the audio to the MP3 file
         # logger=None suppresses the moviepy console output
@@ -43,21 +44,21 @@ def convert_mp4_to_mp3(uploaded_file):
         
     finally:
         # Cleanup temporary files
-        if os.path.exists(tmp_mp4_path):
-            os.remove(tmp_mp4_path)
+        if os.path.exists(tmp_video_path):
+            os.remove(tmp_video_path)
         if os.path.exists(tmp_mp3_path):
             os.remove(tmp_mp3_path)
 
 # --- Streamlit App Layout ---
-st.set_page_config(page_title="MP4 to MP3 Converter", page_icon="🎵")
+st.set_page_config(page_title="Video to MP3 Converter", page_icon="🎵")
 
-st.title("🎵 Batch MP4 to MP3 Converter")
-st.write("Upload your MP4 video files below to extract the audio.")
+st.title("🎵 Batch Video to MP3 Converter")
+st.write("Upload your video files below to extract the audio.")
 
 # File uploader widget
 uploaded_files = st.file_uploader(
-    "Choose MP4 files", 
-    type=["mp4"], 
+    "Choose video files", 
+    type=["mp4", "mkv"], 
     accept_multiple_files=True
 )
 
@@ -72,7 +73,7 @@ if uploaded_files:
         for i, file in enumerate(uploaded_files):
             status_text.text(f"Converting {file.name}...")
             
-            mp3_data, mp3_name = convert_mp4_to_mp3(file)
+            mp3_data, mp3_name = convert_video_to_mp3(file)
             
             if mp3_data:
                 converted_files.append({"name": mp3_name, "data": mp3_data})
