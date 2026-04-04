@@ -1,4 +1,4 @@
-# pip install -r requirements.txt
+# pip install -r requirements.txt --break-system-packages
 streamlit
 numpy
 pandas
@@ -27,5 +27,11 @@ seaborn
 bokeh
 streamlit-drawable-canvas
 streamlit_bokeh_events
+<<<<<<< HEAD
 moviepy
 
+=======
+speech_recognition
+deep_translator
+speech_recognition
+>>>>>>> 90e9bc7 (Good Start)
