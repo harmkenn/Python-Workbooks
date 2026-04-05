@@ -17,6 +17,46 @@ from pathlib import Path
 from difflib import SequenceMatcher
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Duration helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def to_seconds(raw: str) -> float | None:
+    """
+    Normalise any duration representation to seconds (float).
+    Handles:
+      - plain integer seconds  e.g. "213"       → M3U EXTINF
+      - milliseconds           e.g. "213000"    → Spotify CSV / MusicBee XML
+      - mm:ss or h:mm:ss       e.g. "3:33"
+    Returns None when the value is missing or unparseable.
+    """
+    if not raw or raw.strip() in ("", "nan", "None", "-1"):
+        return None
+    raw = raw.strip()
+    # mm:ss or h:mm:ss
+    if ":" in raw:
+        parts = raw.split(":")
+        try:
+            secs = sum(int(p) * 60 ** (len(parts) - 1 - i) for i, p in enumerate(parts))
+            return float(secs)
+        except ValueError:
+            return None
+    try:
+        val = float(raw)
+        # Heuristic: Spotify/XML store ms; values ≥ 10 000 are almost certainly ms
+        return val / 1000.0 if val >= 10_000 else val
+    except ValueError:
+        return None
+
+
+def fmt_seconds(s: float | None) -> str:
+    """Format seconds as m:ss, or '—' if unknown."""
+    if s is None:
+        return "—"
+    s = int(round(s))
+    return f"{s // 60}:{s % 60:02d}"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Parsers
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -150,7 +190,12 @@ def similarity(a: str, b: str) -> float:
     return SequenceMatcher(None, a, b).ratio()
 
 @st.cache_data(show_spinner=False)
-def compare_playlists(mb_records: tuple, sp_records: tuple, threshold: float):
+def compare_playlists(mb_records: tuple, sp_records: tuple,
+                      threshold: float, dur_tolerance: int):
+    """
+    mb_records / sp_records: tuples of (title, artist, duration_str)
+    dur_tolerance: max allowed difference in seconds before flagging a mismatch
+    """
     mb_list = list(mb_records)
     sp_list = list(sp_records)
     mb_keys = {track_key(t, a): i for i, (t, a, _) in enumerate(mb_list)}
@@ -159,12 +204,31 @@ def compare_playlists(mb_records: tuple, sp_records: tuple, threshold: float):
     matched_mb, matched_sp = set(), set()
     match_rows = []
 
+    def dur_diff(mb_dur: str, sp_dur: str) -> float | None:
+        """Return absolute difference in seconds, or None if either is unknown."""
+        a, b = to_seconds(mb_dur), to_seconds(sp_dur)
+        return abs(a - b) if (a is not None and b is not None) else None
+
+    def make_match(mb_idx, sp_idx, score, mtype):
+        t, a, mb_dur = mb_list[mb_idx]
+        _,  _, sp_dur = sp_list[sp_idx]
+        diff = dur_diff(mb_dur, sp_dur)
+        return {
+            "title":        t,
+            "artist":       a,
+            "mb_duration":  fmt_seconds(to_seconds(mb_dur)),
+            "sp_duration":  fmt_seconds(to_seconds(sp_dur)),
+            "dur_diff_s":   round(diff, 1) if diff is not None else None,
+            "dur_ok":       (diff is None or diff <= dur_tolerance),
+            "match_score":  score,
+            "match_type":   mtype,
+        }
+
     # Exact matches
     for key, mb_idx in mb_keys.items():
         if key in sp_keys:
             sp_idx = sp_keys[key]
-            t, a, _ = mb_list[mb_idx]
-            match_rows.append({"title": t, "artist": a, "match_score": 1.0, "match_type": "exact"})
+            match_rows.append(make_match(mb_idx, sp_idx, 1.0, "exact"))
             matched_mb.add(mb_idx)
             matched_sp.add(sp_idx)
 
@@ -184,17 +248,17 @@ def compare_playlists(mb_records: tuple, sp_records: tuple, threshold: float):
             if score > best_score:
                 best_score, best_sp_idx = score, sp_idx
         if best_score >= threshold and best_sp_idx is not None:
-            t, a, _ = mb_list[mb_idx]
-            match_rows.append({"title": t, "artist": a,
-                                "match_score": round(best_score, 2), "match_type": "fuzzy"})
+            match_rows.append(make_match(mb_idx, best_sp_idx, round(best_score, 2), "fuzzy"))
             matched_mb.add(mb_idx)
             fuzzy_matched_sp.add(best_sp_idx)
             matched_sp.add(best_sp_idx)
 
-    only_mb = [{"title": mb_list[i][0], "artist": mb_list[i][1]}
-               for i in range(len(mb_list)) if i not in matched_mb]
-    only_sp = [{"title": sp_list[i][0], "artist": sp_list[i][1]}
-               for i in range(len(sp_list)) if i not in matched_sp]
+    def only_row(lst, i):
+        t, a, dur = lst[i]
+        return {"title": t, "artist": a, "duration": fmt_seconds(to_seconds(dur))}
+
+    only_mb = [only_row(mb_list, i) for i in range(len(mb_list)) if i not in matched_mb]
+    only_sp = [only_row(sp_list, i) for i in range(len(sp_list)) if i not in matched_sp]
     return match_rows, only_mb, only_sp
 
 
@@ -269,7 +333,12 @@ sp_ready = "sp_bytes" in st.session_state
 # ── Options ───────────────────────────────────────────────────────────────────
 with st.expander("⚙️  Matching options", expanded=False):
     threshold = st.slider("Fuzzy match threshold", 0.5, 1.0, 0.82, 0.01)
-    show_fuzzy_only = st.checkbox("Show only fuzzy matches in the Matched tab", value=False)
+    dur_tolerance = st.slider(
+        "Duration mismatch tolerance (seconds)", 1, 30, 5, 1,
+        help="Matched tracks whose lengths differ by more than this are flagged as duration mismatches."
+    )
+    show_fuzzy_only   = st.checkbox("Show only fuzzy matches in the Matched tab", value=False)
+    show_dur_mismatch = st.checkbox("Show only duration mismatches in the Matched tab", value=False)
 
 # ── Action buttons ────────────────────────────────────────────────────────────
 btn_col, clr_col = st.columns([3, 1])
@@ -323,7 +392,7 @@ if run:
     sp_records = tuple((str(r.title), str(r.artist), str(r.duration)) for r in df_sp.itertuples())
 
     with st.spinner(f"Comparing {len(mb_records)} × {len(sp_records)} tracks…"):
-        match_rows, only_mb, only_sp = compare_playlists(mb_records, sp_records, threshold)
+        match_rows, only_mb, only_sp = compare_playlists(mb_records, sp_records, threshold, dur_tolerance)
 
     st.session_state["results"] = {
         "match_rows": match_rows, "only_mb": only_mb, "only_sp": only_sp,
@@ -364,7 +433,7 @@ if "results" in st.session_state:
         if df_only_mb.empty:
             st.success("🎉 Everything is on Spotify too!")
         else:
-            st.dataframe(df_only_mb, use_container_width=True,
+            st.dataframe(df_only_mb, width='stretch',
                          height=min(40*len(df_only_mb)+50, 600))
             st.download_button("⬇ Download CSV", df_only_mb.to_csv(index=False),
                                "only_in_musicbee.csv", "text/csv")
@@ -374,7 +443,7 @@ if "results" in st.session_state:
         if df_only_sp.empty:
             st.success("🎉 Everything on Spotify is in MusicBee too!")
         else:
-            st.dataframe(df_only_sp, use_container_width=True,
+            st.dataframe(df_only_sp, width='stretch',
                          height=min(40*len(df_only_sp)+50, 600))
             st.download_button("⬇ Download CSV", df_only_sp.to_csv(index=False),
                                "only_in_spotify.csv", "text/csv")
@@ -383,7 +452,7 @@ if "results" in st.session_state:
         disp = df_matched[df_matched["match_type"] == "fuzzy"] if show_fuzzy_only else df_matched
         st.caption(f"{len(disp)} tracks shown{' (fuzzy only)' if show_fuzzy_only else ''}.")
         if not disp.empty:
-            st.dataframe(disp.reset_index(drop=True), use_container_width=True,
+            st.dataframe(disp.reset_index(drop=True), width='stretch',
                          height=min(40*len(disp)+50, 600),
                          column_config={"match_score": st.column_config.ProgressColumn(
                              "Score", min_value=0, max_value=1, format="%.2f")})
@@ -395,10 +464,10 @@ if "results" in st.session_state:
         with r1:
             st.markdown("**MusicBee — parsed**")
             st.dataframe(parse_file(mb_name, mb_bytes, "musicbee"),
-                         use_container_width=True, height=300)
+                         width='stretch', height=300)
         with r2:
             st.markdown("**Spotify — parsed**")
             st.dataframe(parse_file(sp_name, sp_bytes, "spotify"),
-                         use_container_width=True, height=300)
+                         width='stretch', height=300)
 
 st.markdown('<p class="footnote">Matching: normalized title+artist keys, exact first, then fuzzy fallback. Adjust threshold in ⚙️ if needed.</p>', unsafe_allow_html=True)
