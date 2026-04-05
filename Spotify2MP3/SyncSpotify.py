@@ -13,6 +13,10 @@ import pandas as pd
 import re
 import json
 import io
+import glob
+import shutil
+import subprocess
+import tempfile
 from pathlib import Path
 from difflib import SequenceMatcher
 
@@ -123,13 +127,15 @@ def parse_spotify_csv(text: str) -> pd.DataFrame:
     title_col  = next((c for c in df.columns if "track name" in c or c in ("name", "title")), None)
     artist_col = next((c for c in df.columns if "artist" in c), None)
     dur_col    = next((c for c in df.columns if "duration" in c or "ms" in c), None)
+    uri_col    = next((c for c in df.columns if "spotify uri" in c or c == "spotify_uri" or c == "uri"), None)
     if title_col is None:
         st.error("Could not detect a track-name column. Columns found: " + str(list(df.columns)))
-        return pd.DataFrame(columns=["title", "artist", "duration"])
+        return pd.DataFrame(columns=["title", "artist", "duration", "spotify_uri"])
     result = pd.DataFrame()
-    result["title"]    = df[title_col].fillna("").astype(str)
-    result["artist"]   = df[artist_col].fillna("").astype(str) if artist_col else ""
-    result["duration"] = df[dur_col].fillna("").astype(str)    if dur_col    else ""
+    result["title"]       = df[title_col].fillna("").astype(str)
+    result["artist"]      = df[artist_col].fillna("").astype(str) if artist_col else ""
+    result["duration"]    = df[dur_col].fillna("").astype(str)    if dur_col    else ""
+    result["spotify_uri"] = df[uri_col].fillna("").astype(str)    if uri_col    else ""
     return result
 
 
@@ -144,9 +150,11 @@ def parse_spotify_json(text: str) -> pd.DataFrame:
             artists = track.get("artists", [])
             artist  = ", ".join(a["name"] for a in artists) if artists else track.get("artistName", "")
             dur     = str(track.get("duration_ms", track.get("msPlayed", "")))
+            track_id = track.get("id", track.get("track_id", ""))
+            uri     = f"spotify:track:{track_id}" if track_id else track.get("uri", "")
             if title:
-                rows.append({"title": title, "artist": artist, "duration": dur})
-    return pd.DataFrame(rows) if rows else pd.DataFrame(columns=["title", "artist", "duration"])
+                rows.append({"title": title, "artist": artist, "duration": dur, "spotify_uri": uri})
+    return pd.DataFrame(rows) if rows else pd.DataFrame(columns=["title", "artist", "duration", "spotify_uri"])
 
 
 def parse_file(name: str, content: bytes, source: str) -> pd.DataFrame:
@@ -170,6 +178,38 @@ def parse_file(name: str, content: bytes, source: str) -> pd.DataFrame:
         else:
             st.error(f"Unsupported Spotify format: {suffix}")
     return pd.DataFrame(columns=["title", "artist", "duration"])
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# spotdl downloader
+# ─────────────────────────────────────────────────────────────────────────────
+
+SPOTDL_AVAILABLE = shutil.which("spotdl") is not None
+
+
+def spotdl_download(query: str) -> tuple[bytes, str] | None:
+    """
+    Download a track via spotdl.
+    query: Spotify URI like 'spotify:track:XXXX' (preferred) or 'Artist - Title'.
+    Returns (mp3_bytes, filename) or None on failure.
+    """
+    with tempfile.TemporaryDirectory() as tmpdir:
+        try:
+            subprocess.run(
+                ["spotdl", "download", query,
+                 "--output", tmpdir,
+                 "--format", "mp3",
+                 "--log-level", "ERROR"],
+                capture_output=True, text=True, timeout=180, check=True,
+            )
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            pass
+        mp3_files = glob.glob(f"{tmpdir}/*.mp3")
+        if mp3_files:
+            fpath = mp3_files[0]
+            with open(fpath, "rb") as f:
+                return f.read(), Path(fpath).name
+    return None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -391,29 +431,40 @@ if run:
     mb_records = tuple((str(r.title), str(r.artist), str(r.duration)) for r in df_mb.itertuples())
     sp_records = tuple((str(r.title), str(r.artist), str(r.duration)) for r in df_sp.itertuples())
 
+    # Build (title, artist) → spotify_uri lookup for the download tab
+    uri_map = {}
+    if "spotify_uri" in df_sp.columns:
+        for r in df_sp.itertuples():
+            if r.spotify_uri:
+                uri_map[(str(r.title), str(r.artist))] = str(r.spotify_uri)
+
     with st.spinner(f"Comparing {len(mb_records)} × {len(sp_records)} tracks…"):
         match_rows, only_mb, only_sp = compare_playlists(mb_records, sp_records, threshold, dur_tolerance)
 
     st.session_state["results"] = {
         "match_rows": match_rows, "only_mb": only_mb, "only_sp": only_sp,
         "total_mb": len(mb_records), "total_sp": len(sp_records),
+        "uri_map": uri_map,
     }
 
 # ── Show results ──────────────────────────────────────────────────────────────
 if "results" in st.session_state:
     res = st.session_state["results"]
-    df_matched = pd.DataFrame(res["match_rows"]) if res["match_rows"] else pd.DataFrame(columns=["title","artist","match_score","match_type"])
-    df_only_mb = pd.DataFrame(res["only_mb"])    if res["only_mb"]    else pd.DataFrame(columns=["title","artist"])
-    df_only_sp = pd.DataFrame(res["only_sp"])    if res["only_sp"]    else pd.DataFrame(columns=["title","artist"])
+    df_matched = pd.DataFrame(res["match_rows"]) if res["match_rows"] else pd.DataFrame(columns=["title","artist","mb_duration","sp_duration","dur_diff_s","dur_ok","match_score","match_type"])
+    df_only_mb = pd.DataFrame(res["only_mb"])    if res["only_mb"]    else pd.DataFrame(columns=["title","artist","duration"])
+    df_only_sp = pd.DataFrame(res["only_sp"])    if res["only_sp"]    else pd.DataFrame(columns=["title","artist","duration"])
+
+    n_dur_mismatch = int((~df_matched["dur_ok"]).sum()) if "dur_ok" in df_matched.columns else 0
 
     st.markdown("---")
-    c1, c2, c3, c4, c5 = st.columns(5)
+    c1, c2, c3, c4, c5, c6 = st.columns(6)
     for col, num, lbl, cls in [
-        (c1, res["total_mb"],   "MusicBee tracks",  "blue"),
-        (c2, res["total_sp"],   "Spotify tracks",   "blue"),
-        (c3, len(df_matched),   "Matched",          "green"),
-        (c4, len(df_only_mb),   "Only in MusicBee", "amber"),
-        (c5, len(df_only_sp),   "Only in Spotify",  "red"),
+        (c1, res["total_mb"],   "MusicBee tracks",   "blue"),
+        (c2, res["total_sp"],   "Spotify tracks",    "blue"),
+        (c3, len(df_matched),   "Matched",           "green"),
+        (c4, len(df_only_mb),   "Only in MusicBee",  "amber"),
+        (c5, len(df_only_sp),   "Only in Spotify",   "red"),
+        (c6, n_dur_mismatch,    "Duration mismatches","amber"),
     ]:
         with col:
             st.markdown(f'<div class="metric-card"><div class="num {cls}">{num}</div>'
@@ -421,11 +472,14 @@ if "results" in st.session_state:
 
     st.markdown("&nbsp;")
 
-    tab1, tab2, tab3, tab4 = st.tabs([
+    uri_map = res.get("uri_map", {})
+
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         f"🟡 Only in MusicBee ({len(df_only_mb)})",
         f"🔴 Only in Spotify ({len(df_only_sp)})",
         f"✅ Matched ({len(df_matched)})",
         "📋 Raw data",
+        "⬇️ Download MP3",
     ])
 
     with tab1:
@@ -449,13 +503,34 @@ if "results" in st.session_state:
                                "only_in_spotify.csv", "text/csv")
 
     with tab3:
-        disp = df_matched[df_matched["match_type"] == "fuzzy"] if show_fuzzy_only else df_matched
-        st.caption(f"{len(disp)} tracks shown{' (fuzzy only)' if show_fuzzy_only else ''}.")
+        disp = df_matched.copy()
+        if show_fuzzy_only:
+            disp = disp[disp["match_type"] == "fuzzy"]
+        if show_dur_mismatch:
+            disp = disp[~disp["dur_ok"]]
+        st.caption(f"{len(disp)} tracks shown.")
+
         if not disp.empty:
-            st.dataframe(disp.reset_index(drop=True), width='stretch',
-                         height=min(40*len(disp)+50, 600),
-                         column_config={"match_score": st.column_config.ProgressColumn(
-                             "Score", min_value=0, max_value=1, format="%.2f")})
+            # Friendly flag column
+            disp = disp.copy()
+            disp.insert(4, "⏱ dur ok?", disp["dur_ok"].map({True: "✅", False: "⚠️"}))
+            show_cols = ["title", "artist", "mb_duration", "sp_duration", "dur_diff_s",
+                         "⏱ dur ok?", "match_score", "match_type"]
+            st.dataframe(
+                disp[show_cols].reset_index(drop=True),
+                width='stretch',
+                height=min(40*len(disp)+50, 600),
+                column_config={
+                    "match_score": st.column_config.ProgressColumn(
+                        "Score", min_value=0, max_value=1, format="%.2f"),
+                    "mb_duration":  st.column_config.TextColumn("MusicBee length"),
+                    "sp_duration":  st.column_config.TextColumn("Spotify length"),
+                    "dur_diff_s":   st.column_config.NumberColumn("Δ seconds", format="%.1f"),
+                },
+            )
+            st.download_button("⬇ Download CSV",
+                               disp[show_cols].to_csv(index=False),
+                               "matched.csv", "text/csv")
 
     with tab4:
         r1, r2 = st.columns(2)
@@ -469,5 +544,65 @@ if "results" in st.session_state:
             st.markdown("**Spotify — parsed**")
             st.dataframe(parse_file(sp_name, sp_bytes, "spotify"),
                          width='stretch', height=300)
+
+    with tab5:
+        if not SPOTDL_AVAILABLE:
+            st.error("**spotdl is not installed.** Run `pip install spotdl` in your terminal, then restart the app.")
+            st.code("pip install spotdl\nspotdl --download-ffmpeg", language="bash")
+            st.caption("spotdl also requires FFmpeg — run `spotdl --download-ffmpeg` after installing.")
+        else:
+            st.markdown("Download any track as MP3 using [spotdl](https://spotdl.readthedocs.io/).")
+
+            # Source selector
+            src = st.radio(
+                "Track source",
+                ["Only in Spotify (missing from MusicBee)", "All Spotify tracks", "Custom search"],
+                horizontal=True,
+            )
+
+            if src == "Only in Spotify (missing from MusicBee)":
+                pool = [(r["title"], r["artist"]) for r in res["only_sp"]] if res["only_sp"] else []
+            elif src == "All Spotify tracks":
+                sp_name, sp_bytes = st.session_state["sp_bytes"]
+                df_all_sp = parse_file(sp_name, sp_bytes, "spotify")
+                pool = list(zip(df_all_sp["title"].tolist(), df_all_sp["artist"].tolist()))
+            else:
+                pool = []
+
+            if src != "Custom search":
+                if not pool:
+                    st.info("No tracks available in this list.")
+                    st.stop()
+                labels = [f"{t}  —  {a}" if a else t for t, a in pool]
+                chosen_label = st.selectbox("Select a track", labels)
+                chosen_idx   = labels.index(chosen_label)
+                chosen_title, chosen_artist = pool[chosen_idx]
+                # Use Spotify URI if we have it, otherwise fall back to "Artist - Title"
+                query = uri_map.get((chosen_title, chosen_artist)) or f"{chosen_artist} - {chosen_title}"
+            else:
+                custom = st.text_input(
+                    "Spotify URI or search query",
+                    placeholder="spotify:track:4uLU6hMCjMI75M1A2tKUQC  or  Artist - Title",
+                )
+                query = custom.strip()
+                chosen_title = query
+
+            st.caption(f"Query: `{query}`" if query else "")
+
+            if st.button("⬇️  Download MP3", type="primary", disabled=not bool(query)):
+                track_label = chosen_title if src != "Custom search" else query
+                with st.spinner(f"Downloading '{track_label}' via spotdl… this may take 30–60 s"):
+                    result = spotdl_download(query)
+                if result:
+                    mp3_bytes, filename = result
+                    st.success(f"✅ Ready: **{filename}**")
+                    st.download_button(
+                        label="💾  Save MP3",
+                        data=mp3_bytes,
+                        file_name=filename,
+                        mime="audio/mpeg",
+                    )
+                else:
+                    st.error("❌ Download failed. Check that spotdl and FFmpeg are installed, and that the track is available.")
 
 st.markdown('<p class="footnote">Matching: normalized title+artist keys, exact first, then fuzzy fallback. Adjust threshold in ⚙️ if needed.</p>', unsafe_allow_html=True)

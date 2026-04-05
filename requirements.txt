@@ -27,11 +27,4 @@ seaborn
 bokeh
 streamlit-drawable-canvas
 streamlit_bokeh_events
-<<<<<<< HEAD
-moviepy
-
-=======
-speech_recognition
-deep_translator
-speech_recognition
->>>>>>> 90e9bc7 (Good Start)
+spotdl
